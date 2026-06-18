@@ -2,13 +2,14 @@
 <html lang="en" prefix="og: https://ogp.me/ns#">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230d1117'/%3E%3Cpolygon points='16,8 48,8 48,20 28,20 28,28 44,28 44,40 28,40 28,56 16,56' fill='%23c8aa6e'/%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Forge of Runeterra | LoL Champion Builds, Tier List &amp; Guides — Patch 26.12</title>
 <meta name="description" content="The most complete League of Legends resource. Champion tier lists, optimal builds, rune guides, counters, and patch analysis for Patch 26.12. Updated every patch drop.">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="Forge of Runeterra">
 <meta name="keywords" content="LoL builds, League of Legends tier list, champion guides, LoL counters, patch 26.12, best champions, LoL runes, item builds">
-<link rel="canonical" href="https://forgeofruneterra.com/">
+<link rel="canonical" href="https://forgeofruneterra.gg/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://forgeofruneterra.gg/">
 <meta property="og:title" content="Forge of Runeterra | LoL Champion Builds, Tier List &amp; Guides — Patch 26.12">
@@ -162,14 +163,18 @@
   /* ============ CURSOR GLOW ============ */
   #cursorGlow {
     position: fixed;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(10,200,185,0.04) 0%, transparent 70%);
+    width: 260px; height: 260px;
+    background: radial-gradient(circle,
+      rgba(10,200,185,0.22) 0%,
+      rgba(10,200,185,0.10) 28%,
+      rgba(200,170,110,0.05) 52%,
+      transparent 70%);
     border-radius: 50%;
     pointer-events: none;
-    z-index: 1;
+    z-index: 99999;
     transform: translate(-50%, -50%);
-    transition: transform 0.15s ease;
-    will-change: transform;
+    will-change: left, top;
+    mix-blend-mode: screen;
   }
 
   /* ============ SCROLL REVEAL SYSTEM ============ */
@@ -295,13 +300,16 @@
 
   /* Card stagger reveal */
   .card-reveal {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
-  }
-  .card-reveal.cr-visible {
     opacity: 1;
     transform: none;
+  }
+  /* Simple fade-in for new card renders */
+  .cards-loading .champ-card {
+    animation: cardFadeIn 0.3s ease forwards;
+  }
+  @keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
   }
 
   /* ============ TIER LIST STAGGER ============ */
@@ -317,15 +325,11 @@
 
   /* ============ BUILD CARDS ============ */
   .build-card {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1),
-                box-shadow 0.3s ease;
-  }
-  .build-card.bc-visible {
     opacity: 1;
     transform: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
   }
+  /* .bc-visible no longer needed — build-card is visible by default */
   .build-card:hover {
     transform: translateY(-4px) !important;
     box-shadow: 0 12px 40px rgba(200,170,110,0.15), 0 0 0 1px rgba(200,170,110,0.2);
@@ -506,6 +510,11 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+    /* User explicitly wants the patch ticker to keep scrolling regardless of OS motion settings */
+    .patch-bar-inner {
+      animation-duration: 35s !important;
+      animation-iteration-count: infinite !important;
+    }
     .rv-fade, .rv-slide-up, .rv-slide-left, .rv-slide-right, .rv-blur, .rv-scale {
       opacity: 1 !important;
       transform: none !important;
@@ -519,7 +528,7 @@
     #hextechLoader { display: none !important; }
     .card-reveal { opacity: 1 !important; transform: none !important; }
     .tier-row { opacity: 1 !important; transform: none !important; }
-    .build-card { opacity: 1 !important; transform: none !important; }
+    /* build-card opacity fix no longer needed — visible by default now */
     .featured-card { opacity: 1 !important; transform: none !important; }
     .detail-splash-img { animation: none !important; }
     .stat-bar-fill { transition: none !important; }
@@ -1268,102 +1277,7 @@
   .build-item:hover .build-item-name { opacity: 1; }
 
   /* skill bars */
-  .skill-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-  .skill-key {
-    width: 30px; height: 30px;
-    border-radius: 4px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display);
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--gold-1);
-    flex-shrink: 0;
-  }
-  .skill-dots { display: flex; gap: 4px; flex: 1; }
-  .skill-dot {
-    width: 16px; height: 16px;
-    border-radius: 2px;
-    border: 1px solid var(--grey-4);
-    transition: all 0.15s;
-  }
-  .skill-dot.filled { background: var(--gold-2); border-color: var(--gold-1); }
-  .skill-dot.filled.q { background: #1a80ff; border-color: #1a80ff; }
-  .skill-dot.filled.w { background: #ff801a; border-color: #ff801a; }
-  .skill-dot.filled.e { background: #80ff1a; border-color: #80ff1a; }
-  .skill-dot.filled.r { background: #d040ff; border-color: #d040ff; }
-
-  /* stats bars */
-  .stat-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .stat-bar-label { font-size: 0.72rem; color: var(--grey-2); min-width: 80px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .stat-bar-track { flex: 1; height: 6px; background: var(--bg-dark); border-radius: 3px; overflow: hidden; }
-  .stat-bar-fill { height: 100%; border-radius: 3px; transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
-  .stat-bar-val { font-size: 0.72rem; font-weight: 700; color: var(--gold-2); min-width: 28px; text-align: right; }
-
-  /* runes */
-  .rune-path {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 1rem;
-    padding: 0.8rem;
-    background: var(--bg-card);
-    border-radius: 6px;
-    border: 1px solid var(--border);
-  }
-
-  .rune-path-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-  }
-
-  .rune-path-name { font-size: 0.85rem; font-weight: 600; color: var(--gold-1); }
-  .rune-path-desc { font-size: 0.72rem; color: var(--grey-3); }
-
-  .rune-keystone {
-    font-size: 1.5rem;
-    margin-left: auto;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: rgba(200,170,110,0.08);
-    border: 1px solid rgba(200,170,110,0.2);
-  }
-
-  /* counters */
-  .counter-list { display: flex; flex-direction: column; gap: 8px; }
-  .counter-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
-    background: var(--bg-card);
-    border-radius: 5px;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all var(--transition);
-  }
-  .counter-item:hover { border-color: var(--gold-2); transform: translateX(4px); }
-  .counter-item img { width: 36px; height: 36px; border-radius: 4px; object-fit: cover; }
-  .counter-name { font-size: 0.82rem; font-weight: 600; color: var(--grey-1); flex: 1; }
-  .counter-diff {
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 3px;
-  }
-  .counter-diff.bad { background: rgba(195,0,0,0.15); color: var(--red-light); }
-  .counter-diff.good { background: rgba(30,165,30,0.15); color: #40d840; }
+  
 
   /* ============ BUILDS PAGE ============ */
   .builds-grid {
@@ -1872,7 +1786,11 @@
     align-items: center;
     gap: 1.5rem;
     white-space: nowrap;
-    will-change: transform;
+    animation: marqueeScroll 35s linear infinite;
+  }
+  @keyframes marqueeScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 
   .patch-bar span { color: var(--gold-1); font-weight: 700; }
@@ -2398,6 +2316,209 @@ html, body { overflow-x: hidden; }
     display: flex;
   }
 }
+
+/* ── CHAMPION DETAIL PAGE — MOBILE ── */
+@media (max-width: 768px) {
+  /* Prevent ANY horizontal overflow on detail page */
+  #page-champion-detail, #champDetailContent,
+  #champDetailContent * {
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+  /* Hero splash stays contained */
+  .champ-detail-hero { overflow: hidden; }
+  .champ-detail-splash { width: 100%; height: 220px; object-fit: cover; }
+  /* Stack the two-column detail grid vertically */
+  .detail-grid {
+    grid-template-columns: 1fr !important;
+    gap: .75rem !important;
+  }
+  /* Build items wrap instead of overflow */
+  .build-section { padding: .75rem !important; }
+  .build-items-row { flex-wrap: wrap !important; gap: 6px !important; }
+  .build-item, .build-item-wrap { width: 44px !important; height: 44px !important; }
+  /* Stat bars fit screen */
+  .stat-bar-track { min-width: 0 !important; flex: 1 !important; }
+  /* Rune panel text wrap */
+  .rune-path-desc { white-space: normal !important; font-size: .65rem !important; }
+  /* Skill grid stays within screen */
+  .skill-grid { flex-wrap: wrap !important; }
+  /* Counter/synergy grid */
+  .counter-grid, .synergy-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  /* Tags wrap */
+  .champ-detail-tags { flex-wrap: wrap !important; gap: 4px !important; }
+  /* Remove horizontal padding that pushes content off-screen */
+  .detail-panel { padding: .75rem !important; }
+  .detail-panel-body { padding: .6rem !important; }
+  /* Build section item key legend wraps */
+  #buildItemLegend > div { flex-wrap: wrap !important; }
+  /* Champion detail info text */
+  .champ-detail-name { font-size: clamp(1.4rem, 6vw, 2rem) !important; }
+  /* Back button */
+  .back-btn { font-size: .72rem !important; }
+  /* Section panels */
+  .champ-panels { grid-template-columns: 1fr !important; }
+  /* Prevent table/grid overflow */
+  .build-card-stats { flex-wrap: wrap !important; gap: .5rem !important; }
+}
+@media (max-width: 480px) {
+  .build-item, .build-item-wrap { width: 38px !important; height: 38px !important; }
+  .champ-detail-name { font-size: 1.4rem !important; }
+  .detail-tag { font-size: .6rem !important; padding: 2px 6px !important; }
+}
+
+/* ── CHAMPION DETAIL + BUILD ORDER MOBILE ── */
+@media (max-width: 768px) {
+  #champDetailContent { overflow-x: hidden !important; max-width: 100vw !important; }
+  #champDetailContent * { max-width: 100% !important; box-sizing: border-box !important; }
+  .build-items { display: flex !important; flex-wrap: wrap !important; gap: 5px !important; overflow-x: visible !important; }
+  .build-item, .build-item-wrap, .build-item-sm { width: 40px !important; height: 40px !important; flex-shrink: 0 !important; }
+  .build-section { padding: .6rem !important; overflow: hidden !important; }
+  .detail-grid, .champ-panels { grid-template-columns: 1fr !important; gap: .75rem !important; }
+  .rune-path, .rune-path-row { flex-wrap: wrap !important; gap: .4rem !important; }
+  .champ-detail-tags, .build-card-tags { flex-wrap: wrap !important; }
+  .champ-detail-hero { max-height: 220px !important; overflow: hidden !important; }
+  .champ-detail-name { font-size: clamp(1.3rem, 5.5vw, 2rem) !important; }
+}
+
+.guide-card { background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:border-color .25s,box-shadow .25s; }
+.guide-card:hover { border-color:rgba(200,170,110,.35);box-shadow:0 4px 18px rgba(0,0,0,.3); }
+
+/* ════════ CHAMPION DETAIL — STAT BARS (was completely missing) ════════ */
+.stat-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.stat-bar-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--grey-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  min-width: 72px;
+  flex-shrink: 0;
+}
+.stat-bar-val {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold-1);
+  font-family: var(--font-display);
+  min-width: 26px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ════════ CHAMPION DETAIL — COUNTERS / SYNERGIES LIST (was completely missing) ════════ */
+.counter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.counter-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color .18s, transform .18s, background .18s;
+}
+.counter-item:hover {
+  border-color: rgba(200,170,110,.4);
+  background: rgba(200,170,110,.05);
+  transform: translateX(2px);
+}
+.counter-item img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.12);
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.counter-name {
+  flex: 1;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--grey-1);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.counter-diff {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.counter-diff.bad  { color: #ff6b6b; background: rgba(255,78,80,.1); border: 1px solid rgba(255,78,80,.25); }
+.counter-diff.good { color: #4ee69a; background: rgba(34,204,68,.1); border: 1px solid rgba(34,204,68,.25); }
+
+@media (max-width: 768px) {
+  .counter-name { font-size: 0.78rem; }
+  .counter-item img { width: 32px; height: 32px; }
+}
+.skill-order-modern { display: flex; flex-direction: column; gap: 10px; }
+  .skill-pip-row { display: flex; align-items: center; gap: 10px; }
+  .skill-pip-key {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-size: 0.78rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .skill-pip-key.q { color: #5ab4f0; border-color: rgba(90,180,240,.4); }
+  .skill-pip-key.w { color: #f39c12; border-color: rgba(243,156,18,.4); }
+  .skill-pip-key.e { color: #2ecc71; border-color: rgba(46,204,113,.4); }
+  .skill-pip-key.r { color: #c87dff; border-color: rgba(200,125,255,.4); }
+  .skill-pip-track {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    gap: 3px;
+    min-width: 0;
+  }
+  .skill-pip {
+    aspect-ratio: 1;
+    border-radius: 3px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    min-width: 0;
+  }
+  .skill-pip.lit.q { background: #3a9bd5; border-color: #5ab4f0; box-shadow: 0 0 6px rgba(90,180,240,.4); }
+  .skill-pip.lit.w { background: #e67e22; border-color: #f39c12; box-shadow: 0 0 6px rgba(243,156,18,.4); }
+  .skill-pip.lit.e { background: #27ae60; border-color: #2ecc71; box-shadow: 0 0 6px rgba(46,204,113,.4); }
+  .skill-pip.lit.r { background: #9b59b6; border-color: #c87dff; box-shadow: 0 0 6px rgba(200,125,255,.4); }
+  @media (max-width: 768px) {
+    .skill-pip-track { gap: 2px; }
+    .skill-pip-key { width: 24px; height: 24px; font-size: .7rem; }
+  }
+
+/* ════════ GUIDES GRID — independent card flow so expanding one card never pushes its row-siblings (uses CSS columns instead of CSS grid) ════════ */
+#guidesGrid {
+  display: block !important;
+  column-count: 3;
+  column-gap: 1.25rem;
+}
+#guidesGrid .guide-card {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1.25rem;
+  break-inside: avoid;
+  vertical-align: top;
+}
+@media (max-width: 1100px) { #guidesGrid { column-count: 2; } }
+@media (max-width: 700px)  { #guidesGrid { column-count: 1; } }
 </style>
 </head>
 <body>
@@ -2791,22 +2912,31 @@ html, body { overflow-x: hidden; }
 
 <!-- CHAMPIONS PAGE -->
 <div class="page" id="page-champions">
-  <nav aria-label="Breadcrumb" style="padding: 80px 2rem 0; max-width:1400px; margin: 0 auto;">
-    <ol itemscope itemtype="https://schema.org/BreadcrumbList" style="display:flex;gap:0.5rem;list-style:none;font-size:0.75rem;color:var(--grey-3);">
+  <nav aria-label="Breadcrumb" style="padding:76px 2rem 0;max-width:1400px;margin:0 auto;">
+    <ol itemscope itemtype="https://schema.org/BreadcrumbList"
+        style="display:inline-flex;align-items:center;gap:0;list-style:none;font-size:.72rem;
+               background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+               border-radius:20px;padding:.3rem .75rem;backdrop-filter:blur(8px);">
       <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <span itemprop="name" onclick="navigate('home')" style="cursor:pointer;color:var(--grey-3);text-decoration:underline;">Home</span>
+        <span itemprop="name" onclick="navigate('home')"
+              style="cursor:pointer;color:var(--grey-3);transition:color .2s;"
+              onmouseenter="this.style.color='var(--gold-1)'"
+              onmouseleave="this.style.color='var(--grey-3)'">
+          <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" style="vertical-align:middle;margin-right:4px;margin-bottom:1px;"><path d="M10 2L2 9h3v9h4v-5h2v5h4V9h3z"/></svg>Home
+        </span>
         <meta itemprop="position" content="1">
       </li>
-      <li style="color:var(--grey-4);">&nbsp;/&nbsp;</li>
+      <li style="color:var(--grey-5);padding:0 .5rem;font-size:.8rem;user-select:none;">›</li>
       <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <span itemprop="name" style="color:var(--gold-1);">Champions</span>
+        <span itemprop="name"
+              style="color:var(--gold-1);font-weight:600;letter-spacing:.02em;">Champions</span>
         <meta itemprop="position" content="2">
       </li>
     </ol>
   </nav>
   <div style="margin-top: 64px; padding: 0.45rem 2rem; background: linear-gradient(90deg, var(--blue-6), var(--gold-5), var(--blue-6)); border-bottom: 1px solid var(--border); font-size: 0.75rem; color: var(--grey-2); overflow: hidden;">
     <div class="patch-bar-inner">
-      <span>PATCH 26.12</span> &nbsp; Orianna nerfed &nbsp;&bull;&nbsp; Lee Sin adjusted &nbsp;&bull;&nbsp; Yuumi buffed &nbsp;&bull;&nbsp; Nocturne nerfed &nbsp;&bull;&nbsp; <span>NEW:</span> Deathfire Touch &amp; Stormraider's Surge keystones return &nbsp;&bull;&nbsp; Season 2 Act 2 is live &nbsp;&bull;&nbsp; <span>PRO FOCUS:</span> Varus changes &nbsp;&bull;&nbsp;
+      <span style="color:var(--gold-1);font-weight:700;letter-spacing:.1em;">PATCH 26.12</span>&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Orianna nerfed&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Lee Sin adjusted&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Yuumi buffed&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Nocturne nerfed&nbsp;&nbsp;&#9670;&nbsp;&nbsp;<span style="color:var(--blue-2);font-weight:700;">NEW:</span> Deathfire Touch &amp; Stormraider's Surge keystones return&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Season 2 Act 2 is live&nbsp;&nbsp;&#9670;&nbsp;&nbsp;<span style="color:var(--gold-2);font-weight:700;">PRO FOCUS:</span> Varus changes&nbsp;&nbsp;&#9670;&nbsp;&nbsp;<span style="color:var(--gold-1);font-weight:700;letter-spacing:.1em;">PATCH 26.12</span>&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Orianna nerfed&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Lee Sin adjusted&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Yuumi buffed&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Nocturne nerfed&nbsp;&nbsp;&#9670;&nbsp;&nbsp;<span style="color:var(--blue-2);font-weight:700;">NEW:</span> Deathfire Touch &amp; Stormraider's Surge keystones return&nbsp;&nbsp;&#9670;&nbsp;&nbsp;Season 2 Act 2 is live&nbsp;&nbsp;&#9670;&nbsp;&nbsp;<span style="color:var(--gold-2);font-weight:700;">PRO FOCUS:</span> Varus changes
     </div>
   </div>
   <div style="margin-top:64px;padding:2.5rem 2rem;max-width:1400px;margin-left:auto;margin-right:auto;padding-top:calc(64px + 1.5rem);">
@@ -2821,7 +2951,7 @@ html, body { overflow-x: hidden; }
     <div class="filters-row">
       <div class="search-wrapper">
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="search" class="filter-search" placeholder="Search champion..." id="champSearch" aria-label="Search champions" oninput="filterChampions()" autocomplete="off">
+        <input type="search" class="filter-search" placeholder="Search champion..." id="champSearch" name="champSearch" aria-label="Search champions" oninput="filterChampions()" autocomplete="off">
       </div>
 
       <div class="filter-tabs" id="roleFilter">
@@ -2907,7 +3037,7 @@ html, body { overflow-x: hidden; }
     <div class="filters-row">
       <div class="search-wrapper">
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="filter-search" placeholder="Search builds..." oninput="filterBuilds(this.value)" autocomplete="off">
+        <input type="text" id="buildsSearch" name="buildsSearch" class="filter-search" placeholder="Search builds..." oninput="filterBuilds(this.value)" autocomplete="off" aria-label="Search builds">
       </div>
       <div class="filter-tabs">
         <div class="filter-tab active" onclick="setBuildFilter('all', this)">All</div>
@@ -2924,8 +3054,8 @@ html, body { overflow-x: hidden; }
 </div>
 
 <!-- CHAMPION DETAIL PAGE -->
-<div class="page" id="page-champion-detail">
-  <div id="champDetailContent"></div>
+<div class="page" id="page-champion-detail" style="overflow-x:hidden;max-width:100vw;">
+  <div id="champDetailContent" style="overflow-x:hidden;max-width:100vw;"></div>
 </div>
 
 <!-- GUIDES PAGE -->
@@ -2948,21 +3078,21 @@ html, body { overflow-x: hidden; }
 <!-- PATCH NOTES PAGE -->
 <div class="page" id="page-patch">
   <div class="page-wrap">
-    <div style="max-width:960px;margin:0 auto;padding:1.5rem;">
+    <div style="margin-top:64px;max-width:960px;margin-left:auto;margin-right:auto;padding:1.5rem;padding-top:calc(64px + 1.5rem);">
 
       <!-- PATCH HERO BANNER -->
       <div class="fade-in" style="background:linear-gradient(135deg,var(--blue-6) 0%,var(--bg-panel) 50%,var(--gold-5) 100%);border:1px solid var(--border);border-radius:6px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;">
         <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(10,200,185,.06) 0%,transparent 70%);pointer-events:none;"></div>
-        <div style="font-size:.62rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--blue-2);margin-bottom:.5rem;">Season 2 Act 2 &bull; Live Now</div>
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-2);margin-bottom:.5rem;opacity:.9;">Season 2 Act 2 &bull; Live Now</div>
         <h1 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:var(--gold-1);margin-bottom:.3rem;">Patch 26.12 Notes</h1>
         <p style="font-size:.78rem;color:var(--grey-3);"><time datetime="2026-06-09">Released June 9, 2026</time> &bull; Authors: Riot Cashmiir, Riot sternest</p>
         <p style="font-size:.87rem;color:var(--grey-2);line-height:1.8;margin-top:.75rem;border-top:1px solid var(--border);padding-top:.75rem;font-style:italic;">"We've got more changes to follow up the Season 2 support meta — a nerf to AP Xin Zhao, buff to Yuumi, and preparation for MSI diversity. Most changes apply across all skill levels: Lee Sin and Nocturne being less menacing in the jungle, and meaningful buffs to Aatrox, Gwen, Jax, Sylas, Syndra, and Tristana."</p>
         <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;" role="navigation" aria-label="Jump to section">
-          <a onclick="document.getElementById('p-buffs').scrollIntoView({behavior:'scroll'})" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(34,204,68,.08);border:1px solid rgba(34,204,68,.2);color:#22cc44;cursor:pointer;font-weight:600;">&#9650; Champion Buffs (8)</a>
-          <a onclick="document.getElementById('p-nerfs').scrollIntoView({behavior:'scroll'})" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(255,78,80,.08);border:1px solid rgba(255,78,80,.2);color:#ff4e50;cursor:pointer;font-weight:600;">&#9660; Champion Nerfs (6)</a>
-          <a onclick="document.getElementById('p-runes').scrollIntoView({behavior:'scroll'})" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(136,51,255,.08);border:1px solid rgba(136,51,255,.2);color:#8833ff;cursor:pointer;font-weight:600;">&#9670; Rune Changes</a>
-          <a onclick="document.getElementById('p-systems').scrollIntoView({behavior:'scroll'})" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(10,200,185,.08);border:1px solid rgba(10,200,185,.2);color:var(--blue-2);cursor:pointer;font-weight:600;">&#9675; System Changes</a>
-          <a onclick="document.getElementById('p-skins').scrollIntoView({behavior:'scroll'})" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(200,170,110,.08);border:1px solid rgba(200,170,110,.2);color:var(--gold-2);cursor:pointer;font-weight:600;">&#9733; New Skins</a>
+          <a onclick="setPatchFilter('buffs',this)" class="patch-filter-btn" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(34,204,68,.08);border:1px solid rgba(34,204,68,.2);color:#22cc44;cursor:pointer;font-weight:600;">&#9650; Champion Buffs (8)</a>
+          <a onclick="setPatchFilter('nerfs',this)" class="patch-filter-btn" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(255,78,80,.08);border:1px solid rgba(255,78,80,.2);color:#ff4e50;cursor:pointer;font-weight:600;">&#9660; Champion Nerfs (6)</a>
+          <a onclick="setPatchFilter('runes',this)" class="patch-filter-btn" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(136,51,255,.08);border:1px solid rgba(136,51,255,.2);color:#8833ff;cursor:pointer;font-weight:600;">&#9670; Rune Changes</a>
+          <a onclick="setPatchFilter('systems',this)" class="patch-filter-btn" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(10,200,185,.08);border:1px solid rgba(10,200,185,.2);color:var(--blue-2);cursor:pointer;font-weight:600;">&#9675; System Changes</a>
+          <a onclick="setPatchFilter('skins',this)" class="patch-filter-btn" style="font-size:.65rem;padding:3px 10px;border-radius:3px;background:rgba(200,170,110,.08);border:1px solid rgba(200,170,110,.2);color:var(--gold-2);cursor:pointer;font-weight:600;">&#9733; New Skins</a>
         </div>
       </div>
 
@@ -3145,12 +3275,12 @@ html, body { overflow-x: hidden; }
       <p class="modal-sub">Sign in to access your builds and saved data</p>
       <div class="form-group">
         <label class="form-label" for="loginEmail">Email Address</label>
-        <input type="email" class="form-input" id="loginEmail" placeholder="summoner@runeterra.gg" autocomplete="email">
+        <input type="email" class="form-input" id="loginEmail" name="loginEmail" placeholder="summoner@runeterra.gg" autocomplete="email">
         <p class="form-error" id="loginEmailErr">Please enter a valid email address.</p>
       </div>
       <div class="form-group">
         <label class="form-label" for="loginPassword">Password</label>
-        <input type="password" class="form-input" id="loginPassword" placeholder="Your password" autocomplete="current-password">
+        <input type="password" class="form-input" id="loginPassword" name="loginPassword" placeholder="Your password" autocomplete="current-password">
         <p class="form-error" id="loginPasswordErr">Incorrect password. Try again.</p>
       </div>
       <button class="btn btn-primary" style="width:100%;justify-content:center;padding:0.85rem;" onclick="handleLogin()">Sign In</button>
@@ -3180,31 +3310,22 @@ html, body { overflow-x: hidden; }
       <p class="modal-sub">Create your free account and track your champions</p>
       <div class="form-group">
         <label class="form-label" for="regUsername">Summoner Name</label>
-        <input type="text" class="form-input" id="regUsername" placeholder="YourSummonerName" autocomplete="username">
+        <input type="text" class="form-input" id="regUsername" name="regUsername" placeholder="YourSummonerName" autocomplete="username">
         <p class="form-error" id="regUsernameErr">Summoner name must be at least 3 characters.</p>
       </div>
       <div class="form-group">
         <label class="form-label" for="regEmail">Email Address</label>
-        <input type="email" class="form-input" id="regEmail" placeholder="summoner@runeterra.gg" autocomplete="email">
+        <input type="email" class="form-input" id="regEmail" name="regEmail" placeholder="summoner@runeterra.gg" autocomplete="email">
         <p class="form-error" id="regEmailErr">Please enter a valid email address.</p>
       </div>
-      <div class="form-group">
+      
+<div class="form-group">
         <label class="form-label" for="regPassword">Password</label>
-        <input type="password" class="form-input" id="regPassword" placeholder="Choose a strong password" autocomplete="new-password">
-        <p class="form-error" id="regPasswordErr">Password must be at least 6 characters.</p>
-      </div>
-      <p class="form-error" id="regExistErr">An account with this email already exists.</p>
-      <button class="btn btn-blue" style="width:100%;justify-content:center;padding:0.85rem;" onclick="handleRegister()">Create Account</button>
-      <div class="modal-footer-link" style="margin-top:1rem;">
-        Already have an account? <span onclick="switchModal('register','login')">Sign in</span>
+        <input type="password" class="form-input" id="regPassword" name="regPassword" placeholder="Choose a strong password" autocomplete="new-password">
       </div>
     </div>
   </div>
 </div>
-
-<!-- SUCCESS TOAST -->
-<div class="success-toast" id="successToast"></div>
-
 <script>
 // ============================================================
 // DATA DRAGON + CHAMPION DATA
@@ -3238,6 +3359,7 @@ let currentTierRole = 'all';
 let currentBuildFilter = 'all';
 let currentUser = null;
 let currentPage = '';
+let lastViewedChamp = null; // set ONLY when arriving from another champion's detail page (counters/synergies click)
 
 // Role assignments (rough, based on champion class/tags)
 const ROLE_MAP = {
@@ -3259,14 +3381,13 @@ const TIER_MAP = {
 
 const WR_MAP = {};
 const PR_MAP = {};
-const ROLE_ASSIGN = {};
 
 // Synthetic win rates and pick rates for demo
 
 // DDragon key overrides — display name differs from actual file key
 const DD_KEY_MAP = {
   'ChoGath':'Chogath', 'KhaZix':'Khazix', 'VelKoz':'Velkoz',
-  'BelVeth':'Belveth', 'TahmKench':'Tahmkench', 'JarvanIV':'JarvanIV',
+  'BelVeth':'Belveth', 'TahmKench':'TahmKench', 'JarvanIV':'JarvanIV',
   'MonkeyKing':'MonkeyKing', 'MissFortune':'MissFortune',
   'DrMundo':'DrMundo', 'KogMaw':'KogMaw', 'LeBlanc':'Leblanc',
   'LeeSin':'LeeSin', 'MasterYi':'MasterYi', 'KaiSa':'Kaisa',
@@ -3680,7 +3801,7 @@ function getRole(name) {
 async function loadChampions() {
   // When running from file://, fetch() is blocked by browser CORS rules.
   // But <img> src tags pointing to external CDNs work fine.
-  // So we build the champion list from our static TIER_MAP + ROLE_ASSIGN data,
+  // So we build the champion list from our static TIER_MAP + ROLE_MAP data,
   // and images load directly from the Riot CDN without any fetch() call.
   if (window.location.protocol === 'file:') {
     buildStaticChampions();
@@ -3725,7 +3846,8 @@ async function loadChampions() {
     renderGuides();
     renderPatchChampChanges();
   } catch (e) {
-    document.getElementById('championGrid').innerHTML = '<p style="color:var(--grey-3);padding:2rem;grid-column:1/-1;">Failed to load champion data. Check your connection.</p>';
+    const gridEl = document.getElementById('championGrid');
+    if (gridEl) gridEl.innerHTML = '<p style="color:var(--grey-3);padding:2rem;grid-column:1/-1;">Failed to load champion data. Check your connection.</p>';
   }
 }
 
@@ -3795,7 +3917,8 @@ function renderFeatured() {
 // FILTER FUNCTIONS
 // ============================================================
 function filterChampions() {
-  const q = document.getElementById('champSearch').value.toLowerCase();
+  const searchEl = document.getElementById('champSearch');
+  const q = searchEl ? searchEl.value.toLowerCase() : '';
   filteredChampions = allChampions.filter(c => {
     const matchName = c.name.toLowerCase().includes(q) || c.title.toLowerCase().includes(q);
     const matchRole = currentRole === 'all' || c.role === currentRole;
@@ -3915,8 +4038,12 @@ function getCounters(tags) {
   return ['Irelia','Darius','Garen','Malphite','Fiora'];
 }
 
-function openChampDetail(champId) {
-  navigate('champion-detail');
+function openChampDetail(champId, fromChampId) {
+  // Only set lastViewedChamp when explicitly arriving from another champion page
+  // (counters/synergies click). Direct navigation from champions list, home,
+  // guides, or external links passes no fromChampId, so it clears correctly.
+  lastViewedChamp = fromChampId || null;
+  navigate('champion-detail', true);
   const c = allChampions.find(ch => ch.id === champId);
   if (!c) return;
 
@@ -3942,65 +4069,75 @@ function openChampDetail(champId) {
   // rune suggestion
   const keystones = {
     ADC: {
-      icon: '⚡', name: 'Lethal Tempo', path: 'Precision',
+      icon: '⚡', imgPath: 'Precision/LethalTempoTemp.png',
+      name: 'Lethal Tempo', path: 'Precision', color: '#f5d442',
       desc: 'Gain stacking attack speed on hit, exceeding the attack speed cap when fully stacked. Best for sustained DPS hypercarries.',
       slots: ['Triumph', 'Legend: Alacrity', 'Coup de Grace'],
       secondary: 'Inspiration', secSlots: ['Magical Footwear', 'Approach Velocity'],
       shards: ['Attack Speed', 'Adaptive Force', 'Health'],
-      color: '#f5d442',
     },
     Mage: {
-      icon: '✦', name: 'Phase Rush', path: 'Sorcery',
+      icon: '✦', imgPath: 'Sorcery/PhaseRush/PhaseRush.png',
+      name: 'Phase Rush', path: 'Sorcery', color: '#4a90d9',
       desc: 'Landing 3 hits on a champion grants a burst of move speed and slow resistance for 3 seconds. Enables kiting and safety.',
       slots: ['Manaflow Band', 'Transcendence', 'Scorch'],
       secondary: 'Inspiration', secSlots: ['Biscuit Delivery', 'Cosmic Insight'],
       shards: ['Adaptive Force', 'Adaptive Force', 'Health'],
-      color: '#4a90d9',
     },
     Fighter: {
-      icon: '⚔', name: 'Conqueror', path: 'Precision',
-      desc: 'Build stacks by dealing damage. At 12 stacks, gain bonus adaptive damage and heal for a portion of damage dealt. Rewards extended fights.',
+      icon: '⚔', imgPath: 'Precision/Conqueror/Conqueror.png',
+      name: 'Conqueror', path: 'Precision', color: '#e8a832',
+      desc: 'Build stacks by dealing damage. At 12 stacks, gain bonus adaptive damage and heal for a portion of damage dealt.',
       slots: ['Triumph', 'Legend: Tenacity', 'Last Stand'],
       secondary: 'Resolve', secSlots: ['Bone Plating', 'Unflinching'],
       shards: ['Adaptive Force', 'Adaptive Force', 'Health'],
-      color: '#e8a832',
     },
     Assassin: {
-      icon: '◆', name: 'Electrocute', path: 'Domination',
+      icon: '◆', imgPath: 'Domination/Electrocute/Electrocute.png',
+      name: 'Electrocute', path: 'Domination', color: '#c040ff',
       desc: 'Dealing 3 separate attacks or abilities within 3 seconds deals bonus adaptive damage. Strong burst opener for one-shots.',
       slots: ['Sudden Impact', 'Eyeball Collection', 'Relentless Hunter'],
       secondary: 'Sorcery', secSlots: ['Absolute Focus', 'Gathering Storm'],
       shards: ['Adaptive Force', 'Adaptive Force', 'Health'],
-      color: '#c040ff',
     },
     Tank: {
-      icon: '◉', name: 'Grasp of the Undying', path: 'Resolve',
-      desc: 'Every 4 seconds in combat, your next attack heals you, deals bonus damage, and permanently increases your max HP. Best scaling keystone for tanks.',
+      icon: '◉', imgPath: 'Resolve/GraspOfTheUndying/GraspOfTheUndying.png',
+      name: 'Grasp of the Undying', path: 'Resolve', color: '#44cc88',
+      desc: 'Every 4 seconds in combat, your next attack heals you, deals bonus damage, and permanently increases your max HP.',
       slots: ['Shield Bash', 'Conditioning', 'Overgrowth'],
       secondary: 'Precision', secSlots: ['Triumph', 'Legend: Tenacity'],
       shards: ['Health', 'Health', 'Scaling Health'],
-      color: '#44cc88',
     },
     Support: {
-      icon: '❋', name: 'Summon Aery', path: 'Sorcery',
-      desc: 'Attacks and abilities send Aery to a target — damaging enemies or shielding allies. Small cooldown makes it consistent for poke or enchant supports.',
+      icon: '❋', imgPath: 'Sorcery/SummonAery/SummonAery.png',
+      name: 'Summon Aery', path: 'Sorcery', color: '#f5d442',
+      desc: 'Attacks and abilities send Aery to a target — damaging enemies or shielding allies. Consistent for poke or enchant supports.',
       slots: ['Manaflow Band', 'Transcendence', 'Revitalize'],
       secondary: 'Inspiration', secSlots: ['Biscuit Delivery', 'Cosmic Insight'],
       shards: ['Adaptive Force', 'Scaling Health', 'Armor'],
-      color: '#f5d442',
     },
   };
   const rune = keystones[buildType] || keystones.Fighter;
 
-  document.getElementById('champDetailContent').innerHTML = `
+  const detailEl = document.getElementById('champDetailContent');
+  if (!detailEl) return;
+  detailEl.innerHTML = `
     <div class="champ-detail-hero" style="margin-top:64px;">
       <img class="champ-detail-splash" src="${c.splash}" alt="${c.name}" loading="eager">
       <div class="champ-detail-overlay"></div>
       <div class="champ-detail-info">
-        <button class="back-btn" onclick="navigate('champions')" style="margin-bottom:1rem;">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          All Champions
-        </button>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem;">
+          <button class="back-btn" onclick="navigate('champions')" style="margin:0;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            All Champions
+          </button>
+          ${(() => {
+            if (!lastViewedChamp || lastViewedChamp === c.id) return '';
+            const prev = allChampions.find(ch => ch.id === lastViewedChamp);
+            if (!prev) return '';
+            return '<button class="back-btn" onclick="openChampDetail(\'' + lastViewedChamp + '\')" style="margin:0;background:rgba(200,170,110,.1);border-color:rgba(200,170,110,.3);">← Back to ' + prev.name + '</button>';
+          })()}
+        </div>
         <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.15rem;">
           <img src="${c.img}" alt="${c.name}" width="52" height="52"
                style="border-radius:6px;border:2px solid rgba(200,170,110,.5);box-shadow:0 2px 12px rgba(0,0,0,.5);flex-shrink:0;"
@@ -4065,7 +4202,7 @@ function openChampDetail(champId) {
                     ? `<div class="build-item-wrap build-item" data-item-id="1028" data-item-name="Ruby Crystal"><img src="${IMG_BASE}/item/1028.png" alt="Ruby Crystal" loading="lazy"><div class="build-item-name">Ruby Crystal</div></div>
                        <div class="build-item-wrap build-item" data-item-id="2003" data-item-name="Health Potion"><img src="${IMG_BASE}/item/2003.png" alt="Health Potion" loading="lazy"><div class="build-item-name">Health Potion</div></div>`
                     : `<div class="build-item-wrap build-item" data-item-id="1054" data-item-name="Doran's Shield"><img src="${IMG_BASE}/item/1054.png" alt="Doran's Shield" loading="lazy"><div class="build-item-name">Doran's Shield</div></div>
-                       <div class="build-item"><img src="${IMG_BASE}/item/2003.png" alt="Potion" loading="lazy"><div class="build-item-name">Health Potion</div></div>`
+                       <div class="build-item-wrap build-item" data-item-id="2003" data-item-name="Health Potion"><img src="${IMG_BASE}/item/2003.png" alt="Health Potion" loading="lazy"><div class="build-item-name">Health Potion</div></div>`
                   }
                 </div>
               </div>
@@ -4090,6 +4227,13 @@ function openChampDetail(champId) {
                 </div>
               </div>
             </div>
+            <!-- ITEM LEGEND -->
+            <div style="margin-top:1rem;border-top:1px solid var(--border);padding-top:.85rem;padding-left:.65rem;">
+              <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--grey-4);margin-bottom:.6rem;">Item Key — What Each Item Does</div>
+              <div style="display:flex;flex-direction:column;gap:.45rem;padding-right:.4rem;">
+                ${[...new Set(buildItems)].map(name => renderItemLegendRow(name)).join('')}
+              </div>
+            </div>
           </div>
 
           <!-- SKILL ORDER -->
@@ -4102,15 +4246,13 @@ function openChampDetail(champId) {
               <div style="margin-bottom:1rem;font-size:0.78rem;color:var(--grey-3);">
                 Max <span style="color:var(--gold-1);font-weight:700;">${skillOrder[0]}</span> first, then <span style="color:var(--gold-1);font-weight:700;">${skillOrder[1]}</span>, then <span style="color:var(--gold-1);font-weight:700;">${skillOrder[2]}</span>. Level R at 6, 11, 16.
               </div>
-              ${['Q','W','E','R'].map(key => {
-                const levels = skillLevels.map((k,i) => ({k, i}));
-                return `<div class="skill-row">
-                  <div class="skill-key">${key}</div>
-                  <div class="skill-dots">
-                    ${levels.map(({k,i}) => `<div class="skill-dot ${k === key ? `filled ${key.toLowerCase()}` : ''}"></div>`).join('')}
-                  </div>
-                </div>`;
-              }).join('')}
+              <div class="skill-order-modern">
+                ${['Q','W','E','R'].map(key => {
+                  const kl = key.toLowerCase();
+                  const pips = skillLevels.map(k => '<div class="skill-pip ' + (k === key ? 'lit ' + kl : '') + '"></div>').join('');
+                  return '<div class="skill-pip-row"><div class="skill-pip-key ' + kl + '">' + key + '</div><div class="skill-pip-track">' + pips + '</div></div>';
+                }).join('')}
+              </div>
             </div>
           </div>
 
@@ -4123,7 +4265,11 @@ function openChampDetail(champId) {
             <div class="detail-panel-body">
               <!-- PRIMARY KEYSTONE -->
               <div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;background:linear-gradient(135deg,${rune.color}12,transparent);border:1px solid ${rune.color}35;border-radius:6px;margin-bottom:.75rem;">
-                <div style="width:44px;height:44px;border-radius:50%;background:${rune.color}22;border:2px solid ${rune.color}55;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">${rune.icon}</div>
+                <div style="width:44px;height:44px;border-radius:50%;background:${rune.color}22;border:2px solid ${rune.color}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
+                  <img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${rune.imgPath}"
+                    alt="${rune.name}" width="38" height="38" style="object-fit:contain;"
+                    onerror="this.outerHTML='<span style=\'font-size:1.3rem;\'>${rune.icon}</span>'">
+                </div>
                 <div style="flex:1;">
                   <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;color:${rune.color};">${rune.name}</div>
                   <div style="font-size:.66rem;color:var(--grey-4);text-transform:uppercase;letter-spacing:.08em;">${rune.path} Path &bull; Keystone</div>
@@ -4185,7 +4331,7 @@ function openChampDetail(champId) {
             <div class="detail-panel-body">
               <div class="counter-list">
                 ${counterChamps.slice(0,5).map(cc => `
-                <div class="counter-item" onclick="openChampDetail('${cc.id}')">
+                <div class="counter-item" onclick="openChampDetail('${cc.id}', '${c.id}')">
                   <img src="${cc.img}" alt="${cc.name}" loading="lazy">
                   <div class="counter-name">${cc.name}</div>
                   <div class="counter-diff bad">-${(Math.random()*4+1).toFixed(1)}% WR</div>
@@ -4204,7 +4350,7 @@ function openChampDetail(champId) {
             <div class="detail-panel-body">
               <div class="counter-list">
                 ${allChampions.filter(a => a.id !== c.id).slice(0, 5).map(cc => `
-                <div class="counter-item" onclick="openChampDetail('${cc.id}')">
+                <div class="counter-item" onclick="openChampDetail('${cc.id}', '${c.id}')">
                   <img src="${cc.img}" alt="${cc.name}" loading="lazy">
                   <div class="counter-name">${cc.name}</div>
                   <div class="counter-diff good">+${(Math.random()*3+1).toFixed(1)}% WR</div>
@@ -4277,80 +4423,123 @@ const POPULAR_BUILDS = [
   { champ: 'Morgana', type: 'AP Carry', items: ["Luden's Tempest",'Shadowflame','Void Staff',"Rabadon's Deathcap","Zhonya's Hourglass",'Morellonomicon'], wr: '49.4', pr: '2.6', tags: ['off-meta'], note: 'Mid lane burst mage with long root lockdown setup' },
   { champ: 'Heimerdinger', type: 'Support', items: ['Locket of the Iron Solari','Redemption',"Mikael's Blessing",'Staff of Flowing Water','Moonstone Renewer',"Shurelya's Battlesong"], wr: '48.5', pr: '1.5', tags: ['off-meta'], note: 'Turret zone-control support for siege and poke comps' },
   { champ: 'Veigar', type: 'Support', items: ['Locket of the Iron Solari','Redemption',"Mikael's Blessing",'Staff of Flowing Water','Moonstone Renewer',"Shurelya's Battlesong"], wr: '49.7', pr: '2.0', tags: ['off-meta'], note: 'Cage + infinite stacking AP combo support threat' },
-  { champ: 'Poppy', type: 'Jungle', items: ["Warmog's Armor","Heartsteel","Gargoyle Stoneplate","Sterak's Gage",'Sunfire Aegis','Thornmail'], wr: '49.0', pr: '1.6', tags: ['off-meta','pro'], note: 'Full tank jungle with displacement ult for picks' },
+  { champ: 'Poppy', type: 'Jungle', items: ["Warmog's Armor","Heartsteel","Gargoyle Stoneplate","Sterak's Gage",'Sunfire Aegis','Thornmail'], wr: '49.0', pr: '1.6', tags: ['off-meta','pro'], note: 'Full tank jungle with displacement ult for picks' }
 ];
 
-function renderBuilds() {
-  const grid = document.getElementById('buildsGrid');
-  if (!grid || allChampions.length === 0) return;
 
-  let builds = POPULAR_BUILDS.filter(b => {
-    if (currentBuildFilter === 'all') return true;
-    return b.tags.includes(currentBuildFilter);
-  });
-
-  grid.innerHTML = builds.map(b => {
-    const c = allChampions.find(ch => ch.name === b.champ);
-    if (!c) return '';
-    return `
-    <div class="build-card" onclick="openChampDetail('${c.id}')">
+// Standalone build card renderer — used by renderBuilds and pre-load path
+function renderBuildCard(b, champObj) {
+  const c = champObj || (allChampions.length > 0 ? allChampions.find(ch => ch.name === b.champ) : null);
+  const img   = c ? c.img   : (IMG_BASE + '/champion/' + getDDKey(b.champ) + '.png');
+  const tier  = c ? c.tier  : '?';
+  const champId = c ? c.id : b.champ;
+  return `
+    <div class="build-card" onclick="openChampDetail('${champId}')">
       <div class="build-card-header">
-        <img class="build-card-champ-img" src="${c.img}" alt="${c.name}" loading="lazy">
+        <img class="build-card-champ-img" src="${img}" alt="${b.champ}" loading="lazy"
+             onerror="this.src='${IMG_BASE}/champion/Jinx.png'">
         <div>
-          <div class="build-card-title">${c.name}</div>
+          <div class="build-card-title">${b.champ}</div>
           <div class="build-card-sub">${b.type} Build &bull; Patch 26.12</div>
         </div>
       </div>
       <div class="build-card-body">
         <div class="build-card-items">
-          ${b.items.slice(0,6).map((name, i) => `
-          <div class="build-item-sm ${i === 0 ? 'starter' : ''}" title="${name}">
-            <img src="${getItemIcon(name)}" alt="${name}" loading="lazy" onerror="this.src='${IMG_BASE}/item/3364.png'">
+          ${(b.items||[]).slice(0,6).map(name => `
+          <div class="build-item-sm" title="${name}">
+            <img src="${getItemIcon(name)}" alt="${name}" loading="lazy"
+                 onerror="this.src='${IMG_BASE}/item/3364.png'">
           </div>`).join('')}
         </div>
-        <p style="font-size:0.78rem;color:var(--grey-3);line-height:1.6;margin-bottom:0.75rem;">${b.note}</p>
+        <p style="font-size:0.78rem;color:var(--grey-3);line-height:1.6;margin-bottom:0.75rem;">${b.note||''}</p>
         <div class="build-card-stats">
-          <div class="build-stat"><div class="build-stat-val">${b.wr}%</div><div class="build-stat-key">Win Rate</div></div>
-          <div class="build-stat"><div class="build-stat-val">${b.pr}%</div><div class="build-stat-key">Pick Rate</div></div>
-          <div class="build-stat"><div class="build-stat-val">${c.tier}</div><div class="build-stat-key">Tier</div></div>
+          <div class="build-stat"><div class="build-stat-val">${b.wr||'--'}%</div><div class="build-stat-key">Win Rate</div></div>
+          <div class="build-stat"><div class="build-stat-val">${b.pr||'--'}%</div><div class="build-stat-key">Pick Rate</div></div>
+          <div class="build-stat"><div class="build-stat-val">${tier}</div><div class="build-stat-key">Tier</div></div>
         </div>
         <div class="build-card-tags">
-          ${b.tags.map(t => `<span class="build-tag ${t}">${t === 'off-meta' ? 'Off-Meta' : t.charAt(0).toUpperCase() + t.slice(1)}</span>`).join('')}
+          ${(b.tags||[]).map(t => `<span class="build-tag ${t}">${t==='off-meta'?'Off-Meta':t.charAt(0).toUpperCase()+t.slice(1)}</span>`).join('')}
         </div>
       </div>
     </div>`;
-  }).join('');
+}
+
+// Returns the COMPLETE build list (curated + one auto-generated per remaining champion).
+// Shared by renderBuilds() and filterBuilds() so they never go out of sync.
+function getAllBuilds() {
+  const allBuilds = POPULAR_BUILDS
+    .filter(b => b != null && b.champ)
+    .map(b => ({ champ: b.champ, type: b.type, items: b.items || [],
+                 wr: b.wr || '50.0', pr: b.pr || '4.0',
+                 tags: Array.isArray(b.tags) ? b.tags : [],
+                 note: b.note || '' }));
+
+  if (allChampions.length > 0) {
+    const curated = new Set(allBuilds.map(b => b.champ));
+    allChampions.forEach(c => {
+      if (!c || !c.name || curated.has(c.name)) return;
+      const bt = getBuildType(c.tags || []);
+      allBuilds.push({
+        champ: c.name, type: bt,
+        items: BUILD_ITEMS[bt] || BUILD_ITEMS.Fighter,
+        wr: c.winRate || '50.0', pr: c.pickRate || '4.0',
+        tags: [(c.tier === 'S' || c.tier === 'A') ? 'popular' : 'all'],
+        note: c.name + ' ' + bt + ' — optimal build for Patch 26.12.',
+      });
+    });
+  }
+  return allBuilds;
+}
+
+function renderBuilds() {
+  const grid = document.getElementById('buildsGrid');
+  if (!grid) return;
+
+  // Show curated builds immediately if champions haven't loaded yet
+  if (allChampions.length === 0) {
+    grid.innerHTML = POPULAR_BUILDS
+      .filter(b => b && b.champ)
+      .map(b => renderBuildCard(b, null))
+      .join('');
+    return;
+  }
+
+  const allBuilds = getAllBuilds();
+  const f = currentBuildFilter || 'all';
+  const builds = f === 'all'
+    ? allBuilds
+    : allBuilds.filter(b => Array.isArray(b.tags) && b.tags.includes(f));
+
+  grid.innerHTML = builds.filter(b => b && b.champ).map(b => renderBuildCard(b, null)).join('');
 }
 
 function filterBuilds(q) {
-  const builds = POPULAR_BUILDS.filter(b => b.champ.toLowerCase().includes(q.toLowerCase()) || b.type.toLowerCase().includes(q.toLowerCase()) || b.note.toLowerCase().includes(q.toLowerCase()));
   const grid = document.getElementById('buildsGrid');
-  if (!grid || allChampions.length === 0) return;
-  grid.innerHTML = builds.map(b => {
-    const c = allChampions.find(ch => ch.name === b.champ);
-    if (!c) return '';
-    return `
-    <div class="build-card" onclick="openChampDetail('${c.id}')">
-      <div class="build-card-header">
-        <img class="build-card-champ-img" src="${c.img}" alt="${c.name}" loading="lazy">
-        <div>
-          <div class="build-card-title">${c.name}</div>
-          <div class="build-card-sub">${b.type} Build</div>
-        </div>
-      </div>
-      <div class="build-card-body">
-        <div class="build-card-items">
-          ${b.items.slice(0,6).map(name => `<div class="build-item-sm"><img src="${getItemIcon(name)}" alt="${name}" loading="lazy" onerror="this.src='${IMG_BASE}/item/3364.png'"></div>`).join('')}
-        </div>
-        <p style="font-size:0.78rem;color:var(--grey-3);line-height:1.6;margin-bottom:0.75rem;">${b.note}</p>
-        <div class="build-card-stats">
-          <div class="build-stat"><div class="build-stat-val">${b.wr}%</div><div class="build-stat-key">Win Rate</div></div>
-          <div class="build-stat"><div class="build-stat-val">${b.pr}%</div><div class="build-stat-key">Pick Rate</div></div>
-          <div class="build-stat"><div class="build-stat-val">${c.tier}</div><div class="build-stat-key">Tier</div></div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
+  if (!grid) return;
+
+  // Empty search — fall back to the normal tab-filtered render (full list restored)
+  if (!q || !q.trim()) { renderBuilds(); return; }
+
+  const query = q.toLowerCase();
+  const allBuilds = allChampions.length > 0 ? getAllBuilds() : POPULAR_BUILDS;
+  const tabFilter = currentBuildFilter || 'all';
+
+  const matches = allBuilds.filter(b => {
+    if (!b || !b.champ) return false;
+    // Respect the active tab (All/Pro/Popular/Off-Meta) while searching
+    if (tabFilter !== 'all' && !(Array.isArray(b.tags) && b.tags.includes(tabFilter))) return false;
+    return b.champ.toLowerCase().includes(query)
+        || (b.type || '').toLowerCase().includes(query)
+        || (b.note || '').toLowerCase().includes(query);
+  });
+
+  if (matches.length === 0) {
+    const safeQ = q.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;color:var(--grey-3);font-size:0.85rem;">No builds match "' + safeQ + '".</div>';
+    return;
+  }
+
+  grid.innerHTML = matches.map(b => renderBuildCard(b, null)).join('');
 }
 
 function setBuildFilter(f, el) {
@@ -4690,9 +4879,7 @@ function renderGuides() {
     }
 
     // Card HTML
-    return '<article style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:border-color .25s,box-shadow .25s;"' +
-      ' onmouseenter="this.style.borderColor=\'rgba(200,170,110,.35)\';this.style.boxShadow=\'0 4px 18px rgba(0,0,0,.3)\'"' +
-      ' onmouseleave="this.style.borderColor=\'\';this.style.boxShadow=\'\'">' +
+    return '<article class="guide-card">' +
       '<div style="position:relative;height:72px;overflow:hidden;background:linear-gradient(135deg,var(--blue-6),var(--gold-5));">' +
         (splash ? '<img src="' + splash + '" alt="' + (g.champ || '') + '" style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:brightness(.38);" loading="lazy" decoding="async">' : '') +
         '<div style="position:absolute;inset:0;display:flex;align-items:flex-end;padding:.55rem .75rem;">' +
@@ -4779,247 +4966,182 @@ function setGuideFilter(level, el) {
 // ============================================================
 // AUTH SYSTEM (localStorage)
 // ============================================================
-const USERS_KEY = 'forgeUsers';
-const SESSION_KEY = 'forgeSession';
+// ============================================================
+// AUTH SYSTEM — localStorage demo + real backend hooks
+// ─────────────────────────────────────────────────────────
+// DEMO MODE: accounts stored in localStorage (resets if cleared).
+// TO ENABLE REAL AUTH: set AUTH_API_URL to your Cloudflare Worker
+// or Supabase endpoint — the handleLogin/handleRegister functions
+// already call it if set. See comments below for exact setup.
+// ============================================================
 
-function getUsers() {
-  try { return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); } catch { return {}; }
-}
+// ── Config ───────────────────────────────────────────────
+// Set to your real backend URL to enable persistent accounts:
+//   Cloudflare Worker: 'https://your-worker.workers.dev'
+//   Supabase:          'https://your-project.supabase.co/auth/v1'
+const AUTH_API_URL = ''; // empty = demo mode (localStorage only)
+const SESSION_KEY  = 'forge_session_v2';
 
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
+// ── Session helpers ───────────────────────────────────────
 function getSession() {
   try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch { return null; }
 }
-
 function saveSession(user) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ ...user, ts: Date.now() }));
 }
-
 function clearSession() {
   localStorage.removeItem(SESSION_KEY);
 }
 
-function initAuth() {
-  const session = getSession();
-  if (session) {
-    currentUser = session;
-    updateAuthUI();
-  }
+// ── Demo user store (localStorage only) ──────────────────
+const DEMO_USERS_KEY = 'forge_users_v2';
+function getDemoUsers()  { try { return JSON.parse(localStorage.getItem(DEMO_USERS_KEY) || '{}'); } catch { return {}; } }
+function saveDemoUsers(u){ localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(u)); }
+
+// ── Simple hash for demo passwords (NOT production-safe) ─
+async function weakHash(str) {
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-function updateAuthUI() {
-  const authBtns = document.getElementById('authButtons');
-  const userWrap = document.getElementById('userMenuWrap');
-  const userAv = document.getElementById('userAvatarNav');
-  const userName = document.getElementById('userNameNav');
-  if (currentUser) {
-    authBtns.style.display = 'none';
-    userWrap.style.display = 'flex';
-    userAv.textContent = currentUser.username.charAt(0).toUpperCase();
-    userName.textContent = currentUser.username;
-  } else {
-    authBtns.style.display = 'flex';
-    userWrap.style.display = 'none';
+// ── Register ─────────────────────────────────────────────
+async function handleRegister() {
+  const username = (document.getElementById('regUsername') || {}).value?.trim() || '';
+  const email    = (document.getElementById('regEmail')    || {}).value?.trim() || '';
+  const password = (document.getElementById('regPassword') || {}).value || '';
+
+  // Clear old errors
+  ['regUsernameErr','regEmailErr','regPasswordErr','regDupErr'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.classList.remove('show');
+  });
+
+  let ok = true;
+  if (username.length < 3) { showFieldErr('regUsernameErr'); ok = false; }
+  if (!email.includes('@')) { showFieldErr('regEmailErr');   ok = false; }
+  if (password.length < 6)  { showFieldErr('regPasswordErr'); ok = false; }
+  if (!ok) return;
+
+  // ── Real backend path ────────────────────────────────
+  if (AUTH_API_URL) {
+    try {
+      const res = await fetch(AUTH_API_URL + '/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { showFieldErr('regDupErr', data.error || 'Account already exists'); return; }
+      saveSession({ username: data.username || username, email: data.email || email, token: data.token || '' });
+      updateAuthUI(); closeModal('register');
+      showToast('Welcome to the Forge, ' + username + '! ⚔');
+      return;
+    } catch (e) { showFieldErr('regDupErr', 'Server error — try again'); return; }
   }
+
+  // ── Demo fallback path (localStorage) ────────────────
+  const users = getDemoUsers();
+  if (users[email.toLowerCase()]) { showFieldErr('regDupErr'); return; }
+  const hash = await weakHash(password);
+  users[email.toLowerCase()] = { username, email, hash, created: new Date().toISOString() };
+  saveDemoUsers(users);
+  saveSession({ username, email, demo: true });
+  updateAuthUI(); closeModal('register');
+  showToast('Welcome to the Forge, ' + username + '! ⚔');
 }
 
-function handleLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const password = document.getElementById('loginPassword').value;
+// ── Login ─────────────────────────────────────────────────
+async function handleLogin() {
+  const email    = (document.getElementById('loginEmail')    || {}).value?.trim() || '';
+  const password = (document.getElementById('loginPassword') || {}).value || '';
 
-  document.getElementById('loginEmailErr').classList.remove('show');
-  document.getElementById('loginPasswordErr').classList.remove('show');
+  ['loginEmailErr','loginPasswordErr'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.classList.remove('show');
+  });
 
-  if (!email || !email.includes('@')) {
-    document.getElementById('loginEmailErr').classList.add('show');
-    return;
+  if (!email.includes('@')) { showFieldErr('loginEmailErr'); return; }
+  if (!password)             { showFieldErr('loginPasswordErr'); return; }
+
+  // ── Real backend path ────────────────────────────────
+  if (AUTH_API_URL) {
+    try {
+      const res = await fetch(AUTH_API_URL + '/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { showFieldErr('loginPasswordErr', 'Invalid email or password'); return; }
+      saveSession({ username: data.username, email: data.email, token: data.token });
+      updateAuthUI(); closeModal('login');
+      showToast('Welcome back, ' + data.username + '!');
+      return;
+    } catch (e) { showFieldErr('loginPasswordErr', 'Server error — try again'); return; }
   }
 
-  const users = getUsers();
-  const user = users[email.toLowerCase()];
-
-  if (!user || user.password !== password) {
-    document.getElementById('loginPasswordErr').classList.add('show');
-    return;
-  }
-
-  currentUser = { username: user.username, email: user.email, joined: user.joined };
-  saveSession(currentUser);
-  updateAuthUI();
-  closeModal('login');
+  // ── Demo fallback path ───────────────────────────────
+  const users = getDemoUsers();
+  const user  = users[email.toLowerCase()];
+  if (!user) { showFieldErr('loginPasswordErr'); return; }
+  const hash = await weakHash(password);
+  if (hash !== user.hash) { showFieldErr('loginPasswordErr'); return; }
+  saveSession({ username: user.username, email: user.email, demo: true });
+  updateAuthUI(); closeModal('login');
   showToast('Welcome back, ' + user.username + '!');
 }
 
-function handleRegister() {
-  const username = document.getElementById('regUsername').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPassword').value;
-
-  document.getElementById('regUsernameErr').classList.remove('show');
-  document.getElementById('regEmailErr').classList.remove('show');
-  document.getElementById('regPasswordErr').classList.remove('show');
-  document.getElementById('regExistErr').classList.remove('show');
-
-  if (username.length < 3) { document.getElementById('regUsernameErr').classList.add('show'); return; }
-  if (!email || !email.includes('@')) { document.getElementById('regEmailErr').classList.add('show'); return; }
-  if (password.length < 6) { document.getElementById('regPasswordErr').classList.add('show'); return; }
-
-  const users = getUsers();
-  if (users[email.toLowerCase()]) { document.getElementById('regExistErr').classList.add('show'); return; }
-
-  const newUser = { username, email: email.toLowerCase(), password, joined: new Date().toISOString() };
-  users[email.toLowerCase()] = newUser;
-  saveUsers(users);
-
-  currentUser = { username, email: email.toLowerCase(), joined: newUser.joined };
-  saveSession(currentUser);
-  updateAuthUI();
-  closeModal('register');
-  showToast('Welcome to the Forge, ' + username + '!');
+function showFieldErr(id, msg) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  if (msg) el.textContent = msg;
+  el.classList.add('show');
 }
 
 function logout() {
-  currentUser = null;
   clearSession();
+  currentUser = null;
   updateAuthUI();
-  toggleUserMenu();
-  showToast('Signed out. See you on the Rift!');
   navigate('home');
+  showToast('Signed out.');
 }
 
-function openModal(name) {
-  document.getElementById('modal-' + name).classList.add('open');
-  document.body.style.overflow = 'hidden';
+function initAuth() {
+  const session = getSession();
+  if (!session) return;
+  // Session expires after 30 days
+  if (Date.now() - (session.ts || 0) > 30 * 24 * 60 * 60 * 1000) {
+    clearSession(); return;
+  }
+  currentUser = session;
+  updateAuthUI();
 }
 
-function closeModal(name) {
-  document.getElementById('modal-' + name).classList.remove('open');
-  document.body.style.overflow = '';
+function updateAuthUI() {
+  const authBtns  = document.getElementById('authButtons');
+  const userWrap  = document.getElementById('userMenuWrap');
+  const userAvNav = document.getElementById('userAvatarNav');
+  const userNmNav = document.getElementById('userNameNav');
+  if (!authBtns) return;
+  if (currentUser) {
+    authBtns.style.display  = 'none';
+    if (userWrap) userWrap.style.display = 'flex';
+    if (userAvNav) userAvNav.textContent = (currentUser.username || 'U').charAt(0).toUpperCase();
+    if (userNmNav) userNmNav.textContent = currentUser.username || '';
+  } else {
+    authBtns.style.display = 'flex';
+    if (userWrap) userWrap.style.display = 'none';
+  }
 }
-
-function switchModal(from, to) {
-  closeModal(from);
-  setTimeout(() => openModal(to), 150);
-}
-
-// Close modal on overlay click
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', e => {
-    if (e.target === overlay) {
-      overlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-  });
-});
 
 function toggleUserMenu() {
-  document.getElementById('userDropdown').classList.toggle('open');
+  const dd = document.getElementById('userDropdown');
+  if (dd) dd.classList.toggle('open');
 }
 
-// Close user dropdown on outside click
-document.addEventListener('click', e => {
-  const wrap = document.getElementById('userMenuWrap');
-  if (wrap && !wrap.contains(e.target)) {
-    document.getElementById('userDropdown').classList.remove('open');
-  }
-});
-
-// ============================================================
-// TOAST
-// ============================================================
-let toastTimeout;
-function showToast(msg) {
-  const toast = document.getElementById('successToast');
-  toast.textContent = msg;
-  toast.style.display = 'block';
-  clearTimeout(toastTimeout);
-  toastTimeout = setTimeout(() => { toast.style.display = 'none'; }, 3500);
-}
-
-// ============================================================
-// NAVIGATION
-// ============================================================
-function navigate(pageName, skipFlash) {
-  // Flash transition
-  if (!skipFlash && currentPage && window.matchMedia('(prefers-reduced-motion:no-preference)').matches) {
-    const pf = document.getElementById('pageFlash');
-    if (pf) {
-      pf.style.opacity = '0.35';
-      pf.style.transition = 'opacity 0.15s ease';
-      setTimeout(() => { pf.style.opacity = '0'; }, 150);
-    }
-  }
-
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const page = document.getElementById('page-' + pageName);
-  if (page) { page.classList.add('active'); window.scrollTo(0,0); }
-
-  document.querySelectorAll('.nav-links a, .mobile-menu a').forEach(a => a.classList.remove('active'));
-  const navEl = document.getElementById('nav-' + pageName);
-  if (navEl) navEl.classList.add('active');
-
-  currentPage = pageName;
-
-  // Re-render data pages
-  if (pageName === 'profile') renderProfile();
-  if (pageName === 'tierlist') { renderTierList(); }
-  if (pageName === 'builds') { renderBuilds(); }
-  if (pageName === 'guides') { renderGuides(); }
-
-  // TRIGGER PAGE ANIMATIONS on every visit
-  setTimeout(() => {
-    observeFadeIns();
-    animatePageIn(pageName);
-  }, 60);
-}
-
-function animatePageIn(pageName) {
-  // Reset + re-stagger card elements so animations fire every visit
-  if (pageName === 'champions') {
-    // Always re-render the full grid so cards appear immediately on tab click
-    filterChampions();
-    resetStagger('.champ-card', 'card-reveal');
-    setTimeout(() => staggerReveal('.champ-card', 'card-reveal', 18), 60);
-    setTimeout(initCardTilt, 280);
-  }
-  if (pageName === 'home') {
-    resetStagger('.featured-card', 'fc-visible');
-    setTimeout(() => staggerReveal('.featured-card', 'fc-visible', 55), 100);
-    setTimeout(animateCounters, 200);
-  }
-  if (pageName === 'tierlist') {
-    resetStagger('.tier-row', 'tr-visible');
-    setTimeout(() => animateTierRows(), 80);
-  }
-  if (pageName === 'builds') {
-    resetStagger('.build-card', 'bc-visible');
-    setTimeout(() => staggerReveal('.build-card', 'bc-visible', 40), 80);
-  }
-  if (pageName === 'guides') {
-    resetStagger('.guide-card', 'gc-visible');
-    setTimeout(() => staggerReveal('.guide-card', 'gc-visible', 40), 80);
-  }
-  if (pageName === 'patch') {
-    // Animate patch change cards
-    resetStagger('.champ-change-card', 'cc-visible');
-    setTimeout(() => staggerReveal('.champ-change-card', 'cc-visible', 30), 120);
-  }
-  if (pageName === 'detail') {
-    animateStatBars();
-  }
-}
-
-// Reset animations so they re-fire on re-visit
 function resetStagger(sel, cls) {
   document.querySelectorAll(sel).forEach(el => el.classList.remove(cls));
 }
 
-// ============================================================
-// PROFILE PAGE
-// ============================================================
+
 function renderProfile() {
   const el = document.getElementById('profileContent');
   if (!el) return;
@@ -5075,6 +5197,56 @@ function renderProfile() {
     </div>
   `;
 }
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function navigate(pageName, skipFlash) {
+  // Leaving the champion-detail page entirely (not via chained openChampDetail) clears back-nav state
+  if (pageName !== 'champion-detail') lastViewedChamp = null;
+  if (!skipFlash && currentPage && window.matchMedia('(prefers-reduced-motion:no-preference)').matches) {
+    const pf = document.getElementById('pageFlash');
+    if (pf) { pf.style.opacity='0.3'; pf.style.transition='opacity .15s ease'; setTimeout(()=>{pf.style.opacity='0';},150); }
+  }
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + pageName);
+  if (page) { page.classList.add('active'); window.scrollTo(0,0); }
+  document.querySelectorAll('.nav-links a, .mobile-menu a, #mobileNavMenu a').forEach(a => a.classList.remove('active'));
+  const navEl = document.getElementById('nav-' + pageName);
+  if (navEl) navEl.classList.add('active');
+  currentPage = pageName;
+  if (pageName === 'profile')  renderProfile();
+  if (pageName === 'tierlist') renderTierList();
+  if (pageName === 'builds')   renderBuilds();
+  if (pageName === 'guides')   { guidePage = 0; renderGuides(); }
+  setTimeout(() => { observeFadeIns(); animatePageIn(pageName); }, 60);
+}
+
+function animatePageIn(pageName) {
+  if (pageName === 'champions') {
+    filterChampions();
+    setTimeout(initCardTilt, 200);
+  }
+  if (pageName === 'home') {
+    resetStagger('.featured-card', 'fc-visible');
+    setTimeout(() => staggerReveal('.featured-card', 'fc-visible', 55), 100);
+    setTimeout(animateCounters, 200);
+  }
+  if (pageName === 'tierlist') {
+    resetStagger('.tier-row', 'tr-visible');
+    setTimeout(() => animateTierRows(), 80);
+  }
+  if (pageName === 'builds') { renderBuilds(); }
+  if (pageName === 'guides') { /* guide-card visibility is handled by pure CSS, no stagger needed */ }
+  if (pageName === 'patch') {
+    resetStagger('.champ-change-card', 'cc-visible');
+    setTimeout(() => staggerReveal('.champ-change-card', 'cc-visible', 30), 120);
+  }
+  if (pageName === 'detail') {
+    animateStatBars();
+  }
+}
+
 
 // ============================================================
 // SCROLL FADE ANIMATIONS
@@ -5277,11 +5449,12 @@ document.addEventListener('keydown', e => {
     if (glow) glow.style.display = 'none';
     return;
   }
-  let mx = 0, my = 0, cx = 0, cy = 0;
-  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+  let mx = 0, my = 0, cx = -500, cy = -500;
+  // Track mouse across ENTIRE document including top bar
+  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
   function animGlow() {
-    cx += (mx - cx) * 0.12;
-    cy += (my - cy) * 0.12;
+    cx += (mx - cx) * 0.18;
+    cy += (my - cy) * 0.18;
     glow.style.left = cx + 'px';
     glow.style.top = cy + 'px';
     requestAnimationFrame(animGlow);
@@ -5350,6 +5523,57 @@ document.addEventListener('click', e => {
 // ============================================================
 // PATCH SKINS RENDER
 // ============================================================
+function renderPatchChampChanges() {
+  const el = document.getElementById('patchChampChanges');
+  if (!el) return;
+
+  const BUFFS = [
+    { champ:'Aatrox', change:'Base AD 60 → 64. Q1 healing increased from 50% to 60% of damage dealt.' },
+    { champ:'Gwen', change:'Snip Snip! (Q) cooldown reduced 8/7.25/6.5/5.75/5s → 7/6.25/5.5/4.75/4s.' },
+    { champ:'Jax', change:'Relentless Assault (W) stacks now also grant 1% bonus AS per stack to allies within range during ult.' },
+    { champ:'Sylas', change:'Petricite Burst (E) shield strength increased 80-200 → 100-240 (based on level).' },
+    { champ:'Syndra', change:'Dark Sphere (Q) mana cost reduced 70/75/80/85/90 → 60/65/70/75/80.' },
+    { champ:'Tristana', change:'Explosive Charge (E) base damage increased 60-220 → 70-250 (based on level).' },
+    { champ:'Yuumi', change:'You and Me! (R) cooldown reduced 180/150/120s → 150/130/110s.' },
+    { champ:'Varus', change:'Piercing Arrow (Q) max charge damage increased by 10% at all ranks.' },
+  ];
+  const NERFS = [
+    { champ:'Lee Sin', change:'Tempest (W) damage reduced 70-230 → 60-200 (based on level).' },
+    { champ:'Nocturne', change:'Duskbringer (Q) cooldown increased 8/7/6/5/4s → 9/8/7/6/5s.' },
+    { champ:'Xin Zhao (AP)', change:'Ability Power ratios on Three Talon Strike (Q) reduced from 60% AP to 40% AP.' },
+    { champ:'Orianna', change:'Command: Protect (W) shield strength reduced 70-190 → 60-170 (based on level).' },
+    { champ:'Kassadin', change:'Riftwalk (R) mana cost no longer decreases per cast within the same fight.' },
+    { champ:'Zeri', change:'Living Battery passive — ally Attack Speed share reduced from 15% to 10%.' },
+  ];
+
+  const row = (entry, isBuff) => `<div class="fade-in" style="display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);">
+      <img src="${(allChampions.find(c=>c.name===entry.champ.split(' (')[0])||{}).img || (IMG_BASE+'/champion/'+entry.champ.split(' (')[0]+'.png')}"
+           alt="${entry.champ}" width="40" height="40" style="border-radius:6px;border:1px solid var(--border);object-fit:cover;flex-shrink:0;" loading="lazy" decoding="async"
+           onerror="this.src='${IMG_BASE}/champion/Aatrox.png'">
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem;">
+          <span style="font-size:.82rem;font-weight:700;color:var(--grey-1);">${entry.champ}</span>
+          <span style="font-size:.58rem;font-weight:700;padding:1px 7px;border-radius:3px;${isBuff ? 'background:rgba(34,204,68,.12);color:#22cc44;border:1px solid rgba(34,204,68,.3);' : 'background:rgba(255,78,80,.12);color:#ff4e50;border:1px solid rgba(255,78,80,.3);'}">${isBuff?'BUFF':'NERF'}</span>
+        </div>
+        <p style="font-size:.76rem;color:var(--grey-3);line-height:1.6;">${entry.change}</p>
+      </div>
+    </div>`;
+
+  el.innerHTML = `
+    <div id="p-buffs" style="margin-bottom:1.5rem;">
+      <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;color:var(--gold-1);padding:.6rem 1rem;background:rgba(34,204,68,.07);border:1px solid rgba(34,204,68,.2);border-radius:6px 6px 0 0;border-bottom:none;">▲ Champion Buffs</div>
+      <div style="border:1px solid rgba(34,204,68,.2);border-radius:0 0 6px 6px;">
+        ${BUFFS.map(b => row(b, true)).join('')}
+      </div>
+    </div>
+    <div id="p-nerfs" style="margin-bottom:1.5rem;">
+      <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;color:var(--gold-1);padding:.6rem 1rem;background:rgba(255,78,80,.07);border:1px solid rgba(255,78,80,.2);border-radius:6px 6px 0 0;border-bottom:none;">▼ Champion Nerfs</div>
+      <div style="border:1px solid rgba(255,78,80,.2);border-radius:0 0 6px 6px;">
+        ${NERFS.map(n => row(n, false)).join('')}
+      </div>
+    </div>`;
+}
+
 function renderPatchSkins() {
   const el = document.getElementById('patchSkinsList');
   if (!el) return;
@@ -5611,20 +5835,80 @@ document.addEventListener('click', e => {
 
 
 // ── Smooth marquee — JS RAF so it never freezes on page switches ──
-(function() {
-  var el = null, pos = 0, running = false;
-  function step() {
-    if (!el) { el = document.querySelector('.patch-bar-inner'); }
-    if (!el) { requestAnimationFrame(step); return; }
-    pos -= 0.55; // px per frame ~33px/sec at 60fps
-    var w = el.offsetWidth;
-    if (w && pos < -w / 2) pos = 0;
-    el.style.transform = 'translateX(' + pos + 'px)';
-    requestAnimationFrame(step);
-  }
-  step();
-})();
+// Marquee handled by CSS animation
 
+
+// Item legend row renderer (avoids nested template literal issue)
+function renderItemLegendRow(name) {
+  const id = getItemId(name);
+  const s  = ITEM_STATIC_DATA[id];
+  const iconSrc = getItemIcon(name);
+  const row = document.createElement('div');
+  row.style.cssText = 'display:flex;align-items:flex-start;gap:.6rem;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.04);';
+  const imgEl = document.createElement('img');
+  imgEl.src = iconSrc; imgEl.alt = name; imgEl.width = 28; imgEl.height = 28;
+  imgEl.style.cssText = 'border-radius:4px;border:1px solid rgba(200,170,110,.25);flex-shrink:0;';
+  imgEl.onerror = function() { this.onerror=null; this.src = IMG_BASE+'/item/3364.png'; };
+  row.appendChild(imgEl);
+  const info = document.createElement('div');
+  info.style.cssText = 'flex:1;min-width:0;';
+  if (s) {
+    info.innerHTML = '<div style="font-family:var(--font-display);font-size:.72rem;font-weight:700;color:var(--gold-2);">' + s.name + '</div>'
+      + '<div style="font-size:.65rem;color:#9ec8ff;font-weight:600;margin:.1rem 0;">' + s.stats + '</div>'
+      + '<div style="font-size:.67rem;color:var(--grey-3);line-height:1.5;">' + s.passive + '</div>';
+  } else {
+    info.innerHTML = '<div style="font-size:.72rem;color:var(--grey-3);">' + name + '</div>';
+  }
+  row.appendChild(info);
+  return row.outerHTML;
+}
+
+
+// ── Modal open / close / switch ────────────────────────────
+function openModal(name) {
+  const el = document.getElementById('modal-' + name);
+  if (!el) return;
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(name) {
+  const el = document.getElementById('modal-' + name);
+  if (!el) return;
+  el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+function switchModal(from, to) {
+  closeModal(from);
+  setTimeout(() => openModal(to), 150);
+}
+
+
+let patchActiveFilter = null;
+function setPatchFilter(section, btnEl) {
+  // Toggle off if clicking the same filter again — shows everything
+  if (patchActiveFilter === section) {
+    patchActiveFilter = null;
+    document.querySelectorAll('.patch-filter-btn').forEach(b => { b.style.opacity='1'; b.style.fontWeight='600'; });
+    ['buffs','nerfs','runes','systems','skins'].forEach(s => {
+      const sec = document.getElementById('p-'+s);
+      if (sec) sec.style.display = '';
+    });
+    return;
+  }
+  patchActiveFilter = section;
+  document.querySelectorAll('.patch-filter-btn').forEach(b => { b.style.opacity='0.4'; b.style.fontWeight='500'; });
+  if (btnEl) { btnEl.style.opacity='1'; btnEl.style.fontWeight='700'; }
+  ['buffs','nerfs','runes','systems','skins'].forEach(s => {
+    const sec = document.getElementById('p-'+s);
+    if (!sec) return;
+    if (s === section) {
+      sec.style.display = '';
+      setTimeout(() => sec.scrollIntoView({behavior:'smooth',block:'start'}), 60);
+    } else {
+      sec.style.display = 'none';
+    }
+  });
+}
 window.addEventListener('DOMContentLoaded', () => {
   initAuth();
   navigate('home');
