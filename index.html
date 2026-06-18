@@ -3078,7 +3078,7 @@ html, body { overflow-x: hidden; }
 <!-- PATCH NOTES PAGE -->
 <div class="page" id="page-patch">
   <div class="page-wrap">
-    <div style="margin-top:64px;max-width:960px;margin-left:auto;margin-right:auto;padding:1.5rem;padding-top:calc(64px + 1.5rem);">
+    <div style="max-width:960px;margin:0 auto;padding:1.5rem;padding-top:calc(64px + 1.5rem);">
 
       <!-- PATCH HERO BANNER -->
       <div class="fade-in" style="background:linear-gradient(135deg,var(--blue-6) 0%,var(--bg-panel) 50%,var(--gold-5) 100%);border:1px solid var(--border);border-radius:6px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;">
@@ -4069,7 +4069,7 @@ function openChampDetail(champId, fromChampId) {
   // rune suggestion
   const keystones = {
     ADC: {
-      icon: '⚡', imgPath: 'Precision/LethalTempoTemp.png',
+      icon: '⚡', imgPath: 'Precision/FlowofBattle/FlowofBattleTemp.png',
       name: 'Lethal Tempo', path: 'Precision', color: '#f5d442',
       desc: 'Gain stacking attack speed on hit, exceeding the attack speed cap when fully stacked. Best for sustained DPS hypercarries.',
       slots: ['Triumph', 'Legend: Alacrity', 'Coup de Grace'],
@@ -4268,7 +4268,7 @@ function openChampDetail(champId, fromChampId) {
                 <div style="width:44px;height:44px;border-radius:50%;background:${rune.color}22;border:2px solid ${rune.color}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
                   <img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${rune.imgPath}"
                     alt="${rune.name}" width="38" height="38" style="object-fit:contain;"
-                    onerror="this.outerHTML='<span style=\'font-size:1.3rem;\'>${rune.icon}</span>'">
+                    onerror="this.outerHTML='<span style=&quot;font-size:1.3rem;&quot;>${rune.icon}</span>'">
                 </div>
                 <div style="flex:1;">
                   <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;color:${rune.color};">${rune.name}</div>
