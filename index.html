@@ -30,6 +30,8 @@
 <link rel="dns-prefetch" href="https://ddragon.leagueoflegends.com">
 <link rel="preconnect" href="https://ddragon.leagueoflegends.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- AUTH: Supabase client SDK — hosted auth backend, no server of your own needed -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script type="application/ld+json">
 [{"@context":"https://schema.org","@type":"Organization","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/","description":"The most complete League of Legends resource for champion builds, tier lists, rune guides, and patch analysis."},{"@context":"https://schema.org","@type":"WebSite","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/","potentialAction":{"@type":"SearchAction","target":"https://forgeofruneterra.gg/?q={search_term_string}","query-input":"required name=search_term_string"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the best champions in Patch 26.12?","acceptedAnswer":{"@type":"Answer","text":"In Patch 26.12, S-tier champions include Jinx, Yasuo, Lux, and Vi, excelling with the returning Deathfire Touch and Stormraiders Surge keystones."}},{"@type":"Question","name":"How often is Forge of Runeterra updated?","acceptedAnswer":{"@type":"Answer","text":"Forge of Runeterra is updated with every League of Legends patch, approximately every two weeks. Tier lists, builds, and patch notes are refreshed on patch day."}},{"@type":"Question","name":"What changed in Patch 26.12?","acceptedAnswer":{"@type":"Answer","text":"Patch 26.12 returned Deathfire Touch and Stormraiders Surge. Key nerfs hit Orianna, Ryze, and Nocturne, while Yuumi received a W heal buff."}},{"@type":"Question","name":"What is the best role to climb ranked in 2026?","acceptedAnswer":{"@type":"Answer","text":"Mid lane and jungle offer the most carry potential in Season 2 due to their map influence. Assassins and mages with strong roam patterns excel at lower elos."}}]},{"@context":"https://schema.org","@type":"Article","headline":"League of Legends Patch 26.12 Notes","description":"Complete patch notes for LoL Patch 26.12 including champion changes, item updates, and returning keystones.","datePublished":"2026-06-09","dateModified":"2026-06-09","author":{"@type":"Organization","name":"Forge of Runeterra"},"publisher":{"@type":"Organization","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/"}}]
 </script>
@@ -3322,6 +3324,12 @@ html, body { overflow-x: hidden; }
 <div class="form-group">
         <label class="form-label" for="regPassword">Password</label>
         <input type="password" class="form-input" id="regPassword" name="regPassword" placeholder="Choose a strong password" autocomplete="new-password">
+        <p class="form-error" id="regPasswordErr">Password must be at least 6 characters.</p>
+        <p class="form-error" id="regDupErr">Could not create account.</p>
+      </div>
+      <button class="btn btn-blue" style="width:100%;justify-content:center;padding:0.85rem;" onclick="handleRegister()">Create Account</button>
+      <div class="modal-footer-link" style="margin-top:1rem;">
+        Already have an account? <span onclick="switchModal('register','login')">Sign in</span>
       </div>
     </div>
   </div>
@@ -4962,133 +4970,23 @@ function setGuideFilter(level, el) {
   renderGuides();
 }
 
-
 // ============================================================
-// AUTH SYSTEM (localStorage)
-// ============================================================
-// ============================================================
-// AUTH SYSTEM — localStorage demo + real backend hooks
-// ─────────────────────────────────────────────────────────
-// DEMO MODE: accounts stored in localStorage (resets if cleared).
-// TO ENABLE REAL AUTH: set AUTH_API_URL to your Cloudflare Worker
-// or Supabase endpoint — the handleLogin/handleRegister functions
-// already call it if set. See comments below for exact setup.
+// AUTH SYSTEM — Supabase Auth (real backend, hashed passwords,
+// persistent accounts, real sessions). Replaces the old
+// localStorage-only demo auth. Nothing else on this page changed.
 // ============================================================
 
-// ── Config ───────────────────────────────────────────────
-// Set to your real backend URL to enable persistent accounts:
-//   Cloudflare Worker: 'https://your-worker.workers.dev'
-//   Supabase:          'https://your-project.supabase.co/auth/v1'
-const AUTH_API_URL = ''; // empty = demo mode (localStorage only)
-const SESSION_KEY  = 'forge_session_v2';
+// AUTH: Your Supabase project values (Project Settings → API).
+// These are PUBLIC by design — safe to ship in frontend code.
+// Real protection comes from Row Level Security on the database,
+// not from hiding these values.
+const SUPABASE_URL = 'https://ulphbemhljgrsxgjbymm.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVscGhiZW1obGpncnN4Z2pieW1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4NjgxNzIsImV4cCI6MjA5NzQ0NDE3Mn0.sbTMoH5tBKnTbOZqoNp5b0rZIDZceR7Z8B1KNm_Wd3A';
 
-// ── Session helpers ───────────────────────────────────────
-function getSession() {
-  try { return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); } catch { return null; }
-}
-function saveSession(user) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify({ ...user, ts: Date.now() }));
-}
-function clearSession() {
-  localStorage.removeItem(SESSION_KEY);
-}
+// AUTH: Single shared Supabase client for the whole page.
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// ── Demo user store (localStorage only) ──────────────────
-const DEMO_USERS_KEY = 'forge_users_v2';
-function getDemoUsers()  { try { return JSON.parse(localStorage.getItem(DEMO_USERS_KEY) || '{}'); } catch { return {}; } }
-function saveDemoUsers(u){ localStorage.setItem(DEMO_USERS_KEY, JSON.stringify(u)); }
-
-// ── Simple hash for demo passwords (NOT production-safe) ─
-async function weakHash(str) {
-  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-}
-
-// ── Register ─────────────────────────────────────────────
-async function handleRegister() {
-  const username = (document.getElementById('regUsername') || {}).value?.trim() || '';
-  const email    = (document.getElementById('regEmail')    || {}).value?.trim() || '';
-  const password = (document.getElementById('regPassword') || {}).value || '';
-
-  // Clear old errors
-  ['regUsernameErr','regEmailErr','regPasswordErr','regDupErr'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.classList.remove('show');
-  });
-
-  let ok = true;
-  if (username.length < 3) { showFieldErr('regUsernameErr'); ok = false; }
-  if (!email.includes('@')) { showFieldErr('regEmailErr');   ok = false; }
-  if (password.length < 6)  { showFieldErr('regPasswordErr'); ok = false; }
-  if (!ok) return;
-
-  // ── Real backend path ────────────────────────────────
-  if (AUTH_API_URL) {
-    try {
-      const res = await fetch(AUTH_API_URL + '/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) { showFieldErr('regDupErr', data.error || 'Account already exists'); return; }
-      saveSession({ username: data.username || username, email: data.email || email, token: data.token || '' });
-      updateAuthUI(); closeModal('register');
-      showToast('Welcome to the Forge, ' + username + '! ⚔');
-      return;
-    } catch (e) { showFieldErr('regDupErr', 'Server error — try again'); return; }
-  }
-
-  // ── Demo fallback path (localStorage) ────────────────
-  const users = getDemoUsers();
-  if (users[email.toLowerCase()]) { showFieldErr('regDupErr'); return; }
-  const hash = await weakHash(password);
-  users[email.toLowerCase()] = { username, email, hash, created: new Date().toISOString() };
-  saveDemoUsers(users);
-  saveSession({ username, email, demo: true });
-  updateAuthUI(); closeModal('register');
-  showToast('Welcome to the Forge, ' + username + '! ⚔');
-}
-
-// ── Login ─────────────────────────────────────────────────
-async function handleLogin() {
-  const email    = (document.getElementById('loginEmail')    || {}).value?.trim() || '';
-  const password = (document.getElementById('loginPassword') || {}).value || '';
-
-  ['loginEmailErr','loginPasswordErr'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.classList.remove('show');
-  });
-
-  if (!email.includes('@')) { showFieldErr('loginEmailErr'); return; }
-  if (!password)             { showFieldErr('loginPasswordErr'); return; }
-
-  // ── Real backend path ────────────────────────────────
-  if (AUTH_API_URL) {
-    try {
-      const res = await fetch(AUTH_API_URL + '/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) { showFieldErr('loginPasswordErr', 'Invalid email or password'); return; }
-      saveSession({ username: data.username, email: data.email, token: data.token });
-      updateAuthUI(); closeModal('login');
-      showToast('Welcome back, ' + data.username + '!');
-      return;
-    } catch (e) { showFieldErr('loginPasswordErr', 'Server error — try again'); return; }
-  }
-
-  // ── Demo fallback path ───────────────────────────────
-  const users = getDemoUsers();
-  const user  = users[email.toLowerCase()];
-  if (!user) { showFieldErr('loginPasswordErr'); return; }
-  const hash = await weakHash(password);
-  if (hash !== user.hash) { showFieldErr('loginPasswordErr'); return; }
-  saveSession({ username: user.username, email: user.email, demo: true });
-  updateAuthUI(); closeModal('login');
-  showToast('Welcome back, ' + user.username + '!');
-}
-
+// AUTH: Show/hide a field error message (same behavior as before).
 function showFieldErr(id, msg) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -5096,23 +4994,108 @@ function showFieldErr(id, msg) {
   el.classList.add('show');
 }
 
-function logout() {
-  clearSession();
+function clearFieldErrs(ids) {
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('show');
+  });
+}
+
+// AUTH: Derive a display name from the email since we're using
+// email+password only (no separate username table).
+// "jon@example.com" -> "jon"
+function nameFromEmail(email) {
+  return (email || '').split('@')[0] || 'Summoner';
+}
+
+// AUTH: Register a new account via Supabase Auth.
+// The password is sent once, over HTTPS, straight to Supabase's
+// auth servers, which hash it (bcrypt) before storage. This code
+// never sees, stores, or transmits a password hash itself.
+async function handleRegister() {
+  const email    = (document.getElementById('regEmail')    || {}).value?.trim() || '';
+  const password = (document.getElementById('regPassword') || {}).value || '';
+
+  clearFieldErrs(['regUsernameErr','regEmailErr','regPasswordErr','regDupErr']);
+
+  let ok = true;
+  if (!email.includes('@')) { showFieldErr('regEmailErr'); ok = false; }
+  if (password.length < 6)  { showFieldErr('regPasswordErr', 'Password must be at least 6 characters.'); ok = false; }
+  if (!ok) return;
+
+  const { data, error } = await supabaseClient.auth.signUp({ email, password });
+
+  if (error) {
+    showFieldErr('regDupErr', error.message || 'Could not create account.');
+    return;
+  }
+
+  // Instant sign-in: Supabase returns an active session immediately
+  // here as long as "Confirm email" is OFF in your project settings.
+  if (data.session) {
+    currentUser = { username: nameFromEmail(data.user.email), email: data.user.email };
+    updateAuthUI();
+    closeModal('register');
+    showToast('Welcome to the Forge, ' + currentUser.username + '! ⚔');
+  } else {
+    // Fallback if email confirmation is ever turned back on later.
+    closeModal('register');
+    showToast('Account created — check your email to confirm, then sign in.');
+  }
+}
+
+// AUTH: Log in an existing account via Supabase Auth.
+async function handleLogin() {
+  const email    = (document.getElementById('loginEmail')    || {}).value?.trim() || '';
+  const password = (document.getElementById('loginPassword') || {}).value || '';
+
+  clearFieldErrs(['loginEmailErr','loginPasswordErr']);
+
+  if (!email.includes('@')) { showFieldErr('loginEmailErr'); return; }
+  if (!password)             { showFieldErr('loginPasswordErr'); return; }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    showFieldErr('loginPasswordErr', 'Incorrect email or password.');
+    return;
+  }
+
+  currentUser = { username: nameFromEmail(data.user.email), email: data.user.email };
+  updateAuthUI();
+  closeModal('login');
+  showToast('Welcome back, ' + currentUser.username + '!');
+}
+
+// AUTH: Clear the real Supabase session (not just local UI state).
+async function logout() {
+  await supabaseClient.auth.signOut();
   currentUser = null;
   updateAuthUI();
   navigate('home');
   showToast('Signed out.');
 }
 
-function initAuth() {
-  const session = getSession();
-  if (!session) return;
-  // Session expires after 30 days
-  if (Date.now() - (session.ts || 0) > 30 * 24 * 60 * 60 * 1000) {
-    clearSession(); return;
+// AUTH: On page load, ask Supabase if a valid session already exists.
+// This is what makes login persist across reloads and return visits —
+// Supabase stores its own session token securely and verifies it here.
+async function initAuth() {
+  const { data } = await supabaseClient.auth.getSession();
+  if (data.session && data.session.user) {
+    currentUser = { username: nameFromEmail(data.session.user.email), email: data.session.user.email };
+    updateAuthUI();
   }
-  currentUser = session;
-  updateAuthUI();
+
+  // AUTH: Keep UI in sync if the session changes in another tab,
+  // or is refreshed/expired in the background.
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    if (session && session.user) {
+      currentUser = { username: nameFromEmail(session.user.email), email: session.user.email };
+    } else {
+      currentUser = null;
+    }
+    updateAuthUI();
+  });
 }
 
 function updateAuthUI() {
@@ -5910,7 +5893,7 @@ function setPatchFilter(section, btnEl) {
   });
 }
 window.addEventListener('DOMContentLoaded', () => {
-  initAuth();
+  initAuth(); // AUTH: async — checks for an existing Supabase session and updates the UI when ready
   navigate('home');
   // Pre-fetch item data in background so tooltips are instant on first open
   if (window.location.protocol !== 'file:') getItemDataPromise();
