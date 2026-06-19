@@ -3284,11 +3284,71 @@ html, body { overflow-x: hidden; }
         <label class="form-label" for="loginPassword">Password</label>
         <input type="password" class="form-input" id="loginPassword" name="loginPassword" placeholder="Your password" autocomplete="current-password">
         <p class="form-error" id="loginPasswordErr">Incorrect password. Try again.</p>
+        <div style="text-align:right;margin-top:0.4rem;">
+          <span onclick="switchModal('login','forgot')" style="font-size:0.78rem;color:var(--gold-2);cursor:pointer;text-decoration:none;">Forgot password?</span>
+        </div>
       </div>
       <button class="btn btn-primary" style="width:100%;justify-content:center;padding:0.85rem;" onclick="handleLogin()">Sign In</button>
       <div class="modal-footer-link" style="margin-top:1rem;">
         Don't have an account? <span onclick="switchModal('login','register')">Create one free</span>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH: FORGOT PASSWORD MODAL — collects email, sends Supabase reset link -->
+<div class="modal-overlay" id="modal-forgot">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('forgot')">&times;</button>
+    <div class="modal-top">
+      <div class="modal-top-bg"></div>
+      <div class="modal-emblem">
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="28,4 52,17 52,39 28,52 4,39 4,17" fill="rgba(200,170,110,0.15)" stroke="#c8aa6e" stroke-width="2"/>
+          <polygon points="28,12 44,21 44,35 28,44 12,35 12,21" fill="none" stroke="#c8aa6e" stroke-width="1" opacity="0.5"/>
+          <text x="28" y="35" text-anchor="middle" font-size="20" font-weight="900" fill="#c8aa6e" font-family="serif">?</text>
+        </svg>
+      </div>
+    </div>
+    <div class="modal-body">
+      <h2 class="modal-title">Reset Password</h2>
+      <p class="modal-sub">Enter your email and we'll send you a reset link</p>
+      <div class="form-group">
+        <label class="form-label" for="forgotEmail">Email Address</label>
+        <input type="email" class="form-input" id="forgotEmail" name="forgotEmail" placeholder="summoner@runeterra.gg" autocomplete="email">
+        <p class="form-error" id="forgotEmailErr">Please enter a valid email address.</p>
+      </div>
+      <p id="forgotSuccessMsg" style="display:none;font-size:0.82rem;color:var(--blue-2);background:rgba(10,200,185,0.08);border:1px solid rgba(10,200,185,0.2);border-radius:4px;padding:0.75rem;margin-bottom:1rem;">Check your email for a reset link. It may take a minute to arrive.</p>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:0.85rem;" onclick="handleForgotPassword()" id="forgotSubmitBtn">Send Reset Link</button>
+      <div class="modal-footer-link" style="margin-top:1rem;">
+        Remembered it? <span onclick="switchModal('forgot','login')">Sign in</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH: SET NEW PASSWORD MODAL — shown automatically after user clicks the email reset link -->
+<div class="modal-overlay" id="modal-reset">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-top-bg"></div>
+      <div class="modal-emblem">
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="28,4 52,17 52,39 28,52 4,39 4,17" fill="rgba(10,200,185,0.1)" stroke="#0ac8b9" stroke-width="2"/>
+          <polygon points="28,12 44,21 44,35 28,44 12,35 12,21" fill="none" stroke="#0ac8b9" stroke-width="1" opacity="0.5"/>
+          <text x="28" y="35" text-anchor="middle" font-size="20" font-weight="900" fill="#0ac8b9" font-family="serif">F</text>
+        </svg>
+      </div>
+    </div>
+    <div class="modal-body">
+      <h2 class="modal-title">Set New Password</h2>
+      <p class="modal-sub">Choose a new password for your account</p>
+      <div class="form-group">
+        <label class="form-label" for="newPassword">New Password</label>
+        <input type="password" class="form-input" id="newPassword" name="newPassword" placeholder="Choose a strong password" autocomplete="new-password">
+        <p class="form-error" id="newPasswordErr">Password must be at least 6 characters.</p>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:0.85rem;" onclick="handleResetPassword()">Update Password</button>
     </div>
   </div>
 </div>
@@ -5076,6 +5136,57 @@ async function logout() {
   showToast('Signed out.');
 }
 
+// AUTH: Send a password reset email via Supabase. Supabase sends the
+// link itself — this code never generates or sees the reset token.
+async function handleForgotPassword() {
+  const email = (document.getElementById('forgotEmail') || {}).value?.trim() || '';
+  const errEl = document.getElementById('forgotEmailErr');
+  if (errEl) errEl.classList.remove('show');
+
+  if (!email.includes('@')) { showFieldErr('forgotEmailErr'); return; }
+
+  const btn = document.getElementById('forgotSubmitBtn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+
+  // AUTH: redirectTo must exactly match a URL listed in
+  // Supabase → Authentication → URL Configuration → Redirect URLs,
+  // or Supabase will reject the redirect. Using the current page's
+  // own URL keeps this working on any domain you deploy to.
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + window.location.pathname,
+  });
+
+  if (btn) { btn.disabled = false; btn.textContent = 'Send Reset Link'; }
+
+  // AUTH: Show the same success message whether or not the email
+  // exists — this avoids revealing which emails have accounts.
+  if (error) { showFieldErr('forgotEmailErr', 'Something went wrong. Please try again.'); return; }
+  const successEl = document.getElementById('forgotSuccessMsg');
+  if (successEl) successEl.style.display = 'block';
+}
+
+// AUTH: Called from the "Set New Password" modal that auto-opens
+// after the user clicks the link in their reset email.
+async function handleResetPassword() {
+  const password = (document.getElementById('newPassword') || {}).value || '';
+  const errEl = document.getElementById('newPasswordErr');
+  if (errEl) errEl.classList.remove('show');
+
+  if (password.length < 6) { showFieldErr('newPasswordErr'); return; }
+
+  const { error } = await supabaseClient.auth.updateUser({ password });
+
+  if (error) { showFieldErr('newPasswordErr', error.message || 'Could not update password.'); return; }
+
+  closeModal('reset');
+  showToast('Password updated! You are signed in.');
+  // AUTH: clean the recovery token out of the URL bar so refreshing
+  // the page later doesn't try to re-trigger the recovery flow.
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState(null, '', window.location.pathname);
+  }
+}
+
 // AUTH: On page load, ask Supabase if a valid session already exists.
 // This is what makes login persist across reloads and return visits —
 // Supabase stores its own session token securely and verifies it here.
@@ -5087,8 +5198,14 @@ async function initAuth() {
   }
 
   // AUTH: Keep UI in sync if the session changes in another tab,
-  // or is refreshed/expired in the background.
-  supabaseClient.auth.onAuthStateChange((_event, session) => {
+  // or is refreshed/expired in the background. Also catches the
+  // PASSWORD_RECOVERY event fired when a user lands here from a
+  // password reset email, and opens the "set new password" modal.
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      openModal('reset');
+      return;
+    }
     if (session && session.user) {
       currentUser = { username: nameFromEmail(session.user.email), email: session.user.email };
     } else {
