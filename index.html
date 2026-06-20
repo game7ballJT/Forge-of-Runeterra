@@ -2521,6 +2521,76 @@ html, body { overflow-x: hidden; }
 }
 @media (max-width: 1100px) { #guidesGrid { column-count: 2; } }
 @media (max-width: 700px)  { #guidesGrid { column-count: 1; } }
+
+/* ════════ FAVORITE STAR — champion cards ════════ */
+.champ-fav-btn {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13,17,23,.72);
+  border: 1px solid rgba(200,170,110,.3);
+  color: var(--grey-3);
+  cursor: pointer;
+  z-index: 3;
+  backdrop-filter: blur(2px);
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
+  padding: 0;
+}
+.champ-fav-btn:hover:not(:disabled) {
+  background: rgba(200,170,110,.18);
+  border-color: var(--gold-1);
+  color: var(--gold-1);
+  transform: scale(1.08);
+}
+.champ-fav-btn:active:not(:disabled) { transform: scale(0.92); }
+.champ-fav-btn.is-favorited {
+  color: var(--gold-1);
+  border-color: var(--gold-1);
+  background: rgba(200,170,110,.16);
+}
+.champ-fav-btn:disabled { cursor: not-allowed; opacity: .55; }
+
+/* ════════ SAVE BOOKMARK — build cards ════════ */
+.build-save-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(13,17,23,.78);
+  border: 1px solid var(--border);
+  color: var(--grey-3);
+  cursor: pointer;
+  z-index: 3;
+  transition: background .2s ease, border-color .2s ease, color .2s ease, transform .15s ease;
+  padding: 0;
+}
+.build-save-btn:hover:not(:disabled) {
+  background: rgba(200,170,110,.16);
+  border-color: var(--gold-1);
+  color: var(--gold-1);
+  transform: scale(1.06);
+}
+.build-save-btn:active:not(:disabled) { transform: scale(0.92); }
+.build-save-btn.is-saved {
+  color: var(--gold-1);
+  border-color: var(--gold-1);
+  background: rgba(200,170,110,.14);
+}
+.build-save-btn:disabled { cursor: not-allowed; opacity: .5; }
+
+/* build-card needs relative positioning for the save button to anchor to it */
+.build-card { position: relative; }
 </style>
 </head>
 <body>
@@ -2530,6 +2600,7 @@ html, body { overflow-x: hidden; }
 <div id="scrollProgress"></div>
 <div id="cursorGlow"></div>
 <div id="pageTransition"></div>
+<div id="successToast" class="success-toast" role="status" aria-live="polite"></div>
 <div id="hextechLoader">
   <svg class="hex-spinner" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
     <polygon points="40,4 72,22 72,58 40,76 8,58 8,22" fill="none" stroke="#0ac8b9" stroke-width="1.5" opacity="0.3"/>
@@ -2592,11 +2663,11 @@ html, body { overflow-x: hidden; }
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
           My Profile
         </div>
-        <div class="dropdown-item">
+        <div class="dropdown-item" onclick="goToProfileSection('saved-builds')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
           Saved Builds
         </div>
-        <div class="dropdown-item">
+        <div class="dropdown-item" onclick="goToProfileSection('favorite-champs')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           My Champions
         </div>
@@ -3426,6 +3497,8 @@ let currentSort = 'tier';
 let currentTierRole = 'all';
 let currentBuildFilter = 'all';
 let currentUser = null;
+let favoriteChampIds = null;   // Set<string> of favorited champ ids — null = not loaded / signed out
+let savedBuildKeys   = null;   // Set<string> of saved 'Champ:Type' build keys — null = not loaded / signed out
 let currentPage = '';
 let lastViewedChamp = null; // set ONLY when arriving from another champion's detail page (counters/synergies click)
 
@@ -3947,11 +4020,22 @@ function renderChampionGrid() {
 
   grid.innerHTML = champs.map(c => {
     const wrClass = parseFloat(c.winRate) >= 52 ? 'wr-high' : parseFloat(c.winRate) <= 48 ? 'wr-low' : '';
+    const isFav = !!(favoriteChampIds && favoriteChampIds.has(c.id));
     return `
     <div class="champ-card" onclick="openChampDetail('${c.id}')" tabindex="0" role="button" aria-label="${c.name}">
       <div class="champ-img-wrapper">
         <img class="champ-img" src="${c.img}" alt="${c.name}" loading="lazy" width="120" height="120">
         <div class="champ-tier-badge tier-${c.tier}">${c.tier}</div>
+        <button type="button" class="champ-fav-btn${isFav ? ' is-favorited' : ''}"
+                data-champ-id="${c.id}" data-champ-name="${c.name.replace(/"/g,'&quot;')}" ${currentUser ? '' : 'disabled'}
+                aria-label="${isFav ? 'Remove ' + c.name + ' from favorites' : 'Add ' + c.name + ' to favorites'}"
+                aria-pressed="${isFav}"
+                title="${currentUser ? 'Favorite' : 'Sign in to favorite'}"
+                onclick="toggleFavoriteChamp(this.dataset.champId, this.dataset.champName, this, event)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+        </button>
       </div>
       <div class="champ-info">
         <div class="champ-name">${c.name}</div>
@@ -4501,8 +4585,22 @@ function renderBuildCard(b, champObj) {
   const img   = c ? c.img   : (IMG_BASE + '/champion/' + getDDKey(b.champ) + '.png');
   const tier  = c ? c.tier  : '?';
   const champId = c ? c.id : b.champ;
+  const buildKey = buildKeyFor(b);
+  const isSaved = !!(savedBuildKeys && savedBuildKeys.has(buildKey));
   return `
     <div class="build-card" onclick="openChampDetail('${champId}')">
+      <button type="button" class="build-save-btn${isSaved ? ' is-saved' : ''}"
+              data-build-key="${buildKey}" ${currentUser ? '' : 'disabled'}
+              aria-label="${isSaved ? 'Remove saved build for ' + b.champ : 'Save ' + b.champ + ' build'}"
+              aria-pressed="${isSaved}"
+              title="${currentUser ? 'Save build' : 'Sign in to save'}"
+              data-build-champ="${b.champ.replace(/"/g,'&quot;')}"
+              data-build-type="${b.type.replace(/"/g,'&quot;')}"
+              onclick="toggleSavedBuild({champ:this.dataset.buildChamp,type:this.dataset.buildType}, this, event)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+          <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+        </svg>
+      </button>
       <div class="build-card-header">
         <img class="build-card-champ-img" src="${img}" alt="${b.champ}" loading="lazy"
              onerror="this.src='${IMG_BASE}/champion/Jinx.png'">
@@ -5044,7 +5142,17 @@ const SUPABASE_URL = 'https://ulphbemhljgrsxgjbymm.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVscGhiZW1obGpncnN4Z2pieW1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE4NjgxNzIsImV4cCI6MjA5NzQ0NDE3Mn0.sbTMoH5tBKnTbOZqoNp5b0rZIDZceR7Z8B1KNm_Wd3A';
 
 // AUTH: Single shared Supabase client for the whole page.
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Guarded: if the Supabase SDK script (loaded from a CDN) fails to load —
+// slow connection, ad-blocker, CDN outage — `window.supabase` is undefined.
+// Without this guard that would throw here and halt the ENTIRE script,
+// breaking champion loading, search, builds, everything — not just auth.
+// With the guard, supabaseClient stays null and every auth/favorites/
+// saved-builds function below checks for it and degrades gracefully
+// (buttons disabled, profile shows a "service unavailable" message)
+// instead of taking the whole site down with it.
+const supabaseClient = (typeof window.supabase !== 'undefined')
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
 
 // AUTH: Show/hide a field error message (same behavior as before).
 function showFieldErr(id, msg) {
@@ -5073,6 +5181,7 @@ function nameFromEmail(email) {
 // auth servers, which hash it (bcrypt) before storage. This code
 // never sees, stores, or transmits a password hash itself.
 async function handleRegister() {
+  if (!supabaseClient) { showToast('Account creation is temporarily unavailable. Please try again shortly.'); return; }
   const email    = (document.getElementById('regEmail')    || {}).value?.trim() || '';
   const password = (document.getElementById('regPassword') || {}).value || '';
 
@@ -5093,10 +5202,11 @@ async function handleRegister() {
   // Instant sign-in: Supabase returns an active session immediately
   // here as long as "Confirm email" is OFF in your project settings.
   if (data.session) {
-    currentUser = { username: nameFromEmail(data.user.email), email: data.user.email };
+    currentUser = { id: data.user.id, username: nameFromEmail(data.user.email), email: data.user.email };
     updateAuthUI();
     closeModal('register');
     showToast('Welcome to the Forge, ' + currentUser.username + '! ⚔');
+    loadUserCollections(); // brand-new account — this will just populate empty Sets, which is correct
   } else {
     // Fallback if email confirmation is ever turned back on later.
     closeModal('register');
@@ -5106,6 +5216,7 @@ async function handleRegister() {
 
 // AUTH: Log in an existing account via Supabase Auth.
 async function handleLogin() {
+  if (!supabaseClient) { showToast('Sign-in is temporarily unavailable. Please try again shortly.'); return; }
   const email    = (document.getElementById('loginEmail')    || {}).value?.trim() || '';
   const password = (document.getElementById('loginPassword') || {}).value || '';
 
@@ -5121,15 +5232,16 @@ async function handleLogin() {
     return;
   }
 
-  currentUser = { username: nameFromEmail(data.user.email), email: data.user.email };
+  currentUser = { id: data.user.id, username: nameFromEmail(data.user.email), email: data.user.email };
   updateAuthUI();
   closeModal('login');
   showToast('Welcome back, ' + currentUser.username + '!');
+  loadUserCollections(); // load this account's favorites/saved builds right away
 }
 
 // AUTH: Clear the real Supabase session (not just local UI state).
 async function logout() {
-  await supabaseClient.auth.signOut();
+  if (supabaseClient) await supabaseClient.auth.signOut();
   currentUser = null;
   updateAuthUI();
   navigate('home');
@@ -5139,6 +5251,7 @@ async function logout() {
 // AUTH: Send a password reset email via Supabase. Supabase sends the
 // link itself — this code never generates or sees the reset token.
 async function handleForgotPassword() {
+  if (!supabaseClient) { showToast('This is temporarily unavailable. Please try again shortly.'); return; }
   const email = (document.getElementById('forgotEmail') || {}).value?.trim() || '';
   const errEl = document.getElementById('forgotEmailErr');
   if (errEl) errEl.classList.remove('show');
@@ -5168,6 +5281,7 @@ async function handleForgotPassword() {
 // AUTH: Called from the "Set New Password" modal that auto-opens
 // after the user clicks the link in their reset email.
 async function handleResetPassword() {
+  if (!supabaseClient) { showToast('This is temporarily unavailable. Please try again shortly.'); return; }
   const password = (document.getElementById('newPassword') || {}).value || '';
   const errEl = document.getElementById('newPasswordErr');
   if (errEl) errEl.classList.remove('show');
@@ -5191,10 +5305,12 @@ async function handleResetPassword() {
 // This is what makes login persist across reloads and return visits —
 // Supabase stores its own session token securely and verifies it here.
 async function initAuth() {
+  if (!supabaseClient) return; // Supabase SDK failed to load — skip auth, rest of site still works
   const { data } = await supabaseClient.auth.getSession();
   if (data.session && data.session.user) {
-    currentUser = { username: nameFromEmail(data.session.user.email), email: data.session.user.email };
+    currentUser = { id: data.session.user.id, username: nameFromEmail(data.session.user.email), email: data.session.user.email };
     updateAuthUI();
+    loadUserCollections(); // populate favorites/saved-builds caches for the restored session
   }
 
   // AUTH: Keep UI in sync if the session changes in another tab,
@@ -5207,9 +5323,14 @@ async function initAuth() {
       return;
     }
     if (session && session.user) {
-      currentUser = { username: nameFromEmail(session.user.email), email: session.user.email };
+      currentUser = { id: session.user.id, username: nameFromEmail(session.user.email), email: session.user.email };
+      loadUserCollections(); // covers login AND token refresh in another tab
     } else {
       currentUser = null;
+      favoriteChampIds = null; // clear caches on logout so a future guest never sees stale data
+      savedBuildKeys = null;
+      refreshFavoriteButtons();
+      refreshSavedBuildButtons();
     }
     updateAuthUI();
   });
@@ -5237,6 +5358,124 @@ function toggleUserMenu() {
   if (dd) dd.classList.toggle('open');
 }
 
+// ============================================================
+// FAVORITES & SAVED BUILDS — Supabase-backed, per-user
+// ============================================================
+// In-memory caches so the UI never has to re-fetch on every render.
+// (favoriteChampIds / savedBuildKeys are declared near the top of the
+// script, alongside currentUser, so every function — including ones
+// defined earlier in the file like renderBuildCard — can see them.)
+function buildKeyFor(b) { return b.champ + ':' + b.type; }
+
+// Fetch both lists from Supabase for the current user and populate the caches.
+// Call this once right after a session is confirmed (initAuth / onAuthStateChange).
+async function loadUserCollections() {
+  if (!supabaseClient || !currentUser || !currentUser.id) { favoriteChampIds = null; savedBuildKeys = null; return; }
+  try {
+    const [favRes, buildRes] = await Promise.all([
+      supabaseClient.from('favorite_champions').select('champ_id').eq('user_id', currentUser.id),
+      supabaseClient.from('saved_builds').select('build_key').eq('user_id', currentUser.id),
+    ]);
+    favoriteChampIds = new Set((favRes.data || []).map(r => r.champ_id));
+    savedBuildKeys   = new Set((buildRes.data || []).map(r => r.build_key));
+  } catch (e) {
+    // Network/DB hiccup — leave caches null so UI shows buttons as disabled
+    // rather than confidently wrong (never show a false "favorited" state).
+    favoriteChampIds = null;
+    savedBuildKeys = null;
+  }
+  refreshFavoriteButtons();
+  refreshSavedBuildButtons();
+  if (currentPage === 'profile') renderProfile();
+}
+
+// Toggle a champion's favorite state. Called from the star icon's onclick.
+// `btnEl` is passed so we can give instant visual feedback before the
+// network round-trip resolves (then correct it if the request fails).
+async function toggleFavoriteChamp(champId, champName, btnEl, evt) {
+  if (evt) evt.stopPropagation(); // never trigger the card's own onclick (openChampDetail)
+  if (!supabaseClient) { showToast('Favorites are temporarily unavailable.'); return; }
+  if (!currentUser) { openModal('login'); showToast('Sign in to save favorites.'); return; }
+  if (!favoriteChampIds) favoriteChampIds = new Set(); // defensive: collections hadn't loaded yet
+
+  const wasFav = favoriteChampIds.has(champId);
+  // Optimistic UI update
+  if (wasFav) favoriteChampIds.delete(champId); else favoriteChampIds.add(champId);
+  if (btnEl) btnEl.classList.toggle('is-favorited', !wasFav);
+
+  try {
+    if (wasFav) {
+      const { error } = await supabaseClient.from('favorite_champions')
+        .delete().eq('user_id', currentUser.id).eq('champ_id', champId);
+      if (error) throw error;
+    } else {
+      const { error } = await supabaseClient.from('favorite_champions')
+        .insert({ user_id: currentUser.id, champ_id: champId, champ_name: champName });
+      if (error) throw error;
+    }
+  } catch (e) {
+    // Roll back the optimistic update on failure
+    if (wasFav) favoriteChampIds.add(champId); else favoriteChampIds.delete(champId);
+    if (btnEl) btnEl.classList.toggle('is-favorited', wasFav);
+    showToast('Could not update favorites. Try again.');
+    return;
+  }
+  if (currentPage === 'profile') renderProfile();
+}
+
+// Toggle a build's saved state. Called from the bookmark icon's onclick.
+async function toggleSavedBuild(build, btnEl, evt) {
+  if (evt) evt.stopPropagation(); // never trigger the card's own onclick (openChampDetail)
+  if (!supabaseClient) { showToast('Saved builds are temporarily unavailable.'); return; }
+  if (!currentUser) { openModal('login'); showToast('Sign in to save builds.'); return; }
+  if (!savedBuildKeys) savedBuildKeys = new Set();
+
+  const key = buildKeyFor(build);
+  const wasSaved = savedBuildKeys.has(key);
+  if (wasSaved) savedBuildKeys.delete(key); else savedBuildKeys.add(key);
+  if (btnEl) btnEl.classList.toggle('is-saved', !wasSaved);
+
+  try {
+    if (wasSaved) {
+      const { error } = await supabaseClient.from('saved_builds')
+        .delete().eq('user_id', currentUser.id).eq('build_key', key);
+      if (error) throw error;
+    } else {
+      const { error } = await supabaseClient.from('saved_builds')
+        .insert({ user_id: currentUser.id, build_key: key, champ_name: build.champ, build_type: build.type });
+      if (error) throw error;
+    }
+  } catch (e) {
+    if (wasSaved) savedBuildKeys.add(key); else savedBuildKeys.delete(key);
+    if (btnEl) btnEl.classList.toggle('is-saved', wasSaved);
+    showToast('Could not update saved builds. Try again.');
+    return;
+  }
+  if (currentPage === 'profile') renderProfile();
+}
+
+// Re-sync every favorite-star icon currently in the DOM with favoriteChampIds.
+// Called after collections load/change so already-rendered cards catch up
+// without a full re-render (cheaper, and preserves scroll position).
+function refreshFavoriteButtons() {
+  document.querySelectorAll('.champ-fav-btn[data-champ-id]').forEach(btn => {
+    const isFav = !!(favoriteChampIds && favoriteChampIds.has(btn.dataset.champId));
+    btn.classList.toggle('is-favorited', isFav);
+    btn.disabled = !currentUser;
+    btn.setAttribute('aria-pressed', String(isFav));
+  });
+}
+
+// Same idea for saved-build bookmark icons.
+function refreshSavedBuildButtons() {
+  document.querySelectorAll('.build-save-btn[data-build-key]').forEach(btn => {
+    const isSaved = !!(savedBuildKeys && savedBuildKeys.has(btn.dataset.buildKey));
+    btn.classList.toggle('is-saved', isSaved);
+    btn.disabled = !currentUser;
+    btn.setAttribute('aria-pressed', String(isSaved));
+  });
+}
+
 function resetStagger(sel, cls) {
   document.querySelectorAll(sel).forEach(el => el.classList.remove(cls));
 }
@@ -5261,8 +5500,100 @@ function renderProfile() {
     return;
   }
 
-  const joined = new Date(currentUser.joined);
-  const joinedStr = joined.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const joinedStr = currentUser.joined
+    ? new Date(currentUser.joined).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : '—';
+
+  // favoriteChampIds / savedBuildKeys are null until loadUserCollections() resolves
+  // (fired from initAuth/handleLogin/handleRegister). Show a loading state rather
+  // than a confident "0" while that request is still in flight. Only show
+  // "unavailable" when there's no Supabase connection AND no data has been
+  // loaded any other way — if the Sets are already populated, trust them.
+  const collectionsLoading = (favoriteChampIds !== null && savedBuildKeys !== null)
+    ? 'ready'
+    : (!supabaseClient ? 'unavailable' : 'loading');
+
+  const savedBuildCount = collectionsLoading === 'ready' ? savedBuildKeys.size : 0;
+  const favoriteCount   = collectionsLoading === 'ready' ? favoriteChampIds.size : 0;
+
+  // Resolve saved build keys back into full build objects so we can render real cards.
+  const savedBuildsList = collectionsLoading === 'ready'
+    ? getAllBuilds().filter(b => savedBuildKeys.has(buildKeyFor(b)))
+    : [];
+
+  // Resolve favorited champ ids back into champion objects.
+  const favoriteChampsList = collectionsLoading === 'ready'
+    ? allChampions.filter(c => favoriteChampIds.has(c.id))
+    : [];
+
+  function emptyState(msg, btnLabel, page) {
+    return `<div style="text-align:center;padding:2rem;">
+      <p style="color:var(--grey-4);font-size:0.82rem;">${msg}</p>
+      <button class="btn btn-ghost" onclick="navigate('${page}')" style="margin-top:1rem;">${btnLabel}</button>
+    </div>`;
+  }
+
+  function loadingState() {
+    return `<div style="text-align:center;padding:2rem;">
+      <p style="color:var(--grey-4);font-size:0.82rem;">Loading…</p>
+    </div>`;
+  }
+
+  function unavailableState() {
+    return `<div style="text-align:center;padding:2rem;">
+      <p style="color:var(--grey-4);font-size:0.82rem;">This is temporarily unavailable. Please refresh the page in a moment.</p>
+    </div>`;
+  }
+
+  function savedBuildsBody() {
+    if (collectionsLoading === 'unavailable') return unavailableState();
+    if (collectionsLoading === 'loading') return loadingState();
+    if (savedBuildsList.length === 0) return emptyState('No saved builds yet. Browse champions and save builds you like.', 'Browse Builds', 'builds');
+    return `<div style="display:flex;flex-direction:column;gap:.6rem;">
+      ${savedBuildsList.map(b => {
+        const c = allChampions.find(ch => ch.name === b.champ);
+        const champId = c ? c.id : b.champ;
+        const img = c ? c.img : (IMG_BASE + '/champion/' + getDDKey(b.champ) + '.png');
+        const key = buildKeyFor(b);
+        return `<div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;background:rgba(200,170,110,.04);border:1px solid var(--border);border-radius:6px;">
+          <img src="${img}" alt="${b.champ}" width="36" height="36" style="border-radius:6px;border:1px solid var(--border);object-fit:cover;flex-shrink:0;cursor:pointer;" loading="lazy"
+               onerror="this.src='${IMG_BASE}/champion/Jinx.png'" onclick="openChampDetail('${champId}')">
+          <div style="flex:1;min-width:0;cursor:pointer;" onclick="openChampDetail('${champId}')">
+            <div style="font-size:.82rem;font-weight:700;color:var(--grey-1);">${b.champ}</div>
+            <div style="font-size:.68rem;color:var(--grey-4);">${b.type} Build</div>
+          </div>
+          <button type="button" class="build-save-btn is-saved" style="position:static;" data-build-key="${key}"
+                  aria-label="Remove saved build for ${b.champ}" aria-pressed="true" title="Remove from saved builds"
+                  data-build-champ="${b.champ.replace(/"/g,'&quot;')}" data-build-type="${b.type.replace(/"/g,'&quot;')}"
+                  onclick="toggleSavedBuild({champ:this.dataset.buildChamp,type:this.dataset.buildType}, this, event)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+          </button>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  function favoriteChampsBody() {
+    if (collectionsLoading === 'unavailable') return unavailableState();
+    if (collectionsLoading === 'loading') return loadingState();
+    if (favoriteChampsList.length === 0) return emptyState('No favorites yet. Visit a champion page to add them here.', 'Find Champions', 'champions');
+    return `<div style="display:flex;flex-direction:column;gap:.6rem;">
+      ${favoriteChampsList.map(c => `
+        <div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;background:rgba(200,170,110,.04);border:1px solid var(--border);border-radius:6px;">
+          <img src="${c.img}" alt="${c.name}" width="36" height="36" style="border-radius:6px;border:1px solid var(--border);object-fit:cover;flex-shrink:0;cursor:pointer;" loading="lazy"
+               onclick="openChampDetail('${c.id}')">
+          <div style="flex:1;min-width:0;cursor:pointer;" onclick="openChampDetail('${c.id}')">
+            <div style="font-size:.82rem;font-weight:700;color:var(--grey-1);">${c.name}</div>
+            <div style="font-size:.68rem;color:var(--grey-4);">${c.role} &bull; ${c.tier}-Tier</div>
+          </div>
+          <button type="button" class="champ-fav-btn is-favorited" style="position:static;" data-champ-id="${c.id}" data-champ-name="${c.name.replace(/"/g,'&quot;')}"
+                  aria-label="Remove ${c.name} from favorites" aria-pressed="true" title="Remove from favorites"
+                  onclick="toggleFavoriteChamp(this.dataset.champId, this.dataset.champName, this, event)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></polygon></svg>
+          </button>
+        </div>`).join('')}
+    </div>`;
+  }
 
   el.innerHTML = `
     <div class="profile-header">
@@ -5272,30 +5603,42 @@ function renderProfile() {
         <div class="profile-email">${currentUser.email}</div>
         <div class="profile-joined">Member since ${joinedStr}</div>
         <div class="profile-stats-row">
-          <div class="profile-stat"><div class="profile-stat-val">0</div><div class="profile-stat-key">Saved Builds</div></div>
-          <div class="profile-stat"><div class="profile-stat-val">0</div><div class="profile-stat-key">Favorite Champs</div></div>
+          <div class="profile-stat"><div class="profile-stat-val">${collectionsLoading === 'ready' ? savedBuildCount : '—'}</div><div class="profile-stat-key">Saved Builds</div></div>
+          <div class="profile-stat"><div class="profile-stat-val">${collectionsLoading === 'ready' ? favoriteCount : '—'}</div><div class="profile-stat-key">Favorite Champs</div></div>
           <div class="profile-stat"><div class="profile-stat-val">Patch 26.12</div><div class="profile-stat-key">Last Visited</div></div>
         </div>
       </div>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
-      <div class="detail-panel">
-        <div class="detail-panel-header">Saved Builds</div>
-        <div class="detail-panel-body" style="text-align:center;padding:2rem;">
-          <p style="color:var(--grey-4);font-size:0.82rem;">No saved builds yet. Browse champions and save builds you like.</p>
-          <button class="btn btn-ghost" onclick="navigate('builds')" style="margin-top:1rem;">Browse Builds</button>
-        </div>
+      <div class="detail-panel" id="profile-saved-builds">
+        <div class="detail-panel-header">Saved Builds${collectionsLoading === 'ready' ? ' (' + savedBuildCount + ')' : ''}</div>
+        <div class="detail-panel-body">${savedBuildsBody()}</div>
       </div>
-      <div class="detail-panel">
-        <div class="detail-panel-header">Favorite Champions</div>
-        <div class="detail-panel-body" style="text-align:center;padding:2rem;">
-          <p style="color:var(--grey-4);font-size:0.82rem;">No favorites yet. Visit a champion page to add them here.</p>
-          <button class="btn btn-ghost" onclick="navigate('champions')" style="margin-top:1rem;">Find Champions</button>
-        </div>
+      <div class="detail-panel" id="profile-favorite-champs">
+        <div class="detail-panel-header">Favorite Champions${collectionsLoading === 'ready' ? ' (' + favoriteCount + ')' : ''}</div>
+        <div class="detail-panel-body">${favoriteChampsBody()}</div>
       </div>
     </div>
   `;
+}
+
+// Navigates to the profile page, then scrolls/highlights the requested section.
+// Used by the "Saved Builds" / "My Champions" links in the user dropdown.
+function goToProfileSection(section) {
+  toggleUserMenu(); // close the dropdown
+  navigate('profile');
+  // Wait a tick for renderProfile()'s innerHTML to land before querying for the section.
+  setTimeout(() => {
+    const id = section === 'saved-builds' ? 'profile-saved-builds' : 'profile-favorite-champs';
+    const target = document.getElementById(id);
+    if (!target) return;
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.style.transition = 'box-shadow .3s ease, border-color .3s ease';
+    target.style.boxShadow = '0 0 0 2px var(--gold-1)';
+    target.style.borderColor = 'var(--gold-1)';
+    setTimeout(() => { target.style.boxShadow = ''; target.style.borderColor = ''; }, 1600);
+  }, 80);
 }
 
 // ============================================================
@@ -5980,6 +6323,19 @@ function closeModal(name) {
 function switchModal(from, to) {
   closeModal(from);
   setTimeout(() => openModal(to), 150);
+}
+
+// Lightweight toast notification — reuses the .success-toast style that
+// already existed in the stylesheet (bottom-right, gold border, slide-in).
+// Called throughout auth, favorites, and saved-builds flows.
+let _toastHideTimer = null;
+function showToast(message) {
+  const el = document.getElementById('successToast');
+  if (!el) return;
+  el.textContent = message;
+  el.style.display = 'block';
+  if (_toastHideTimer) clearTimeout(_toastHideTimer);
+  _toastHideTimer = setTimeout(() => { el.style.display = 'none'; }, 3200);
 }
 
 
