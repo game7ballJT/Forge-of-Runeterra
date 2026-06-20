@@ -31,7 +31,6 @@
 <link rel="preconnect" href="https://ddragon.leagueoflegends.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <!-- AUTH: Supabase client SDK — hosted auth backend, no server of your own needed -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script type="application/ld+json">
 [{"@context":"https://schema.org","@type":"Organization","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/","description":"The most complete League of Legends resource for champion builds, tier lists, rune guides, and patch analysis."},{"@context":"https://schema.org","@type":"WebSite","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/","potentialAction":{"@type":"SearchAction","target":"https://forgeofruneterra.gg/?q={search_term_string}","query-input":"required name=search_term_string"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the best champions in Patch 26.12?","acceptedAnswer":{"@type":"Answer","text":"In Patch 26.12, S-tier champions include Jinx, Yasuo, Lux, and Vi, excelling with the returning Deathfire Touch and Stormraiders Surge keystones."}},{"@type":"Question","name":"How often is Forge of Runeterra updated?","acceptedAnswer":{"@type":"Answer","text":"Forge of Runeterra is updated with every League of Legends patch, approximately every two weeks. Tier lists, builds, and patch notes are refreshed on patch day."}},{"@type":"Question","name":"What changed in Patch 26.12?","acceptedAnswer":{"@type":"Answer","text":"Patch 26.12 returned Deathfire Touch and Stormraiders Surge. Key nerfs hit Orianna, Ryze, and Nocturne, while Yuumi received a W heal buff."}},{"@type":"Question","name":"What is the best role to climb ranked in 2026?","acceptedAnswer":{"@type":"Answer","text":"Mid lane and jungle offer the most carry potential in Season 2 due to their map influence. Assassins and mages with strong roam patterns excel at lower elos."}}]},{"@context":"https://schema.org","@type":"Article","headline":"League of Legends Patch 26.12 Notes","description":"Complete patch notes for LoL Patch 26.12 including champion changes, item updates, and returning keystones.","datePublished":"2026-06-09","dateModified":"2026-06-09","author":{"@type":"Organization","name":"Forge of Runeterra"},"publisher":{"@type":"Organization","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/"}}]
 </script>
@@ -2296,7 +2295,8 @@ html, body { overflow-x: hidden; }
 @media (max-width: 480px) {
   .filter-tab {
     font-size: .68rem !important;
-    padding: .3rem .6rem !important;
+    padding: .55rem .65rem !important;
+    min-height: 40px !important;
   }
 }
 
@@ -2591,6 +2591,26 @@ html, body { overflow-x: hidden; }
 
 /* build-card needs relative positioning for the save button to anchor to it */
 .build-card { position: relative; }
+
+/* ════════ MOBILE NAV LINKS — consolidated from 6x duplicated inline styles.
+   min-height:48px gives a comfortable WCAG 2.2 AA touch target; the previous
+   inline-only padding (.7rem) measured ~37px tall in practice. ════════ */
+.mob-link {
+  padding: .7rem 1rem;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--grey-2);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color .2s, background .2s;
+}
+.mob-link:hover, .mob-link:active { color: var(--gold-1); background: rgba(200,170,110,.06); }
 </style>
 </head>
 <body>
@@ -2677,22 +2697,26 @@ html, body { overflow-x: hidden; }
           Sign Out
         </div>
       </div>
-      <!-- HAMBURGER for mobile -->
-      <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Toggle menu" aria-expanded="false" style="display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px;">
-        <span id="hb1" style="display:block;width:22px;height:2px;background:var(--grey-2);border-radius:2px;transition:all .3s;"></span>
-        <span id="hb2" style="display:block;width:22px;height:2px;background:var(--grey-2);border-radius:2px;transition:all .3s;"></span>
-        <span id="hb3" style="display:block;width:22px;height:2px;background:var(--grey-2);border-radius:2px;transition:all .3s;"></span>
-      </button>
     </div>
+    <!-- HAMBURGER for mobile — sibling of userMenuWrap, NOT a child.
+         It must stay visible regardless of login state; it was previously
+         nested inside userMenuWrap and inherited that wrapper's
+         display:none whenever the visitor wasn't signed in, silently
+         disabling the entire mobile nav for every logged-out visitor. -->
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Toggle menu" aria-expanded="false" style="display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:12px;min-width:48px;min-height:48px;align-items:center;justify-content:center;">
+      <span id="hb1" style="display:block;width:22px;height:2px;background:var(--grey-2);border-radius:2px;transition:all .3s;"></span>
+      <span id="hb2" style="display:block;width:22px;height:2px;background:var(--grey-2);border-radius:2px;transition:all .3s;"></span>
+      <span id="hb3" style="display:block;width:22px;height:2px;background:var(--grey-2);border-radius:2px;transition:all .3s;"></span>
+    </button>
   </div>
 </nav>
 <div id="mobileNavMenu" style="display:none;position:fixed;top:60px;left:0;right:0;background:rgba(10,13,20,.98);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:.75rem 1rem;flex-direction:column;gap:.15rem;z-index:998;" role="navigation" aria-label="Mobile navigation">
-  <a onclick="navigate('home');closeMobileNav()" style="padding:.7rem 1rem;font-size:.8rem;font-weight:600;color:var(--grey-2);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;border-radius:4px;display:block;cursor:pointer;transition:color .2s,background .2s;" class="mob-link">Home</a>
-  <a onclick="navigate('champions');closeMobileNav()" style="padding:.7rem 1rem;font-size:.8rem;font-weight:600;color:var(--grey-2);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;border-radius:4px;display:block;cursor:pointer;transition:color .2s,background .2s;" class="mob-link">Champions</a>
-  <a onclick="navigate('tierlist');closeMobileNav()" style="padding:.7rem 1rem;font-size:.8rem;font-weight:600;color:var(--grey-2);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;border-radius:4px;display:block;cursor:pointer;transition:color .2s,background .2s;" class="mob-link">Tier List</a>
-  <a onclick="navigate('builds');closeMobileNav()" style="padding:.7rem 1rem;font-size:.8rem;font-weight:600;color:var(--grey-2);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;border-radius:4px;display:block;cursor:pointer;transition:color .2s,background .2s;" class="mob-link">Builds</a>
-  <a onclick="navigate('guides');closeMobileNav()" style="padding:.7rem 1rem;font-size:.8rem;font-weight:600;color:var(--grey-2);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;border-radius:4px;display:block;cursor:pointer;transition:color .2s,background .2s;" class="mob-link">Guides</a>
-  <a onclick="navigate('patch');closeMobileNav()" style="padding:.7rem 1rem;font-size:.8rem;font-weight:600;color:var(--blue-2);text-decoration:none;text-transform:uppercase;letter-spacing:.08em;border-radius:4px;display:block;cursor:pointer;" class="mob-link">Patch 26.12</a>
+  <a onclick="navigate('home');closeMobileNav()" class="mob-link">Home</a>
+  <a onclick="navigate('champions');closeMobileNav()" class="mob-link">Champions</a>
+  <a onclick="navigate('tierlist');closeMobileNav()" class="mob-link">Tier List</a>
+  <a onclick="navigate('builds');closeMobileNav()" class="mob-link">Builds</a>
+  <a onclick="navigate('guides');closeMobileNav()" class="mob-link">Guides</a>
+  <a onclick="navigate('patch');closeMobileNav()" style="color:var(--blue-2);" class="mob-link">Patch 26.12</a>
 </div>
 
 <!-- PATCH ANNOUNCEMENT BAR (shown below nav on sub-pages) -->
@@ -3110,7 +3134,7 @@ html, body { overflow-x: hidden; }
     <div class="filters-row">
       <div class="search-wrapper">
         <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="buildsSearch" name="buildsSearch" class="filter-search" placeholder="Search builds..." oninput="filterBuilds(this.value)" autocomplete="off" aria-label="Search builds">
+        <input type="search" id="buildsSearch" name="buildsSearch" class="filter-search" placeholder="Search builds..." oninput="filterBuilds(this.value)" autocomplete="off" aria-label="Search builds">
       </div>
       <div class="filter-tabs">
         <div class="filter-tab active" onclick="setBuildFilter('all', this)">All</div>
@@ -3465,6 +3489,8 @@ html, body { overflow-x: hidden; }
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
 <script>
 // ============================================================
 // DATA DRAGON + CHAMPION DATA
@@ -4190,7 +4216,12 @@ function getCounters(tags) {
   return ['Irelia','Darius','Garen','Malphite','Fiora'];
 }
 
-function openChampDetail(champId, fromChampId) {
+// `buildKeyToHighlight` (optional 3rd arg) is a 'Champ:Type' key, e.g. 'Ahri:Mage'.
+// When present (arriving from a specific build card, or from a deep-link URL),
+// the page updates the URL's ?build= param and scrolls/highlights that exact
+// build section instead of leaving the visitor to hunt for it — this is what
+// makes "open this specific build" feel different from "open this champion".
+function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
   // Only set lastViewedChamp when explicitly arriving from another champion page
   // (counters/synergies click). Direct navigation from champions list, home,
   // guides, or external links passes no fromChampId, so it clears correctly.
@@ -4198,6 +4229,20 @@ function openChampDetail(champId, fromChampId) {
   navigate('champion-detail', true);
   const c = allChampions.find(ch => ch.id === champId);
   if (!c) return;
+
+  // Reflect this view in the URL as a real, shareable, bookmarkable link —
+  // purely additive: it does not change how navigate()/the .page system works,
+  // it just keeps the address bar honest about what's currently showing.
+  // history.replaceState (not pushState) so the browser's own back button
+  // still behaves exactly as it did before (this site has no other history
+  // entries to go back to, so adding pushState here would be misleading).
+  try {
+    const params = new URLSearchParams();
+    params.set('champion', champId);
+    if (buildKeyToHighlight) params.set('build', buildKeyToHighlight);
+    const newUrl = window.location.pathname + '?' + params.toString();
+    window.history.replaceState({ champId, buildKeyToHighlight: buildKeyToHighlight || null }, '', newUrl);
+  } catch (e) { /* replaceState can throw in sandboxed/file:// contexts — never block the page on this */ }
 
   const buildType = getBuildType(c.tags);
   const buildItems = BUILD_ITEMS[buildType] || BUILD_ITEMS.Fighter;
@@ -4275,7 +4320,7 @@ function openChampDetail(champId, fromChampId) {
   if (!detailEl) return;
   detailEl.innerHTML = `
     <div class="champ-detail-hero" style="margin-top:64px;">
-      <img class="champ-detail-splash" src="${c.splash}" alt="${c.name}" loading="eager">
+      <img class="champ-detail-splash" src="${c.splash}" alt="${c.name}" loading="eager" fetchpriority="high" decoding="async">
       <div class="champ-detail-overlay"></div>
       <div class="champ-detail-info">
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem;">
@@ -4338,7 +4383,7 @@ function openChampDetail(champId, fromChampId) {
           </div>
 
           <!-- BEST BUILD -->
-          <div class="detail-panel">
+          <div class="detail-panel" id="champBuildPanel">
             <div class="detail-panel-header">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M12 8v8"/></svg>
               Recommended Build (Patch 26.12)
@@ -4419,7 +4464,7 @@ function openChampDetail(champId, fromChampId) {
               <div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;background:linear-gradient(135deg,${rune.color}12,transparent);border:1px solid ${rune.color}35;border-radius:6px;margin-bottom:.75rem;">
                 <div style="width:44px;height:44px;border-radius:50%;background:${rune.color}22;border:2px solid ${rune.color}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
                   <img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${rune.imgPath}"
-                    alt="${rune.name}" width="38" height="38" style="object-fit:contain;"
+                    alt="${rune.name}" width="38" height="38" style="object-fit:contain;" loading="lazy" decoding="async"
                     onerror="this.outerHTML='<span style=&quot;font-size:1.3rem;&quot;>${rune.icon}</span>'">
                 </div>
                 <div style="flex:1;">
@@ -4551,7 +4596,49 @@ function openChampDetail(champId, fromChampId) {
     });
     // Attach item tooltip listeners after DOM is ready
     setTimeout(initItemTooltips, 80);
+    // Deep-link landing: scroll to and highlight the specific build that was
+    // clicked, instead of leaving the visitor on a generic champion page.
+    if (buildKeyToHighlight) highlightBuildPanel();
   }, 100);
+}
+
+// Reads ?champion=<id>&build=<Champ:Type> from the current URL (if present)
+// and opens that view automatically — this is what makes a deep-link/shared
+// link/bookmark/refresh actually land on the right page instead of always
+// going back to Home. Called once, after allChampions is populated.
+function openFromUrlParams() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const champId = params.get('champion');
+    if (!champId) return;
+    const c = allChampions.find(ch => ch.id === champId);
+    if (!c) return; // unknown/stale champion id in the URL — fall back to whatever navigate('home') already showed
+
+    const buildKey = params.get('build');
+    // Validate the build key actually corresponds to a real build for this
+    // champion before trusting it — never blindly highlight based on
+    // unverified URL content (the key is plain text, not sensitive, but a
+    // garbage value should just be ignored rather than shown as if it were real).
+    const validBuildKey = buildKey && getAllBuilds().some(b => buildKeyFor(b) === buildKey) ? buildKey : null;
+
+    openChampDetail(champId, null, validBuildKey);
+  } catch (e) { /* malformed URL params — never block page load over this */ }
+}
+
+// Scrolls the Recommended Build panel into view and gives it a brief gold
+// glow — the same visual language already used for goToProfileSection() —
+// so arriving from a specific build card feels distinct from a generic
+// champion-page visit, without adding any new colors/borders/fonts.
+function highlightBuildPanel() {
+  const panel = document.getElementById('champBuildPanel');
+  if (!panel) return;
+  setTimeout(() => {
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    panel.style.transition = 'box-shadow .3s ease, border-color .3s ease';
+    panel.style.boxShadow = '0 0 0 2px var(--gold-1)';
+    panel.style.borderColor = 'var(--gold-1)';
+    setTimeout(() => { panel.style.boxShadow = ''; panel.style.borderColor = ''; }, 1800);
+  }, 60);
 }
 
 // ============================================================
@@ -4588,7 +4675,7 @@ function renderBuildCard(b, champObj) {
   const buildKey = buildKeyFor(b);
   const isSaved = !!(savedBuildKeys && savedBuildKeys.has(buildKey));
   return `
-    <div class="build-card" onclick="openChampDetail('${champId}')">
+    <div class="build-card" onclick="openChampDetail('${champId}', null, '${buildKey.replace(/'/g, "\\'")}')">
       <button type="button" class="build-save-btn${isSaved ? ' is-saved' : ''}"
               data-build-key="${buildKey}" ${currentUser ? '' : 'disabled'}
               aria-label="${isSaved ? 'Remove saved build for ' + b.champ : 'Save ' + b.champ + ' build'}"
@@ -4657,9 +4744,25 @@ function getAllBuilds() {
   return allBuilds;
 }
 
+// Builds grid render in two passes to keep the tap that opens this page
+// (or switches a filter tab) feeling instant on mobile: the perf audit
+// measured ~32ms of main-thread blocking just from the innerHTML write
+// when all ~180 cards render in one shot — comfortably inside the 200ms
+// INP budget on its own, but it's pure unnecessary cost on every tap,
+// and stacks with style/layout work in the same event on slower phones.
+// FIRST_BATCH covers the initial viewport plus scroll buffer; the rest
+// paint in right after, via requestAnimationFrame, so the input that
+// triggered this render gets its next paint fast, and the remaining
+// cards still appear within a frame or two — nobody waits longer for
+// content than they do today, the work just isn't all crammed into
+// the same task as the click handler.
+const BUILDS_FIRST_BATCH = 24;
+let _buildsRenderToken = 0; // invalidates a stale in-flight chunked render if the user re-filters mid-render
+
 function renderBuilds() {
   const grid = document.getElementById('buildsGrid');
   if (!grid) return;
+  const myToken = ++_buildsRenderToken;
 
   // Show curated builds immediately if champions haven't loaded yet
   if (allChampions.length === 0) {
@@ -4672,16 +4775,25 @@ function renderBuilds() {
 
   const allBuilds = getAllBuilds();
   const f = currentBuildFilter || 'all';
-  const builds = f === 'all'
+  const builds = (f === 'all'
     ? allBuilds
-    : allBuilds.filter(b => Array.isArray(b.tags) && b.tags.includes(f));
+    : allBuilds.filter(b => Array.isArray(b.tags) && b.tags.includes(f))
+  ).filter(b => b && b.champ);
 
-  grid.innerHTML = builds.filter(b => b && b.champ).map(b => renderBuildCard(b, null)).join('');
+  grid.innerHTML = builds.slice(0, BUILDS_FIRST_BATCH).map(b => renderBuildCard(b, null)).join('');
+
+  if (builds.length > BUILDS_FIRST_BATCH) {
+    requestAnimationFrame(() => {
+      if (myToken !== _buildsRenderToken) return; // a newer renderBuilds()/filterBuilds() call superseded this one
+      grid.insertAdjacentHTML('beforeend', builds.slice(BUILDS_FIRST_BATCH).map(b => renderBuildCard(b, null)).join(''));
+    });
+  }
 }
 
 function filterBuilds(q) {
   const grid = document.getElementById('buildsGrid');
   if (!grid) return;
+  _buildsRenderToken++; // invalidate any in-flight chunked render from a previous renderBuilds() call
 
   // Empty search — fall back to the normal tab-filtered render (full list restored)
   if (!q || !q.trim()) { renderBuilds(); return; }
@@ -4933,6 +5045,8 @@ const GUIDES_META = [
 ];
 let guidePage = 0;
 const GUIDES_PER_PAGE = 20;
+let favoritesPage = 0;
+const FAVORITES_PER_PAGE = 5;
 
 // Role-specific tips for auto-generated champion guides
 const ROLE_TIPS = {
@@ -5182,17 +5296,26 @@ function nameFromEmail(email) {
 // never sees, stores, or transmits a password hash itself.
 async function handleRegister() {
   if (!supabaseClient) { showToast('Account creation is temporarily unavailable. Please try again shortly.'); return; }
+  const username = (document.getElementById('regUsername') || {}).value?.trim() || '';
   const email    = (document.getElementById('regEmail')    || {}).value?.trim() || '';
   const password = (document.getElementById('regPassword') || {}).value || '';
 
   clearFieldErrs(['regUsernameErr','regEmailErr','regPasswordErr','regDupErr']);
 
   let ok = true;
+  // This field/error message already existed in the form but was never
+  // actually checked — the typed name was silently discarded on every signup.
+  if (username.length < 3) { showFieldErr('regUsernameErr'); ok = false; }
   if (!email.includes('@')) { showFieldErr('regEmailErr'); ok = false; }
   if (password.length < 6)  { showFieldErr('regPasswordErr', 'Password must be at least 6 characters.'); ok = false; }
   if (!ok) return;
 
-  const { data, error } = await supabaseClient.auth.signUp({ email, password });
+  // Store the chosen name in Supabase's built-in user_metadata so it's tied
+  // to the account permanently, not re-derived from the email every time.
+  const { data, error } = await supabaseClient.auth.signUp({
+    email, password,
+    options: { data: { username } },
+  });
 
   if (error) {
     showFieldErr('regDupErr', error.message || 'Could not create account.');
@@ -5202,7 +5325,12 @@ async function handleRegister() {
   // Instant sign-in: Supabase returns an active session immediately
   // here as long as "Confirm email" is OFF in your project settings.
   if (data.session) {
-    currentUser = { id: data.user.id, username: nameFromEmail(data.user.email), email: data.user.email };
+    currentUser = {
+      id: data.user.id,
+      username: data.user.user_metadata?.username || nameFromEmail(data.user.email),
+      email: data.user.email,
+      joined: data.user.created_at,
+    };
     updateAuthUI();
     closeModal('register');
     showToast('Welcome to the Forge, ' + currentUser.username + '! ⚔');
@@ -5232,7 +5360,7 @@ async function handleLogin() {
     return;
   }
 
-  currentUser = { id: data.user.id, username: nameFromEmail(data.user.email), email: data.user.email };
+  currentUser = { id: data.user.id, username: data.user.user_metadata?.username || nameFromEmail(data.user.email), email: data.user.email, joined: data.user.created_at };
   updateAuthUI();
   closeModal('login');
   showToast('Welcome back, ' + currentUser.username + '!');
@@ -5308,7 +5436,7 @@ async function initAuth() {
   if (!supabaseClient) return; // Supabase SDK failed to load — skip auth, rest of site still works
   const { data } = await supabaseClient.auth.getSession();
   if (data.session && data.session.user) {
-    currentUser = { id: data.session.user.id, username: nameFromEmail(data.session.user.email), email: data.session.user.email };
+    currentUser = { id: data.session.user.id, username: data.session.user.user_metadata?.username || nameFromEmail(data.session.user.email), email: data.session.user.email, joined: data.session.user.created_at };
     updateAuthUI();
     loadUserCollections(); // populate favorites/saved-builds caches for the restored session
   }
@@ -5323,7 +5451,7 @@ async function initAuth() {
       return;
     }
     if (session && session.user) {
-      currentUser = { id: session.user.id, username: nameFromEmail(session.user.email), email: session.user.email };
+      currentUser = { id: session.user.id, username: session.user.user_metadata?.username || nameFromEmail(session.user.email), email: session.user.email, joined: session.user.created_at };
       loadUserCollections(); // covers login AND token refresh in another tab
     } else {
       currentUser = null;
@@ -5481,6 +5609,15 @@ function resetStagger(sel, cls) {
 }
 
 
+// Pagination for the Favorite Champions list on the profile page —
+// mirrors setGuidePage() exactly (same clamping logic, same re-render call).
+function setFavoritesPage(p) {
+  favoritesPage = Math.max(0, p);
+  renderProfile();
+  const panel = document.getElementById('profile-favorite-champs');
+  if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 function renderProfile() {
   const el = document.getElementById('profileContent');
   if (!el) return;
@@ -5501,7 +5638,7 @@ function renderProfile() {
   }
 
   const joinedStr = currentUser.joined
-    ? new Date(currentUser.joined).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    ? new Date(currentUser.joined).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : '—';
 
   // favoriteChampIds / savedBuildKeys are null until loadUserCollections() resolves
@@ -5577,8 +5714,12 @@ function renderProfile() {
     if (collectionsLoading === 'unavailable') return unavailableState();
     if (collectionsLoading === 'loading') return loadingState();
     if (favoriteChampsList.length === 0) return emptyState('No favorites yet. Visit a champion page to add them here.', 'Find Champions', 'champions');
-    return `<div style="display:flex;flex-direction:column;gap:.6rem;">
-      ${favoriteChampsList.map(c => `
+
+    const totalPages = Math.max(1, Math.ceil(favoriteChampsList.length / FAVORITES_PER_PAGE));
+    if (favoritesPage >= totalPages) favoritesPage = 0; // list shrank (e.g. an un-favorite) past the current page
+    const pageItems = favoriteChampsList.slice(favoritesPage * FAVORITES_PER_PAGE, (favoritesPage + 1) * FAVORITES_PER_PAGE);
+
+    const rows = pageItems.map(c => `
         <div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;background:rgba(200,170,110,.04);border:1px solid var(--border);border-radius:6px;">
           <img src="${c.img}" alt="${c.name}" width="36" height="36" style="border-radius:6px;border:1px solid var(--border);object-fit:cover;flex-shrink:0;cursor:pointer;" loading="lazy"
                onclick="openChampDetail('${c.id}')">
@@ -5591,8 +5732,29 @@ function renderProfile() {
                   onclick="toggleFavoriteChamp(this.dataset.champId, this.dataset.champName, this, event)">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></polygon></svg>
           </button>
-        </div>`).join('')}
-    </div>`;
+        </div>`).join('');
+
+    // Reuses the exact pagination control already established for Guides
+    // (setGuidePage / pagerBtnStyle), just scoped to this 5-per-page list.
+    let pagerHTML = '';
+    if (totalPages > 1) {
+      const maxBtns = 5;
+      let lo = Math.max(0, favoritesPage - Math.floor(maxBtns / 2));
+      let hi = Math.min(totalPages - 1, lo + maxBtns - 1);
+      if (hi - lo < maxBtns - 1) lo = Math.max(0, hi - maxBtns + 1);
+      let btnHTML = '';
+      for (let p = lo; p <= hi; p++) {
+        btnHTML += '<button onclick="setFavoritesPage(' + p + ')" style="' + pagerBtnStyle(p === favoritesPage) + '">' + (p + 1) + '</button>';
+      }
+      const baseBtn = 'padding:.35rem .8rem;border-radius:4px;font-size:.72rem;font-weight:700;font-family:var(--font-body);cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--grey-3);';
+      pagerHTML = '<div style="display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.85rem;flex-wrap:wrap;">' +
+        '<button onclick="setFavoritesPage(favoritesPage-1)" style="' + baseBtn + 'opacity:' + (favoritesPage===0?'.3':'1') + ';" ' + (favoritesPage===0?'disabled':'') + '>&larr; Prev</button>' +
+        '<div style="display:flex;gap:.3rem;">' + btnHTML + '</div>' +
+        '<button onclick="setFavoritesPage(favoritesPage+1)" style="' + baseBtn + 'opacity:' + (favoritesPage===totalPages-1?'.3':'1') + ';" ' + (favoritesPage===totalPages-1?'disabled':'') + '>Next &rarr;</button>' +
+        '</div>';
+    }
+
+    return `<div style="display:flex;flex-direction:column;gap:.6rem;">${rows}</div>${pagerHTML}`;
   }
 
   el.innerHTML = `
@@ -5647,6 +5809,17 @@ function goToProfileSection(section) {
 function navigate(pageName, skipFlash) {
   // Leaving the champion-detail page entirely (not via chained openChampDetail) clears back-nav state
   if (pageName !== 'champion-detail') lastViewedChamp = null;
+  // Also clear the ?champion=&build= deep-link params from the URL when
+  // leaving the detail page through normal navigation (clicking another
+  // nav link, "All Champions", etc). Without this, refreshing on a later
+  // page (say, Builds) would still carry a stale champion/build URL and
+  // openFromUrlParams() would silently snap the user back to a champion
+  // page they never asked to see again.
+  if (pageName !== 'champion-detail') {
+    try {
+      if (window.location.search) window.history.replaceState({}, '', window.location.pathname);
+    } catch (e) { /* never block navigation over this */ }
+  }
   if (!skipFlash && currentPage && window.matchMedia('(prefers-reduced-motion:no-preference)').matches) {
     const pf = document.getElementById('pageFlash');
     if (pf) { pf.style.opacity='0.3'; pf.style.transition='opacity .15s ease'; setTimeout(()=>{pf.style.opacity='0';},150); }
@@ -6156,7 +6329,7 @@ function buildTooltipHTML(itemData, imgSrc, itemName) {
     'Armor Pen':'#ff6688','Magic Pen':'#ff8899','Ability Haste':'#44ddcc',
     'Life Steal':'#ff8866','Move Speed':'#88ffcc','HP Regen':'#66ff99' };
   let out = '<div class="itt-head">'
-    + '<img class="itt-img" src="'+imgSrc+'" alt="'+itemData.name+'">'
+    + '<img class="itt-img" src="'+imgSrc+'" alt="'+itemData.name+'" loading="lazy" decoding="async">'
     + '<div><div class="itt-name">'+itemData.name+'</div>'
     + (gold.total ? '<div class="itt-cost" style="color:#c8a84b;font-size:.65rem;margin-top:.1rem;">'+gold.total.toLocaleString()+' gold</div>' : '')
     + '</div></div>';
@@ -6199,7 +6372,7 @@ function buildStaticTooltipHTML(itemId, itemName, imgSrc) {
     }).join('');
   }
   var head = '<div class="itt-head">'
-    + '<img class="itt-img" src="'+imgSrc+'" alt="'+name+'">'
+    + '<img class="itt-img" src="'+imgSrc+'" alt="'+name+'" loading="lazy" decoding="async">'
     + '<div><div class="itt-name">'+name+'</div>'
     + (cost ? '<div class="itt-cost" style="color:#c8a84b;font-size:.65rem;margin-top:.1rem;">'+cost.toLocaleString()+' gold</div>' : '')
     + '</div></div>';
@@ -6380,6 +6553,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
     staggerReveal('.champ-card', 'card-reveal', 28);
     initCardTilt();
+    // Deep-link support: if the page was opened with ?champion=...&build=...
+    // (a shared link, bookmark, or refresh of a previous deep link), open
+    // that exact champion/build now that allChampions is populated.
+    openFromUrlParams();
   }).catch(() => hideLoader());
   setTimeout(observeFadeIns, 150);
   setTimeout(animateCounters, 500);
