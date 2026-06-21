@@ -3353,6 +3353,31 @@ html, body { overflow-x: hidden; }
 
 <!-- ============ MODALS ============ -->
 
+<!-- SKILL VIDEO MODAL — embeds the original creator's YouTube video,
+     unmodified, via the standard YouTube iframe player, seeked to the
+     timestamp where the relevant champion's segment begins. Nothing is
+     downloaded, cut, re-encoded, or re-hosted; playback happens on
+     YouTube under the original uploader's channel and ad terms. -->
+<div class="modal-overlay" id="modal-skillvideo">
+  <div class="modal" style="max-width:760px;width:92vw;">
+    <button class="modal-close" onclick="closeSkillVideo()">&times;</button>
+    <div style="padding:1.5rem 1.5rem 0;">
+      <h3 id="skillVideoTitle" style="font-family:var(--font-display);color:var(--gold-1);font-size:1.1rem;margin-bottom:.4rem;"></h3>
+      <p style="font-size:.72rem;color:var(--grey-4);margin-bottom:1rem;">Showcase clip via YouTube &bull; not hosted on this site</p>
+    </div>
+    <div style="padding:0 1.5rem 1.5rem;">
+      <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:6px;overflow:hidden;">
+        <iframe id="skillVideoFrame" width="100%" height="100%" src=""
+                title="Champion ability showcase" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
+                style="position:absolute;inset:0;border:0;"></iframe>
+      </div>
+      <p style="font-size:.68rem;color:var(--grey-4);margin-top:.75rem;">Video plays via YouTube's embedded player. Closing this window stops playback.</p>
+    </div>
+  </div>
+</div>
+
 <!-- LOGIN MODAL -->
 <div class="modal-overlay" id="modal-login">
   <div class="modal">
@@ -4405,6 +4430,30 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
               </div>
             </div>
           </div>
+
+          <!-- LEARN SKILLS — embeds the ORIGINAL creator's YouTube video,
+               unmodified, via the standard iframe player, seeked to where
+               this champion's segment begins. Nothing is downloaded, cut,
+               or re-hosted; the video plays from YouTube under the original
+               creator's channel. Only rendered if we have a timestamp for
+               this specific champion. -->
+          ${SKILL_VIDEO_TIMESTAMPS[c.id] !== undefined ? `
+          <div class="detail-panel">
+            <div class="detail-panel-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              Learn Skills
+            </div>
+            <div class="detail-panel-body">
+              <p style="font-size:.76rem;color:var(--grey-3);line-height:1.6;margin-bottom:.85rem;">
+                See ${c.name}'s abilities in action. This opens a video showcase from the original creator on YouTube, starting right at ${c.name}'s segment.
+              </p>
+              <button type="button" class="btn btn-blue" style="width:100%;justify-content:center;"
+                      onclick="openSkillVideo('${c.id}', '${c.name.replace(/'/g,"&#39;")}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right:.4rem;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Watch ${c.name}'s Ability Showcase
+              </button>
+            </div>
+          </div>` : ''}
 
           <!-- BEST BUILD -->
           <div class="detail-panel" id="champBuildPanel">
@@ -6349,6 +6398,25 @@ function getItemDataPromise() {
 // from a hardcoded guess again, and it self-updates on every patch
 // with zero code changes needed.
 // ============================================================
+// ============================================================
+// SKILL SHOWCASE VIDEO — maps each champion to the timestamp (in
+// seconds) where their ability showcase segment begins in a single
+// long-form YouTube video. The video itself is NOT downloaded, cut,
+// or re-hosted anywhere — this only stores a start time, and the
+// player embeds the creator's original YouTube video via the
+// standard YouTube iframe at that timestamp. Source video and
+// credit: see SKILL_VIDEO_ID/SKILL_VIDEO_CREDIT below.
+//
+// NOTE ON PRECISION: timestamps mark where each champion's segment
+// STARTS, not individual Q/W/E/R sub-moments — the source video has
+// no internal markers for that. The "Learn Skills" panel intentionally
+// opens one combined showcase per champion rather than claiming to
+// jump to a specific ability, since that precision doesn't exist in
+// the source material.
+const SKILL_VIDEO_ID = 'GWtQVvEYWp0';
+const SKILL_VIDEO_CREDIT = 'Skill showcase video courtesy of the original creator on YouTube.';
+const SKILL_VIDEO_TIMESTAMPS = {Aatrox:40, Ahri:76, Akali:105, Akshan:143, Alistar:181, Amumu:259, Anivia:300, Annie:340, Aphelios:377, Ashe:414, AurelionSol:454, Azir:549, Bard:586, BelVeth:622, Blitzcrank:677, Brand:708, Braum:750, Briar:785, Caitlyn:834, Camille:875, Cassiopeia:913, ChoGath:956, Corki:992, Darius:1032, Diana:1066, DrMundo:1106, Draven:1143, Ekko:1183, Elise:1225, Evelynn:1276, Ezreal:1313, Fiddlesticks:1352, Fiora:1388, Fizz:1427, Galio:1459, Gangplank:1499, Garen:1544, Gnar:1571, Gragas:1623, Graves:1658, Gwen:1696, Hecarim:1731, Heimerdinger:1766, Hwei:1811, Illaoi:1896, Irelia:1954, Ivern:2002, Janna:2058, JarvanIV:2108, Jax:2168, Jayce:2221, Jhin:2281, Jinx:2329, KSante:2367, KaiSa:2421, Kalista:2479, Karma:2526, Karthus:2561, Kassadin:2605, Katarina:2658, Kayle:2695, Kayn:2722, Kennen:2772, KhaZix:2801, Kindred:2829, Kled:2882, KogMaw:2917, LeBlanc:2956, LeeSin:3003, Leona:3049, Lillia:3079, Lissandra:3114, Lucian:3152, Lulu:3181, Lux:3216, Malphite:3250, Malzahar:3282, Maokai:3329, MasterYi:3368, MissFortune:3478, MonkeyKing:5821, Mordekaiser:3511, Morgana:3553, Naafiri:3597, Nami:3630, Nasus:3616, Nautilus:3703, Neeko:3740, Nidalee:3782, Nilah:3828, Nocturne:3871, Nunu:3915, Olaf:3951, Orianna:3984, Ornn:4013, Pantheon:4045, Poppy:4076, Pyke:4113, Qiyana:4144, Quinn:4189, Rakan:4221, Rammus:4260, RekSai:4304, Rell:4361, Renata:4396, Renekton:4430, Rengar:4480, Riven:4515, Rumble:4550, Ryze:4586, Samira:4617, Sejuani:4647, Senna:4689, Seraphine:4719, Sett:4760, Shaco:4786, Shen:4833, Shyvana:4864, Singed:4895, Sion:4928, Sivir:4962, Skarner:4989, Smolder:5018, Sona:5048, Soraka:5084, Swain:5109, Sylas:5134, Syndra:5161, TahmKench:5184, Taliyah:5220, Talon:5245, Taric:5273, Teemo:5295, Thresh:5326, Tristana:5351, Trundle:5377, Tryndamere:5400, TwistedFate:5437, Twitch:5477, Udyr:5503, Urgot:5533, Varus:5565, Vayne:5590, Veigar:5611, VelKoz:5628, Vex:5651, Vi:5674, Viego:5705, Viktor:5737, Vladimir:5759, Volibear:5779, Warwick:5800, Xayah:5852, Xerath:5879, XinZhao:5906, Yasuo:5929, Yone:5959, Yorick:5991, Yuumi:6057, Zac:6104, Zed:6142, Zeri:6169, Ziggs:6190, Zilean:6221, Zoe:6250, Zyra:6279};
+
 let _runesCache = null;
 let _runesFetchPromise = null;
 
@@ -6693,6 +6761,32 @@ function closeModal(name) {
   el.classList.remove('open');
   document.body.style.overflow = '';
 }
+
+// Opens the skill-showcase modal with YouTube's iframe embed seeked to
+// this champion's segment. The video is the original creator's unmodified
+// upload, played via YouTube's own player — nothing here is downloaded,
+// cut, or re-hosted. `start` is read from SKILL_VIDEO_TIMESTAMPS, which
+// only marks where each champion's combined Q/W/E/R showcase begins (the
+// source video has no finer-grained markers, so this intentionally does
+// not claim to jump to one specific ability).
+function openSkillVideo(champId, champName) {
+  const start = SKILL_VIDEO_TIMESTAMPS[champId];
+  if (start === undefined) return; // shouldn't happen since the button is only rendered when this exists, but never assume
+  const frame = document.getElementById('skillVideoFrame');
+  const title = document.getElementById('skillVideoTitle');
+  if (title) title.textContent = champName + "'s Ability Showcase";
+  if (frame) frame.src = `https://www.youtube.com/embed/${SKILL_VIDEO_ID}?start=${start}&autoplay=1&rel=0`;
+  openModal('skillvideo');
+}
+
+// Clears the iframe src on close so playback (and audio) actually stops —
+// just hiding the modal visually would leave the video still running
+// in the background.
+function closeSkillVideo() {
+  const frame = document.getElementById('skillVideoFrame');
+  if (frame) frame.src = '';
+  closeModal('skillvideo');
+}
 function switchModal(from, to) {
   closeModal(from);
   setTimeout(() => openModal(to), 150);
@@ -6770,6 +6864,11 @@ document.addEventListener('keydown', e => {
       m.classList.remove('open');
       document.body.style.overflow = '';
     });
+    // Stop the YouTube embed's playback specifically — removing the
+    // 'open' class above only hides it visually, the iframe would
+    // otherwise keep playing (and its audio) in the background.
+    const skillFrame = document.getElementById('skillVideoFrame');
+    if (skillFrame) skillFrame.src = '';
     const ud = document.getElementById('userDropdown');
     if (ud) ud.classList.remove('open');
   }
