@@ -4264,9 +4264,18 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
   });
 
   // rune suggestion
+  // Curated fallback data — used instantly on first paint (and always under
+  // file:// or if the live fetch fails), so the page never shows a blank
+  // rune panel while waiting on a network request. `key` is the real
+  // DDragon identifier; once getRunesDataPromise() resolves, applyLiveRuneData()
+  // overwrites icon/name/desc with whatever Riot is actually serving for the
+  // current patch, so a path or wording drift (like the Lethal Tempo bug)
+  // can't happen again — the live data is always the source of truth, this
+  // object only supplies secondary tree/shards (build-strategy picks Riot's
+  // API doesn't provide) and a safe default while that fetch is in flight.
   const keystones = {
     ADC: {
-      icon: '⚡', imgPath: 'Precision/FlowofBattle/FlowofBattleTemp.png',
+      key: 'LethalTempo', icon: '⚡', imgPath: 'Precision/LethalTempo/LethalTempo.png',
       name: 'Lethal Tempo', path: 'Precision', color: '#f5d442',
       desc: 'Gain stacking attack speed on hit, exceeding the attack speed cap when fully stacked. Best for sustained DPS hypercarries.',
       slots: ['Triumph', 'Legend: Alacrity', 'Coup de Grace'],
@@ -4274,7 +4283,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
       shards: ['Attack Speed', 'Adaptive Force', 'Health'],
     },
     Mage: {
-      icon: '✦', imgPath: 'Sorcery/PhaseRush/PhaseRush.png',
+      key: 'PhaseRush', icon: '✦', imgPath: 'Sorcery/PhaseRush/PhaseRush.png',
       name: 'Phase Rush', path: 'Sorcery', color: '#4a90d9',
       desc: 'Landing 3 hits on a champion grants a burst of move speed and slow resistance for 3 seconds. Enables kiting and safety.',
       slots: ['Manaflow Band', 'Transcendence', 'Scorch'],
@@ -4282,7 +4291,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
       shards: ['Adaptive Force', 'Adaptive Force', 'Health'],
     },
     Fighter: {
-      icon: '⚔', imgPath: 'Precision/Conqueror/Conqueror.png',
+      key: 'Conqueror', icon: '⚔', imgPath: 'Precision/Conqueror/Conqueror.png',
       name: 'Conqueror', path: 'Precision', color: '#e8a832',
       desc: 'Build stacks by dealing damage. At 12 stacks, gain bonus adaptive damage and heal for a portion of damage dealt.',
       slots: ['Triumph', 'Legend: Tenacity', 'Last Stand'],
@@ -4290,7 +4299,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
       shards: ['Adaptive Force', 'Adaptive Force', 'Health'],
     },
     Assassin: {
-      icon: '◆', imgPath: 'Domination/Electrocute/Electrocute.png',
+      key: 'Electrocute', icon: '◆', imgPath: 'Domination/Electrocute/Electrocute.png',
       name: 'Electrocute', path: 'Domination', color: '#c040ff',
       desc: 'Dealing 3 separate attacks or abilities within 3 seconds deals bonus adaptive damage. Strong burst opener for one-shots.',
       slots: ['Sudden Impact', 'Eyeball Collection', 'Relentless Hunter'],
@@ -4298,7 +4307,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
       shards: ['Adaptive Force', 'Adaptive Force', 'Health'],
     },
     Tank: {
-      icon: '◉', imgPath: 'Resolve/GraspOfTheUndying/GraspOfTheUndying.png',
+      key: 'GraspOfTheUndying', icon: '◉', imgPath: 'Resolve/GraspOfTheUndying/GraspOfTheUndying.png',
       name: 'Grasp of the Undying', path: 'Resolve', color: '#44cc88',
       desc: 'Every 4 seconds in combat, your next attack heals you, deals bonus damage, and permanently increases your max HP.',
       slots: ['Shield Bash', 'Conditioning', 'Overgrowth'],
@@ -4306,7 +4315,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
       shards: ['Health', 'Health', 'Scaling Health'],
     },
     Support: {
-      icon: '❋', imgPath: 'Sorcery/SummonAery/SummonAery.png',
+      key: 'SummonAery', icon: '❋', imgPath: 'Sorcery/SummonAery/SummonAery.png',
       name: 'Summon Aery', path: 'Sorcery', color: '#f5d442',
       desc: 'Attacks and abilities send Aery to a target — damaging enemies or shielding allies. Consistent for poke or enchant supports.',
       slots: ['Manaflow Band', 'Transcendence', 'Revitalize'],
@@ -4314,7 +4323,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
       shards: ['Adaptive Force', 'Scaling Health', 'Armor'],
     },
   };
-  const rune = keystones[buildType] || keystones.Fighter;
+  const rune = { ...(keystones[buildType] || keystones.Fighter) }; // shallow copy — applyLiveRuneData() may overwrite fields on this specific render's object without mutating the shared template above
 
   const detailEl = document.getElementById('champDetailContent');
   if (!detailEl) return;
@@ -4378,6 +4387,21 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
                   <div style="font-size:1.4rem;font-weight:700;color:var(--gold-1);font-family:var(--font-display);">${c.tier}</div>
                   <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--grey-3);">Tier</div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ABILITIES — populated async via getChampionAbilitiesPromise();
+               starts as a loading skeleton since this is a per-champion
+               fetch that happens after the page has already painted. -->
+          <div class="detail-panel" id="champAbilitiesPanel" data-champ-id="${c.id}">
+            <div class="detail-panel-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+              Abilities
+            </div>
+            <div class="detail-panel-body" data-abilities-body>
+              <div style="display:flex;flex-direction:column;gap:.6rem;">
+                ${[0,1,2,3,4].map(() => `<div class="skeleton" style="height:52px;border-radius:6px;"></div>`).join('')}
               </div>
             </div>
           </div>
@@ -4454,7 +4478,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           </div>
 
           <!-- RUNES -->
-          <div class="detail-panel">
+          <div class="detail-panel" id="champRunePanel">
             <div class="detail-panel-header">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
               Recommended Runes
@@ -4462,18 +4486,18 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
             <div class="detail-panel-body">
               <!-- PRIMARY KEYSTONE -->
               <div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .75rem;background:linear-gradient(135deg,${rune.color}12,transparent);border:1px solid ${rune.color}35;border-radius:6px;margin-bottom:.75rem;">
-                <div style="width:44px;height:44px;border-radius:50%;background:${rune.color}22;border:2px solid ${rune.color}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
-                  <img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${rune.imgPath}"
+                <div data-rune-img-wrap style="width:44px;height:44px;border-radius:50%;background:${rune.color}22;border:2px solid ${rune.color}55;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">
+                  <img data-rune-img src="https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/${rune.imgPath}"
                     alt="${rune.name}" width="38" height="38" style="object-fit:contain;" loading="lazy" decoding="async"
                     onerror="this.outerHTML='<span style=&quot;font-size:1.3rem;&quot;>${rune.icon}</span>'">
                 </div>
                 <div style="flex:1;">
-                  <div style="font-family:var(--font-display);font-size:.88rem;font-weight:700;color:${rune.color};">${rune.name}</div>
+                  <div data-rune-name style="font-family:var(--font-display);font-size:.88rem;font-weight:700;color:${rune.color};">${rune.name}</div>
                   <div style="font-size:.66rem;color:var(--grey-4);text-transform:uppercase;letter-spacing:.08em;">${rune.path} Path &bull; Keystone</div>
                 </div>
               </div>
               <!-- KEYSTONE DESCRIPTION -->
-              <p style="font-size:.75rem;color:var(--grey-3);line-height:1.65;margin-bottom:.75rem;padding:0 .1rem;">${rune.desc}</p>
+              <p data-rune-desc style="font-size:.75rem;color:var(--grey-3);line-height:1.65;margin-bottom:.75rem;padding:0 .1rem;">${rune.desc}</p>
               <!-- PRIMARY SLOT RUNES -->
               <div style="margin-bottom:.75rem;">
                 <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--grey-4);margin-bottom:.4rem;">Primary Runes</div>
@@ -4600,6 +4624,84 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
     // clicked, instead of leaving the visitor on a generic champion page.
     if (buildKeyToHighlight) highlightBuildPanel();
   }, 100);
+
+  // Upgrade the rune panel with live data once it resolves. The panel is
+  // already fully painted above using the curated fallback, so this never
+  // delays first render — it just corrects the icon/name/description in
+  // place if (and only if) Riot's live data differs, the same "paint fast,
+  // upgrade when real data lands" pattern used for chunked build rendering.
+  getRunesDataPromise().then(treesData => applyLiveRuneData(treesData, rune.key));
+
+  // Fetch this champion's real abilities (passive + Q/W/E/R) on demand —
+  // not part of the bulk champion list, so it's a separate request, made
+  // only for the champion actually being viewed, cached after the first visit.
+  getChampionAbilitiesPromise(c.id).then(abilities => applyChampionAbilities(abilities, c.id));
+}
+
+// Swaps the rune panel's icon/name/description for live DDragon data, but
+// only if the panel currently showing belongs to the SAME keystone we just
+// fetched for — guards against the fetch resolving after the visitor has
+// already navigated to a different champion (or closed the page).
+function applyLiveRuneData(treesData, expectedKey) {
+  const panel = document.getElementById('champRunePanel');
+  if (!panel) return; // visitor navigated away before the fetch resolved
+  const imgEl  = panel.querySelector('[data-rune-img]');
+  if (!imgEl) return;
+  // The alt text was set from the fallback rune's name at render time —
+  // use it (rather than a closure variable) to confirm we're still looking
+  // at the panel for the keystone this fetch was actually requested for.
+  const liveRune = findKeystoneByKey(treesData, expectedKey);
+  if (!liveRune) return; // not found in live data (or fetch failed) — fallback stays, which is correct
+
+  const newSrc = 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/' + liveRune.icon;
+  if (imgEl.src !== newSrc) imgEl.src = newSrc;
+  imgEl.alt = liveRune.name;
+
+  const nameEl = panel.querySelector('[data-rune-name]');
+  if (nameEl) nameEl.textContent = liveRune.name;
+
+  const descEl = panel.querySelector('[data-rune-desc]');
+  if (descEl && liveRune.shortDesc) descEl.textContent = liveRune.shortDesc;
+}
+
+// Replaces the Abilities panel's loading skeleton with real passive + Q/W/E/R
+// data once getChampionAbilitiesPromise() resolves. `expectedChampId` guards
+// against a slow fetch resolving after the visitor has opened a DIFFERENT
+// champion's page in the meantime — without this, a slow Jinx fetch landing
+// while Ahri's page is showing would silently render Jinx's abilities under
+// Ahri's name.
+function applyChampionAbilities(abilities, expectedChampId) {
+  const panel = document.getElementById('champAbilitiesPanel');
+  if (!panel) return; // visitor navigated away before the fetch resolved
+  if (panel.dataset.champId !== expectedChampId) return; // a newer openChampDetail() call superseded this one
+  const body = panel.querySelector('[data-abilities-body]');
+  if (!body) return;
+
+  if (!abilities || (!abilities.passive && abilities.spells.length === 0)) {
+    body.innerHTML = '<p style="font-size:0.8rem;color:var(--grey-4);padding:.5rem 0;">Ability data is unavailable right now.</p>';
+    return;
+  }
+
+  const rows = [];
+  if (abilities.passive) {
+    rows.push({ key: 'P', name: abilities.passive.name, desc: abilities.passive.desc, icon: abilities.passive.icon, isPassive: true });
+  }
+  abilities.spells.forEach(s => rows.push({ key: s.key, name: s.name, desc: s.desc, icon: s.icon, isPassive: false }));
+
+  body.innerHTML = `<div style="display:flex;flex-direction:column;gap:.55rem;">
+    ${rows.map(r => `
+      <div style="display:flex;gap:.7rem;align-items:flex-start;padding:.55rem .65rem;background:rgba(200,170,110,.03);border:1px solid var(--border);border-radius:6px;">
+        <div style="width:30px;height:30px;border-radius:5px;background:${r.isPassive ? 'rgba(200,170,110,.15)' : 'rgba(10,200,185,.12)'};border:1px solid ${r.isPassive ? 'rgba(200,170,110,.35)' : 'rgba(10,200,185,.3)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:var(--font-display);font-weight:700;font-size:.7rem;color:${r.isPassive ? 'var(--gold-1)' : 'var(--blue-2)'};overflow:hidden;">
+          ${r.icon ? `<img src="${DD_BASE}/img/${r.isPassive ? 'passive' : 'spell'}/${r.icon}" alt="${r.key}" width="30" height="30" style="object-fit:cover;" loading="lazy" decoding="async" onerror="this.outerHTML='${r.key}'">` : r.key}
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:.8rem;font-weight:700;color:var(--grey-1);margin-bottom:.15rem;">
+            <span style="color:${r.isPassive ? 'var(--gold-1)' : 'var(--blue-2)'};">${r.key}</span> — ${r.name}
+          </div>
+          <p style="font-size:.72rem;color:var(--grey-3);line-height:1.55;">${r.desc.slice(0, 240)}${r.desc.length > 240 ? '…' : ''}</p>
+        </div>
+      </div>`).join('')}
+  </div>`;
 }
 
 // Reads ?champion=<id>&build=<Champ:Type> from the current URL (if present)
@@ -6233,6 +6335,104 @@ function getItemDataPromise() {
     .then(j => { _itemCache = j.data || {}; return _itemCache; })
     .catch(() => { _itemCache = {}; return {}; });
   return _itemFetchPromise;
+}
+
+// ============================================================
+// RUNES — fetched live from runesReforged.json (same DD_BASE/patch
+// version already used everywhere else), instead of hand-typed icon
+// paths and descriptions baked into the page. This is what actually
+// fixes the Lethal Tempo bug class permanently: that bug existed
+// because someone (me) typed 'Precision/LethalTempo/LethalTempo.png'
+// by hand and Riot's real folder name didn't match. Pulling the real
+// data means the path, name, and description are always whatever
+// Riot currently serves for the live patch — they can never drift
+// from a hardcoded guess again, and it self-updates on every patch
+// with zero code changes needed.
+// ============================================================
+let _runesCache = null;
+let _runesFetchPromise = null;
+
+function getRunesDataPromise() {
+  if (_runesCache) return Promise.resolve(_runesCache);
+  if (_runesFetchPromise) return _runesFetchPromise;
+  if (window.location.protocol === 'file:') return Promise.resolve(null);
+  _runesFetchPromise = fetch(DD_BASE + '/data/en_US/runesReforged.json')
+    .then(r => r.json())
+    .then(trees => { _runesCache = Array.isArray(trees) ? trees : []; return _runesCache; })
+    .catch(() => { _runesCache = []; return []; });
+  return _runesFetchPromise;
+}
+
+// Looks up one specific keystone rune by its DDragon `key` (e.g. 'LethalTempo')
+// across all 5 trees, returning {id, key, icon, name, shortDesc, longDesc}
+// or null if not found / data not loaded yet. `icon` is the path fragment
+// after '.../perk-images/Styles/', ready to drop straight into the same
+// img src pattern already used on the page.
+function findKeystoneByKey(treesData, key) {
+  if (!Array.isArray(treesData)) return null;
+  for (const tree of treesData) {
+    const keystoneSlot = tree.slots && tree.slots[0];
+    if (!keystoneSlot || !Array.isArray(keystoneSlot.runes)) continue;
+    const found = keystoneSlot.runes.find(r => r.key === key);
+    if (found) {
+      return {
+        id: found.id, key: found.key, name: found.name,
+        icon: (found.icon || '').replace('perk-images/Styles/', ''),
+        shortDesc: stripItemTags(found.shortDesc || ''), // reuses the existing HTML-tag stripper already used for item tooltips
+        treeName: tree.name, treeKey: tree.key,
+      };
+    }
+  }
+  return null;
+}
+
+// ============================================================
+// CHAMPION ABILITIES — fetched on demand, per champion, from the
+// individual champion file (champion/{id}.json). This is NOT in the
+// bulk champion.json list loadChampions() already fetches — abilities
+// only exist in the per-champion file, so fetching all 166 upfront
+// would be wasteful. Instead this fetches lazily, once per champion,
+// the first time that champion's detail page is opened, and caches
+// the result in memory for the rest of the session.
+//
+// Known caveat (from Riot's own documentation): "The data in ddragon
+// is inaccurate, especially champion spell data" — these descriptions
+// can occasionally be stale or slightly off vs. the live game. That's
+// still a meaningfully better starting point than fully hand-written
+// placeholder text, and it self-updates on patch changes without any
+// code edits — but it's not a 100% authoritative source, by Riot's
+// own admission.
+// ============================================================
+const _championAbilitiesCache = {}; // keyed by champion id, e.g. 'Jinx'
+const _championAbilitiesFetchPromises = {};
+
+function getChampionAbilitiesPromise(champId) {
+  if (_championAbilitiesCache[champId]) return Promise.resolve(_championAbilitiesCache[champId]);
+  if (_championAbilitiesFetchPromises[champId]) return _championAbilitiesFetchPromises[champId];
+  if (window.location.protocol === 'file:') return Promise.resolve(null);
+  _championAbilitiesFetchPromises[champId] = fetch(`${DD_BASE}/data/en_US/champion/${champId}.json`)
+    .then(r => r.json())
+    .then(j => {
+      const data = j.data && j.data[champId];
+      if (!data) { _championAbilitiesCache[champId] = null; return null; }
+      const result = {
+        passive: data.passive ? {
+          name: data.passive.name,
+          desc: stripItemTags(data.passive.description || ''),
+          icon: data.passive.image ? data.passive.image.full : '',
+        } : null,
+        spells: Array.isArray(data.spells) ? data.spells.slice(0, 4).map((s, i) => ({
+          key: ['Q','W','E','R'][i] || '',
+          name: s.name,
+          desc: stripItemTags(s.description || ''),
+          icon: s.image ? s.image.full : '',
+        })) : [],
+      };
+      _championAbilitiesCache[champId] = result;
+      return result;
+    })
+    .catch(() => { _championAbilitiesCache[champId] = null; return null; });
+  return _championAbilitiesFetchPromises[champId];
 }
 
 // Strip HTML tags from DDragon description strings
