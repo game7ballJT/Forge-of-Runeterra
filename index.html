@@ -32,7 +32,154 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <!-- AUTH: Supabase client SDK — hosted auth backend, no server of your own needed -->
 <script type="application/ld+json">
-[{"@context":"https://schema.org","@type":"Organization","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/","description":"The most complete League of Legends resource for champion builds, tier lists, rune guides, and patch analysis."},{"@context":"https://schema.org","@type":"WebSite","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/","potentialAction":{"@type":"SearchAction","target":"https://forgeofruneterra.gg/?q={search_term_string}","query-input":"required name=search_term_string"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the best champions in Patch 26.13?","acceptedAnswer":{"@type":"Answer","text":"Patch 26.13 is the MSI prep patch. LeBlanc, Draven, Kai'Sa, Olaf, and Aphelios all received buffs heading into the international meta, while Senna, Bard, Brand, Cassiopeia, and Rek'Sai were tuned down."}},{"@type":"Question","name":"How often is Forge of Runeterra updated?","acceptedAnswer":{"@type":"Answer","text":"Forge of Runeterra is updated with every League of Legends patch, approximately every two weeks. Tier lists, builds, and patch notes are refreshed on patch day."}},{"@type":"Question","name":"What changed in Patch 26.13?","acceptedAnswer":{"@type":"Answer","text":"Patch 26.13 introduced the new champion Locke, enabled Last Hit Indicators in Normal Draft and Ranked, and reworked the Imperial Mandate build path. Senna, Bard, Brand, Cassiopeia, K'Sante, and Rek'Sai were nerfed; LeBlanc, Draven, Kai'Sa, Olaf, Poppy, and Aphelios were buffed."}},{"@type":"Question","name":"What is the best role to climb ranked in 2026?","acceptedAnswer":{"@type":"Answer","text":"Mid lane and jungle offer the most carry potential in Season 2 due to their map influence. Assassins and mages with strong roam patterns excel at lower elos."}}]},{"@context":"https://schema.org","@type":"Article","headline":"League of Legends Patch 26.13 Notes","description":"Complete patch notes for LoL Patch 26.13, the MSI 2026 prep patch, including the release of Locke, champion balance changes, and the Imperial Mandate rework.","datePublished":"2026-06-24","dateModified":"2026-06-24","author":{"@type":"Organization","name":"Forge of Runeterra"},"publisher":{"@type":"Organization","name":"Forge of Runeterra","url":"https://forgeofruneterra.gg/"}}]
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Forge of Runeterra",
+    "url": "https://forgeofruneterra.gg/",
+    "description": "Forge of Runeterra is a free, browser-based League of Legends resource providing live champion builds, tier lists, rune guides, and patch breakdowns sourced directly from Riot Games' Data Dragon API.",
+    "knowsAbout": ["League of Legends", "champion builds", "rune pages", "tier lists", "patch notes", "esports", "MOBA strategy"]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Forge of Runeterra",
+    "url": "https://forgeofruneterra.gg/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://forgeofruneterra.gg/?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Forge of Runeterra",
+    "applicationCategory": "GameApplication",
+    "applicationSubCategory": "League of Legends Companion Tool",
+    "operatingSystem": "Any (Web Browser)",
+    "url": "https://forgeofruneterra.gg/",
+    "description": "A free, web-based League of Legends companion tool and direct alternative to Blitz.gg and U.GG for players who want champion builds, rune pages, tier lists, and patch tracking without installing a desktop overlay application or Overwolf.",
+    "keywords": "League of Legends builds, LoL tier list, U.GG alternative, Blitz.gg alternative, champion rune guides, LoL patch notes, web-based LoL companion tool",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Live champion tier lists by role, updated every patch",
+      "Champion build paths with item, rune, and skill order recommendations",
+      "Counter and synergy matchup data for every champion",
+      "Patch note breakdowns with buffs, nerfs, and system changes",
+      "Save favorite champions and bookmark builds with a free account",
+      "Works entirely in-browser — no desktop client or background process"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What are the best champions in Patch 26.13?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Patch 26.13 is the MSI prep patch. LeBlanc, Draven, Kai'Sa, Olaf, and Aphelios all received buffs heading into the international meta, while Senna, Bard, Brand, Cassiopeia, and Rek'Sai were tuned down."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How often is Forge of Runeterra updated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Forge of Runeterra is updated with every League of Legends patch, approximately every two weeks. Tier lists, builds, and patch notes are refreshed on patch day."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What changed in Patch 26.13?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Patch 26.13 introduced the new champion Locke, enabled Last Hit Indicators in Normal Draft and Ranked, and reworked the Imperial Mandate build path. Senna, Bard, Brand, Cassiopeia, K'Sante, and Rek'Sai were nerfed; LeBlanc, Draven, Kai'Sa, Olaf, Poppy, and Aphelios were buffed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the best role to climb ranked in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mid lane and jungle offer the most carry potential in Season 2 due to their map influence. Assassins and mages with strong roam patterns excel at lower elos."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a good alternative to U.GG for League of Legends builds?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Forge of Runeterra is a browser-based alternative to U.GG that requires no desktop download or overlay installation. It covers the same core needs — tier lists, builds, and rune pages — directly in the browser, and pulls champion, item, and rune data live from Riot's own Data Dragon API rather than a separate proprietary database."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there a League of Legends build site that doesn't require a desktop app?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Forge of Runeterra runs entirely in the browser with no desktop client, no Overwolf installation, and no background process. This differs from Blitz.gg and U.GG's Live Game Tool, both of which require installing standalone software to get the full overlay experience."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Where can I find patch note breakdowns for League of Legends?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Forge of Runeterra publishes a dedicated patch notes page after every League of Legends update, breaking down champion buffs, nerfs, new releases, and system changes into a scannable format with rune and item context for each change."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What rune page should I use for an AP burst mage?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Burst mages that rely on landing one big combo, such as Syndra or Veigar, typically run Electrocute or Arcane Comet for immediate damage. Sustained-damage mages that land repeated abilities in a fight, such as Brand or Cassiopeia, get more value from Deathfire Touch. Forge of Runeterra's champion pages list the current recommended keystone, secondary tree, and stat shards for every champion."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I find counters for a specific League of Legends champion?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every champion page on Forge of Runeterra includes a Hard Counters panel listing the champions that most consistently beat that pick in lane, alongside a Best Synergies panel for team-composition pairings — both accessible without an account."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Forge of Runeterra require an account to view builds?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Tier lists, champion builds, rune pages, and patch notes are all viewable without creating an account. A free account is only needed to save favorite champions or bookmark specific builds for later."
+        }
+      }
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "League of Legends Patch 26.13 Notes",
+    "description": "Complete patch notes for LoL Patch 26.13, the MSI 2026 prep patch, including the release of Locke, champion balance changes, and the Imperial Mandate rework.",
+    "datePublished": "2026-06-24",
+    "dateModified": "2026-06-24",
+    "author": {
+      "@type": "Organization",
+      "name": "Forge of Runeterra"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Forge of Runeterra",
+      "url": "https://forgeofruneterra.gg/"
+    }
+  }
+]
 </script>
 <style>
   :root {
@@ -2622,7 +2769,7 @@ html, body { overflow-x: hidden; }
 <div id="pageTransition"></div>
 <div id="successToast" class="success-toast" role="status" aria-live="polite"></div>
 <div id="hextechLoader">
-  <svg class="hex-spinner" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <svg class="hex-spinner" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <polygon points="40,4 72,22 72,58 40,76 8,58 8,22" fill="none" stroke="#0ac8b9" stroke-width="1.5" opacity="0.3"/>
     <polygon points="40,4 72,22 72,58 40,76 8,58 8,22" fill="none" stroke="#c8aa6e" stroke-width="1.5" stroke-dasharray="220" stroke-dashoffset="220" style="animation: hexDashAnim 1.4s linear infinite">
       <animate attributeName="stroke-dashoffset" values="220;0;220" dur="1.4s" repeatCount="indefinite"/>
@@ -2640,7 +2787,7 @@ html, body { overflow-x: hidden; }
 <nav class="navbar" role="navigation">
   <div class="nav-logo" onclick="navigate('home')">
     <div class="logo-emblem">
-      <svg class="logo-hex" width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+      <svg class="logo-hex" width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <polygon points="18,2 34,10 34,26 18,34 2,26 2,10" fill="none" stroke="#c8aa6e" stroke-width="1.5"/>
         <polygon points="18,6 30,12 30,24 18,30 6,24 6,12" fill="rgba(200,170,110,0.1)" stroke="#a08a46" stroke-width="1"/>
         <text x="18" y="23" text-anchor="middle" font-size="13" font-weight="900" fill="#c8aa6e" font-family="serif">F</text>
@@ -2676,24 +2823,24 @@ html, body { overflow-x: hidden; }
       <button class="user-btn" onclick="toggleUserMenu()" id="userMenuBtn">
         <div class="user-avatar" id="userAvatarNav">S</div>
         <span id="userNameNav">Summoner</span>
-        <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#c8aa6e" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <svg width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="#c8aa6e" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
       <div class="user-dropdown" id="userDropdown">
         <div class="dropdown-item" onclick="navigate('profile')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
           My Profile
         </div>
         <div class="dropdown-item" onclick="goToProfileSection('saved-builds')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
           Saved Builds
         </div>
         <div class="dropdown-item" onclick="goToProfileSection('favorite-champs')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           My Champions
         </div>
         <div class="dropdown-divider"></div>
         <div class="dropdown-item logout" onclick="logout()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Sign Out
         </div>
       </div>
@@ -2736,7 +2883,7 @@ html, body { overflow-x: hidden; }
 
     <!-- Animated nexus SVG -->
     <div class="nexus-anim" aria-hidden="true">
-      <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <radialGradient id="nexusGlow" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stop-color="#c8aa6e" stop-opacity="0.4"/>
@@ -2771,7 +2918,14 @@ html, body { overflow-x: hidden; }
       </h1>
       <div class="hero-divider"></div>
       <p class="hero-desc">
-        Tier lists, champion builds, rune guides, and patch analysis updated after every patch. Built by players, refined by data, trusted by millions.
+        Tier lists, champion builds, rune guides, and patch analysis updated after every patch, pulled live from Riot's own Data Dragon API.
+      </p>
+      <p style="font-size:0.72rem;color:var(--blue-2);letter-spacing:0.08em;text-transform:uppercase;margin:-1.5rem auto 1.5rem;text-align:center;font-weight:600;">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-1px;margin-right:4px;" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Champion data live for Patch 26.13 &bull; <time datetime="2026-06-24">Content last reviewed June 24, 2026</time>
+      </p>
+      <p style="font-size:0.7rem;color:var(--grey-4);margin:-1rem auto 1.5rem;text-align:center;max-width:480px;">
+        Champion stats, items, and runes update automatically from Riot's Data Dragon API. Tier lists and guides are reviewed by hand each patch.
       </p>
       <div class="hero-cta-row">
         <button class="btn btn-primary" onclick="navigate('champions')">Browse Champions</button>
@@ -2788,8 +2942,8 @@ html, body { overflow-x: hidden; }
           <div class="hero-stat-label">Current Patch</div>
         </div>
         <div class="hero-stat">
-          <div class="hero-stat-num stat-count" data-target="2000000" data-suffix="+">2M+</div>
-          <div class="hero-stat-label">Games Analyzed</div>
+          <div class="hero-stat-num stat-count" data-target="176" data-suffix="+">176+</div>
+          <div class="hero-stat-label">Builds &amp; Guides</div>
         </div>
         <div class="hero-stat">
           <div class="hero-stat-num">24/7</div>
@@ -2818,6 +2972,111 @@ html, body { overflow-x: hidden; }
     </div>
   </section>
 
+  <!-- ENTITY IDENTITY BLOCK — establishes what the site is, who it's for,
+       and how it differs from desktop overlay tools, in answer-first format
+       for AI extraction. Reuses existing .detail-panel / .section-* classes
+       so it matches the established visual system exactly. -->
+  <section style="padding: 4rem 2rem;" aria-labelledby="about-heading">
+    <div class="container">
+      <article class="detail-panel fade-in" style="max-width: 900px; margin: 0 auto;">
+        <div class="detail-panel-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          What Is Forge of Runeterra?
+        </div>
+        <div class="detail-panel-body">
+          <p style="font-size:0.95rem;color:var(--grey-1);line-height:1.8;margin-bottom:1.25rem;">
+            <strong>Forge of Runeterra is a free, 100% web-native League of Legends companion site</strong> — unlike desktop overlay tools such as Blitz.gg, which runs as a background application monitoring the League client, or U.GG's separate Live Game Tool install, Forge of Runeterra provides champion builds, rune pages, tier lists, and patch breakdowns directly in your browser, with no download required.
+          </p>
+          <p style="font-size:0.88rem;color:var(--grey-3);line-height:1.8;margin-bottom:1.25rem;">
+            It's built for players who want fast, reliable answers — "what should I build on this champion," "what changed this patch," "what counters this matchup" — without installing software just to get a build recommendation. Champion, item, and rune data is pulled live from Riot Games' own Data Dragon API, so it updates automatically as soon as a new patch ships, rather than waiting on a manual content refresh.
+          </p>
+          <h3 style="font-family:var(--font-display);font-size:0.95rem;color:var(--gold-2);margin-bottom:0.75rem;">How Forge of Runeterra differs from desktop overlay tools</h3>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:0.65rem;margin-bottom:1.25rem;">
+            <li style="font-size:0.85rem;color:var(--grey-2);padding:8px 12px;background:var(--bg-card);border-left:2px solid var(--gold-3);border-radius:0 4px 4px 0;line-height:1.6;"><strong style="color:var(--grey-1);">No installation required.</strong> Tools like Blitz.gg and U.GG's Live Game Tool run as standalone desktop applications that monitor the League client in the background. Forge of Runeterra runs entirely in a browser tab.</li>
+            <li style="font-size:0.85rem;color:var(--grey-2);padding:8px 12px;background:var(--bg-card);border-left:2px solid var(--gold-3);border-radius:0 4px 4px 0;line-height:1.6;"><strong style="color:var(--grey-1);">No champ-select overlay, by design.</strong> This is a reference site you check before or after a game, not an in-game overlay — there's no background process polling the League Client API while you play.</li>
+            <li style="font-size:0.85rem;color:var(--grey-2);padding:8px 12px;background:var(--bg-card);border-left:2px solid var(--gold-3);border-radius:0 4px 4px 0;line-height:1.6;"><strong style="color:var(--grey-1);">Lightweight by default.</strong> A single page load gets you the full champion roster, tier list, and build database — no separate app to keep updated, no extra RAM or CPU overhead while you're in a match.</li>
+          </ul>
+          <p style="font-size:0.82rem;color:var(--grey-4);line-height:1.7;">
+            Forge of Runeterra is not affiliated with or endorsed by Riot Games. Champion and item data is sourced through Riot's public Data Dragon API, the same data feed used by most third-party League of Legends sites.
+          </p>
+        </div>
+      </article>
+
+      <!-- COMPARISON MATRIX — semantic <table>, factual feature comparison
+           against Blitz.gg and U.GG, researched directly rather than guessed.
+           Differentiators are real (web-only, no install) rather than invented. -->
+      <article class="detail-panel fade-in" style="max-width: 900px; margin: 2.5rem auto 0;">
+        <div class="detail-panel-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Forge of Runeterra vs. Blitz.gg vs. U.GG
+        </div>
+        <div class="detail-panel-body" style="overflow-x:auto;">
+          <p style="font-size:0.85rem;color:var(--grey-3);line-height:1.7;margin-bottom:1.25rem;">
+            <strong style="color:var(--grey-1);">The biggest practical difference is installation:</strong> Blitz.gg and U.GG's in-game overlay both run as standalone desktop applications, while Forge of Runeterra works entirely inside a browser tab. Each tool has a different focus — this table compares them on the dimensions that actually affect day-to-day use.
+          </p>
+          <table style="width:100%;min-width:560px;border-collapse:collapse;font-size:0.82rem;">
+            <caption style="text-align:left;color:var(--grey-4);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.75rem;">Feature comparison, accurate as of Patch 26.13</caption>
+            <thead>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th scope="col" style="text-align:left;padding:10px 12px;color:var(--gold-1);font-family:var(--font-display);font-weight:700;">Feature</th>
+                <th scope="col" style="text-align:center;padding:10px 12px;color:var(--gold-1);font-family:var(--font-display);font-weight:700;">Forge of Runeterra</th>
+                <th scope="col" style="text-align:center;padding:10px 12px;color:var(--grey-2);font-weight:700;">Blitz.gg</th>
+                <th scope="col" style="text-align:center;padding:10px 12px;color:var(--grey-2);font-weight:700;">U.GG</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th scope="row" style="text-align:left;padding:10px 12px;color:var(--grey-2);font-weight:600;">Requires installation</th>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">No</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--grey-3);">Yes (standalone app)</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--grey-3);">Web is free; overlay needs the Live Game Tool app</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th scope="row" style="text-align:left;padding:10px 12px;color:var(--grey-2);font-weight:600;">In-game champ-select overlay</th>
+                <td style="text-align:center;padding:10px 12px;color:var(--grey-3);">No (by design — browser-only)</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th scope="row" style="text-align:left;padding:10px 12px;color:var(--grey-2);font-weight:600;">Champion tier lists by role</th>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th scope="row" style="text-align:left;padding:10px 12px;color:var(--grey-2);font-weight:600;">Build, rune, and skill order pages</th>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes (auto-imported in-game)</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th scope="row" style="text-align:left;padding:10px 12px;color:var(--grey-2);font-weight:600;">Written patch note breakdowns</th>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--grey-3);">Limited</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--grey-3);">Limited</td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--border);">
+                <th scope="row" style="text-align:left;padding:10px 12px;color:var(--grey-2);font-weight:600;">Free account, no ads gating core features</th>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--grey-3);">Free tier is ad-supported</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">Yes</td>
+              </tr>
+              <tr>
+                <th scope="row" style="text-align:left;padding:10px 12px;color:var(--grey-2);font-weight:600;">Background CPU/RAM use while in a match</th>
+                <td style="text-align:center;padding:10px 12px;color:var(--green);font-weight:700;">None</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--grey-3);">Active overlay process</td>
+                <td style="text-align:center;padding:10px 12px;color:var(--grey-3);">Active if overlay is running</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.72rem;color:var(--grey-4);line-height:1.6;margin-top:1rem;">
+            Comparison reflects each tool's publicly documented features at the time of writing and may not capture every recent change. Blitz.gg and U.GG are independent products; this comparison is not endorsed by either.
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
   <!-- HOW IT WORKS -->
   <section style="padding: 4rem 2rem; background: var(--bg-panel); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
     <div class="hex-pattern"></div>
@@ -2831,7 +3090,7 @@ html, body { overflow-x: hidden; }
         <div class="detail-panel fade-in" style="transition-delay: 0.1s;">
           <div style="padding: 1.75rem; text-align: center;">
             <div style="font-size: 2.5rem; margin-bottom: 1rem;">
-              <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;">
+              <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" aria-hidden="true">
                 <polygon points="22,3 41,13 41,31 22,41 3,31 3,13" fill="none" stroke="#c8aa6e" stroke-width="1.5" opacity="0.6"/>
                 <text x="22" y="28" text-anchor="middle" font-size="16" font-weight="900" fill="#c8aa6e" font-family="serif">S</text>
               </svg>
@@ -2843,7 +3102,7 @@ html, body { overflow-x: hidden; }
         <div class="detail-panel fade-in" style="transition-delay: 0.2s;">
           <div style="padding: 1.75rem; text-align: center;">
             <div style="font-size: 2.5rem; margin-bottom: 1rem;">
-              <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;">
+              <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" aria-hidden="true">
                 <rect x="6" y="6" width="32" height="32" rx="4" fill="none" stroke="#c8aa6e" stroke-width="1.5" opacity="0.6"/>
                 <rect x="12" y="18" width="20" height="8" rx="2" fill="rgba(200,170,110,0.3)"/>
                 <line x1="22" y1="14" x2="22" y2="30" stroke="#0ac8b9" stroke-width="1.5"/>
@@ -2856,7 +3115,7 @@ html, body { overflow-x: hidden; }
         <div class="detail-panel fade-in" style="transition-delay: 0.3s;">
           <div style="padding: 1.75rem; text-align: center;">
             <div style="font-size: 2.5rem; margin-bottom: 1rem;">
-              <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;">
+              <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" aria-hidden="true">
                 <circle cx="22" cy="22" r="16" fill="none" stroke="#c8aa6e" stroke-width="1.5" opacity="0.6"/>
                 <path d="M14 22 L20 28 L30 16" stroke="#0ac8b9" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -2868,7 +3127,7 @@ html, body { overflow-x: hidden; }
         <div class="detail-panel fade-in" style="transition-delay: 0.4s;">
           <div style="padding: 1.75rem; text-align: center;">
             <div style="font-size: 2.5rem; margin-bottom: 1rem;">
-              <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;">
+              <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" style="display:inline-block;" aria-hidden="true">
                 <path d="M22 6 L32 12 L32 24 C32 31 22 38 22 38 C22 38 12 31 12 24 L12 12 Z" fill="none" stroke="#c8aa6e" stroke-width="1.5" opacity="0.6"/>
                 <text x="22" y="27" text-anchor="middle" font-size="11" fill="#0ac8b9" font-weight="700" font-family="sans-serif">PRO</text>
               </svg>
@@ -2892,7 +3151,7 @@ html, body { overflow-x: hidden; }
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem; position: relative; z-index: 1;">
         <div class="detail-panel fade-in">
           <div class="detail-panel-header">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22cc44" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22cc44" stroke-width="2" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
             Buffed Champions
           </div>
           <div class="detail-panel-body">
@@ -2918,7 +3177,7 @@ html, body { overflow-x: hidden; }
 
         <div class="detail-panel fade-in">
           <div class="detail-panel-header">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cc2222" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cc2222" stroke-width="2" aria-hidden="true"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
             Nerfed Champions
           </div>
           <div class="detail-panel-body">
@@ -2944,7 +3203,7 @@ html, body { overflow-x: hidden; }
 
         <div class="detail-panel fade-in">
           <div class="detail-panel-header">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8aa6e" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8aa6e" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
             New This Patch
           </div>
           <div class="detail-panel-body">
@@ -2970,7 +3229,13 @@ html, body { overflow-x: hidden; }
           <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
         </summary>
         <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
-          Patch 26.13 is the final tuning patch before MSI 2026, so the changes lean toward competitive viability. LeBlanc, Draven, Kai'Sa, Olaf, Poppy, and Aphelios all received buffs, while Senna, Bard, Brand, Cassiopeia, K'Sante, and Rek'Sai were toned down. The new champion Locke also enters the roster this patch. The full tier list is updated every patch on this site.
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Patch 26.13's strongest picks are LeBlanc, Draven, Kai'Sa, Olaf, Poppy, and Aphelios, all buffed ahead of MSI 2026.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Buffed: LeBlanc, Draven, Kai'Sa, Olaf, Poppy, Aphelios</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Nerfed: Senna, Bard, Brand, Cassiopeia, K'Sante, Rek'Sai</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">New this patch: Locke joins the roster</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Full role-by-role tier list updated every patch on this site</li>
+          </ul>
         </div>
       </details>
       <details class="rv-slide-up rv-d2" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
@@ -2979,7 +3244,12 @@ html, body { overflow-x: hidden; }
           <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
         </summary>
         <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
-          Forge of Runeterra is updated with every League of Legends patch, roughly every two weeks. Tier lists, builds, rune guides, and patch notes are all refreshed on patch day so you always have current data.
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Champion, item, and rune data updates live; written content like tier lists and patch notes refreshes every patch, roughly every two weeks.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Champion stats, items, and rune data: pulled live from Riot's Data Dragon API</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Tier lists, builds, and patch notes: refreshed on patch day by hand</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Patch cadence: roughly every two weeks, matching Riot's own schedule</li>
+          </ul>
         </div>
       </details>
       <details class="rv-slide-up rv-d3" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
@@ -2988,7 +3258,14 @@ html, body { overflow-x: hidden; }
           <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
         </summary>
         <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
-          Patch 26.13 introduces the new champion Locke and enables Last Hit Indicators in both Normal Draft and Ranked. Imperial Mandate's build path was reworked. Key nerfs hit Senna, Bard, Brand, Cassiopeia, K'Sante, and Rek'Sai, while LeBlanc, Draven, Kai'Sa, Olaf, Poppy, and Aphelios were buffed ahead of MSI 2026.
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Patch 26.13 added the champion Locke, enabled Last Hit Indicators, and reworked Imperial Mandate's build path ahead of MSI 2026.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">New champion: Locke</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">New system: Last Hit Indicators in Normal Draft and Ranked</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Item rework: Imperial Mandate's build path</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Nerfed: Senna, Bard, Brand, Cassiopeia, K'Sante, Rek'Sai</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Buffed: LeBlanc, Draven, Kai'Sa, Olaf, Poppy, Aphelios</li>
+          </ul>
         </div>
       </details>
       <details class="rv-slide-up rv-d4" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
@@ -2997,7 +3274,95 @@ html, body { overflow-x: hidden; }
           <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
         </summary>
         <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
-          Mid lane and jungle offer the most carry potential in Season 2 due to their map influence. Assassins and control mages with strong roam patterns are particularly effective at lower elos. Our tier list filters by role to help you find the best pick for your preferred position.
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Mid lane and jungle offer the most carry potential in Season 2 due to their map influence and roam pressure.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Mid and jungle: highest map influence, best for snowballing a lead</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Assassins and roam-heavy mages: especially strong at lower elos</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Tier list filters by role to match your preferred position</li>
+          </ul>
+        </div>
+      </details>
+      <details class="rv-slide-up rv-d5" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+        <summary style="padding:1.25rem 1.5rem;cursor:pointer;font-weight:600;color:var(--grey-1);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          What is a good alternative to U.GG for League of Legends builds?
+          <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
+        </summary>
+        <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Forge of Runeterra is a browser-based alternative to U.GG that covers the same core needs without any separate overlay install.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Tier lists, builds, and rune pages: same core coverage as U.GG's website</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Data source: live from Riot's own Data Dragon API, not a separate proprietary database</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">No install needed: works in any browser tab, no Live Game Tool required</li>
+          </ul>
+        </div>
+      </details>
+      <details class="rv-slide-up rv-d6" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+        <summary style="padding:1.25rem 1.5rem;cursor:pointer;font-weight:600;color:var(--grey-1);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          Is there a League of Legends build site that doesn't require a desktop app?
+          <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
+        </summary>
+        <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Yes — Forge of Runeterra runs entirely in the browser, with no desktop client, Overwolf install, or background process required.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Blitz.gg: standalone desktop app, runs as a background process</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">U.GG: free website, but the Live Game Tool overlay needs a separate install</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Forge of Runeterra: 100% browser-based, nothing to download</li>
+          </ul>
+        </div>
+      </details>
+      <details class="rv-slide-up rv-d7" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+        <summary style="padding:1.25rem 1.5rem;cursor:pointer;font-weight:600;color:var(--grey-1);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          Where can I find patch note breakdowns for League of Legends?
+          <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
+        </summary>
+        <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Forge of Runeterra publishes a dedicated patch notes page after every League of Legends update, broken down by category.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Champion buffs and nerfs, listed with the specific ability changed</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">New releases and reworks</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">System and item changes, with rune/build context for each</li>
+          </ul>
+        </div>
+      </details>
+      <details class="rv-slide-up rv-d8" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+        <summary style="padding:1.25rem 1.5rem;cursor:pointer;font-weight:600;color:var(--grey-1);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          What rune page should I use for an AP burst mage?
+          <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
+        </summary>
+        <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Single-combo burst mages should run Electrocute or Arcane Comet; sustained-damage mages get more from Deathfire Touch.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">One-shot combo mages (Syndra, Veigar): Electrocute or Arcane Comet</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Sustained-damage mages (Brand, Cassiopeia): Deathfire Touch</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Every champion page lists the current keystone, secondary tree, and shards</li>
+          </ul>
+        </div>
+      </details>
+      <details class="rv-slide-up rv-d8" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+        <summary style="padding:1.25rem 1.5rem;cursor:pointer;font-weight:600;color:var(--grey-1);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          How do I find counters for a specific League of Legends champion?
+          <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
+        </summary>
+        <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">Every champion page on Forge of Runeterra includes a Hard Counters panel and a Best Synergies panel, free with no account needed.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Hard Counters: champions that consistently beat this pick in lane</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Best Synergies: strong team-composition pairings</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Both visible without creating an account</li>
+          </ul>
+        </div>
+      </details>
+      <details class="rv-slide-up rv-d8" style="background:var(--bg-card);border:1px solid var(--border);border-radius:6px;overflow:hidden;">
+        <summary style="padding:1.25rem 1.5rem;cursor:pointer;font-weight:600;color:var(--grey-1);list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          Does Forge of Runeterra require an account to view builds?
+          <span style="color:var(--gold-1);font-size:1.2rem;transition:transform 0.3s;">+</span>
+        </summary>
+        <div style="padding:0 1.5rem 1.25rem;color:var(--grey-3);font-size:0.88rem;line-height:1.7;">
+          <p style="margin-bottom:0.75rem;"><strong style="color:var(--grey-1);">No — tier lists, builds, rune pages, and patch notes are all free to view without creating an account.</strong></p>
+          <ul style="list-style:none;display:flex;flex-direction:column;gap:6px;">
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Free without an account: tier lists, builds, rune pages, patch notes</li>
+            <li style="padding-left:1rem;border-left:2px solid var(--gold-3);">Account needed only for: saving favorite champions or bookmarking builds</li>
+          </ul>
         </div>
       </details>
     </div>
@@ -3019,7 +3384,7 @@ html, body { overflow-x: hidden; }
               style="cursor:pointer;color:var(--grey-3);transition:color .2s;"
               onmouseenter="this.style.color='var(--gold-1)'"
               onmouseleave="this.style.color='var(--grey-3)'">
-          <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" style="vertical-align:middle;margin-right:4px;margin-bottom:1px;"><path d="M10 2L2 9h3v9h4v-5h2v5h4V9h3z"/></svg>Home
+          <svg width="11" height="11" viewBox="0 0 20 20" fill="currentColor" style="vertical-align:middle;margin-right:4px;margin-bottom:1px;" aria-hidden="true"><path d="M10 2L2 9h3v9h4v-5h2v5h4V9h3z"/></svg>Home
         </span>
         <meta itemprop="position" content="1">
       </li>
@@ -3039,7 +3404,7 @@ html, body { overflow-x: hidden; }
   <div style="margin-top:64px;padding:2.5rem 2rem;max-width:1400px;margin-left:auto;margin-right:auto;padding-top:calc(64px + 1.5rem);">
     <div class="section-header" style="margin-bottom:1.5rem;">
       <p class="section-eyebrow">Patch 26.13</p>
-      <h1 class="section-title">League of Legends Champions</h1>
+      <h2 class="section-title">League of Legends Champions</h2>
       <div class="section-line"></div>
       <p style="color:var(--grey-3);font-size:0.82rem;margin-top:0.75rem;">Complete champion roster with tier rankings, win rates, and builds. Updated every patch from live API data.</p>
     </div>
@@ -3047,26 +3412,26 @@ html, body { overflow-x: hidden; }
   <div style="padding: 2.5rem 2rem; max-width: 1400px; margin: 0 auto;">
     <div class="filters-row">
       <div class="search-wrapper">
-        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="search" class="filter-search" placeholder="Search champion..." id="champSearch" name="champSearch" aria-label="Search champions" oninput="filterChampions()" autocomplete="off">
       </div>
 
       <div class="filter-tabs" id="roleFilter">
         <div class="filter-tab active" onclick="setRoleFilter('all', this)">All</div>
         <div class="filter-tab" onclick="setRoleFilter('top', this)">
-          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><polygon points="10,2 18,8 18,16 10,18 2,16 2,8" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="6" x2="10" y2="14" stroke="currentColor" stroke-width="1.5"/></svg> Top
+          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="10,2 18,8 18,16 10,18 2,16 2,8" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="6" x2="10" y2="14" stroke="currentColor" stroke-width="1.5"/></svg> Top
         </div>
         <div class="filter-tab" onclick="setRoleFilter('jungle', this)">
-          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 13 Q10 7 13 13" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> Jungle
+          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 13 Q10 7 13 13" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> Jungle
         </div>
         <div class="filter-tab" onclick="setRoleFilter('mid', this)">
-          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> Mid
+          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> Mid
         </div>
         <div class="filter-tab" onclick="setRoleFilter('adc', this)">
-          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 10 L16 10 M12 6 L16 10 L12 14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> ADC
+          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 10 L16 10 M12 6 L16 10 L12 14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg> ADC
         </div>
         <div class="filter-tab" onclick="setRoleFilter('support', this)">
-          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 3 C10 3 3 6 3 12 L10 17 L17 12 C17 6 10 3 10 3Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> Support
+          <svg width="14" height="14" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 3 C10 3 3 6 3 12 L10 17 L17 12 C17 6 10 3 10 3Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg> Support
         </div>
       </div>
 
@@ -3100,7 +3465,7 @@ html, body { overflow-x: hidden; }
   <div style="margin-top:64px; padding: 2.5rem 2rem; max-width: 1400px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; padding-top: calc(64px + 2.5rem);">
     <div class="section-header" style="margin-bottom:2.5rem;">
       <p class="section-eyebrow">Patch 26.13 Tier List</p>
-      <h1 class="section-title">Champion Tier List</h1>
+      <h2 class="section-title">Champion Tier List</h2>
       <div class="section-line"></div>
       <p style="color:var(--grey-3);font-size:0.82rem;margin-top:0.75rem;">Based on high-elo game data. Updated <time datetime="2026-06-09">June 9, 2026</time>.</p>
     </div>
@@ -3127,13 +3492,13 @@ html, body { overflow-x: hidden; }
   <div style="margin-top:64px; padding: 2.5rem 2rem; max-width: 1400px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; padding-top: calc(64px + 2.5rem);">
     <div class="section-header" style="margin-bottom:2rem;">
       <p class="section-eyebrow">Community & Data Builds</p>
-      <h1 class="section-title">Champion Builds</h1>
+      <h2 class="section-title">Champion Builds</h2>
       <div class="section-line"></div>
     </div>
 
     <div class="filters-row">
       <div class="search-wrapper">
-        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input type="search" id="buildsSearch" name="buildsSearch" class="filter-search" placeholder="Search builds..." oninput="filterBuilds(this.value)" autocomplete="off" aria-label="Search builds">
       </div>
       <div class="filter-tabs">
@@ -3160,7 +3525,7 @@ html, body { overflow-x: hidden; }
   <div style="margin-top:64px; padding: 2.5rem 2rem; max-width: 1400px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; padding-top: calc(64px + 2.5rem);">
     <div class="section-header" style="margin-bottom:2rem;">
       <p class="section-eyebrow">Patch 26.13 Guides</p>
-      <h1 class="section-title">Champion Guides</h1>
+      <h2 class="section-title">Champion Guides</h2>
       <div class="section-line"></div>
       <p style="color:var(--grey-3);font-size:0.82rem;margin-top:0.75rem;">Strategy guides covering champion mechanics, matchups, builds, and tips. Updated for Patch 26.13.</p>
     </div>
@@ -3181,7 +3546,7 @@ html, body { overflow-x: hidden; }
       <div class="fade-in" style="background:linear-gradient(135deg,var(--blue-6) 0%,var(--bg-panel) 50%,var(--gold-5) 100%);border:1px solid var(--border);border-radius:6px;padding:2rem;margin-bottom:1.5rem;position:relative;overflow:hidden;">
         <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(10,200,185,.06) 0%,transparent 70%);pointer-events:none;"></div>
         <div style="font-size:.65rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold-2);margin-bottom:.5rem;opacity:.9;">Season 2 Act 2 &bull; Live Now</div>
-        <h1 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:var(--gold-1);margin-bottom:.3rem;">Patch 26.13 Notes</h1>
+        <h2 style="font-family:var(--font-display);font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:var(--gold-1);margin-bottom:.3rem;">Patch 26.13 Notes</h2>
         <p style="font-size:.78rem;color:var(--grey-3);"><time datetime="2026-06-24">Released June 24, 2026</time></p>
         <p style="font-size:.87rem;color:var(--grey-2);line-height:1.8;margin-top:.75rem;border-top:1px solid var(--border);padding-top:.75rem;">Patch 26.13 is the final tuning pass before MSI 2026, and it shows: most of the balance work this patch targets champions likely to see competitive play. The headline addition is <span class="text-gold">Locke</span>, the new Ashen Exorcist. Senna, Bard, Brand, Cassiopeia, K'Sante, and Rek'Sai all come down a notch, while LeBlanc, Draven, Kai'Sa, Olaf, Poppy, and Aphelios get a push back into relevance. On the systems side, Last Hit Indicators are rolling out to Normal Draft and Ranked, and Imperial Mandate's build path has been reworked.</p>
         <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem;" role="navigation" aria-label="Jump to section">
@@ -3202,17 +3567,21 @@ html, body { overflow-x: hidden; }
         <div style="border:1px solid rgba(136,51,255,.2);border-radius:0 0 6px 6px;">
           <div class="fade-in" style="display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);">
             <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#2a0060,#6010c0);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2L18 6L18 14L10 18L2 14L2 6Z" stroke="#d040ff" stroke-width="1.5"/><circle cx="10" cy="10" r="3" fill="#d040ff" opacity=".7"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2L18 6L18 14L10 18L2 14L2 6Z" stroke="#d040ff" stroke-width="1.5"/><circle cx="10" cy="10" r="3" fill="#d040ff" opacity=".7"/></svg>
             </div>
             <div>
               <div style="font-size:.82rem;font-weight:700;color:var(--grey-1);margin-bottom:.2rem;">Imperial Mandate <span style="font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:3px;background:rgba(200,170,110,.12);color:var(--gold-1);border:1px solid rgba(200,170,110,.3);">REWORKED</span></div>
               <div style="font-size:.75rem;color:var(--grey-3);line-height:1.65;"><strong style="color:var(--grey-2);">Slot:</strong> Mythic-tier support item<br>
               Build path smoothed out for supports who found the previous component route awkward: Amp Tome + Bandleglass Mirror + Amp Tome + gold, replacing the old Blasting Wand + Bandleglass Mirror line. Power is shifted along with the new path rather than removed outright.</div>
+              <div style="display:flex;gap:.5rem;align-items:flex-start;margin-top:.6rem;padding:.55rem .65rem;background:rgba(136,51,255,.06);border:1px solid rgba(136,51,255,.18);border-radius:5px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bb88ff" stroke-width="2" style="flex-shrink:0;margin-top:2px;" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                <p style="font-size:.7rem;color:var(--grey-3);line-height:1.55;"><strong style="color:#bb88ff;">Developer insight:</strong> the old Blasting Wand route gave a small AP spike early but left supports without a defensive component until the full build completed. The Amp Tome path trades that spike for steadier mana sustain across the build — worth knowing if you're used to the old timing.</p>
+              </div>
             </div>
           </div>
           <div class="fade-in" style="display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);">
             <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#003060,#0060c0);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polygon points="10,2 18,7 18,13 10,18 2,13 2,7" stroke="#4080ff" stroke-width="1.5"/><polygon points="10,5 15,8 15,12 10,15 5,12 5,8" fill="#4080ff" opacity=".35"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><polygon points="10,2 18,7 18,13 10,18 2,13 2,7" stroke="#4080ff" stroke-width="1.5"/><polygon points="10,5 15,8 15,12 10,15 5,12 5,8" fill="#4080ff" opacity=".35"/></svg>
             </div>
             <div>
               <div style="font-size:.82rem;font-weight:700;color:var(--grey-1);margin-bottom:.2rem;">Last Hit Indicators <span style="font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:3px;background:rgba(10,200,185,.1);color:var(--blue-2);border:1px solid rgba(10,200,185,.2);">NEW SYSTEM</span></div>
@@ -3222,7 +3591,7 @@ html, body { overflow-x: hidden; }
           </div>
           <div class="fade-in" style="display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);">
             <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#003020,#004030);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="#20c060" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#20c060" stroke-width="1.5" stroke-linecap="round"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="7" stroke="#20c060" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="#20c060" stroke-width="1.5" stroke-linecap="round"/></svg>
             </div>
             <div>
               <div style="font-size:.82rem;font-weight:700;color:var(--grey-1);margin-bottom:.2rem;">Summon Aery <span style="font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:3px;background:rgba(255,78,80,.1);color:#ff4e50;border:1px solid rgba(255,78,80,.2);">NERFED</span></div>
@@ -3232,7 +3601,7 @@ html, body { overflow-x: hidden; }
           </div>
           <div class="fade-in" style="display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1.1rem;border-bottom:1px solid var(--border);">
             <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#302000,#604000);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2 5h5l-4 3.5 1.5 5L10 13l-4.5 2.5 1.5-5L3 7h5z" fill="#c8aa6e" opacity=".8"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2l2 5h5l-4 3.5 1.5 5L10 13l-4.5 2.5 1.5-5L3 7h5z" fill="#c8aa6e" opacity=".8"/></svg>
             </div>
             <div>
               <div style="font-size:.82rem;font-weight:700;color:var(--grey-1);margin-bottom:.2rem;">Guardian <span style="font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:3px;background:rgba(34,204,68,.1);color:#22cc44;border:1px solid rgba(34,204,68,.2);">BUFFED</span></div>
@@ -3242,7 +3611,7 @@ html, body { overflow-x: hidden; }
           </div>
           <div class="fade-in" style="display:flex;align-items:flex-start;gap:.75rem;padding:.85rem 1.1rem;">
             <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#200030,#400060);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><polygon points="10,2 18,7 18,13 10,18 2,13 2,7" stroke="#8833ff" stroke-width="1.5"/><path d="M7 7l3-2 3 2M10 5v8" stroke="#8833ff" stroke-width="1.2" stroke-linecap="round"/></svg>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><polygon points="10,2 18,7 18,13 10,18 2,13 2,7" stroke="#8833ff" stroke-width="1.5"/><path d="M7 7l3-2 3 2M10 5v8" stroke="#8833ff" stroke-width="1.2" stroke-linecap="round"/></svg>
             </div>
             <div>
               <div style="font-size:.82rem;font-weight:700;color:var(--grey-1);margin-bottom:.2rem;">Aftershock <span style="font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:3px;background:rgba(34,204,68,.1);color:#22cc44;border:1px solid rgba(34,204,68,.2);">BUFFED</span></div>
@@ -3360,7 +3729,7 @@ html, body { overflow-x: hidden; }
      YouTube under the original uploader's channel and ad terms. -->
 <div class="modal-overlay" id="modal-skillvideo">
   <div class="modal" style="max-width:760px;width:92vw;">
-    <button class="modal-close" onclick="closeSkillVideo()">&times;</button>
+    <button class="modal-close" onclick="closeSkillVideo()" aria-label="Close video">&times;</button>
     <div style="padding:1.5rem 1.5rem 0;">
       <h3 id="skillVideoTitle" style="font-family:var(--font-display);color:var(--gold-1);font-size:1.1rem;margin-bottom:.4rem;"></h3>
       <p style="font-size:.72rem;color:var(--grey-4);margin-bottom:1rem;">Showcase clip via YouTube &bull; not hosted on this site</p>
@@ -3381,11 +3750,11 @@ html, body { overflow-x: hidden; }
 <!-- LOGIN MODAL -->
 <div class="modal-overlay" id="modal-login">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('login')">&times;</button>
+    <button class="modal-close" onclick="closeModal('login')" aria-label="Close sign in dialog">&times;</button>
     <div class="modal-top">
       <div class="modal-top-bg"></div>
       <div class="modal-emblem">
-        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <polygon points="28,4 52,17 52,39 28,52 4,39 4,17" fill="rgba(200,170,110,0.15)" stroke="#c8aa6e" stroke-width="2"/>
           <polygon points="28,12 44,21 44,35 28,44 12,35 12,21" fill="none" stroke="#c8aa6e" stroke-width="1" opacity="0.5"/>
           <text x="28" y="35" text-anchor="middle" font-size="20" font-weight="900" fill="#c8aa6e" font-family="serif">F</text>
@@ -3419,11 +3788,11 @@ html, body { overflow-x: hidden; }
 <!-- AUTH: FORGOT PASSWORD MODAL — collects email, sends Supabase reset link -->
 <div class="modal-overlay" id="modal-forgot">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('forgot')">&times;</button>
+    <button class="modal-close" onclick="closeModal('forgot')" aria-label="Close reset password dialog">&times;</button>
     <div class="modal-top">
       <div class="modal-top-bg"></div>
       <div class="modal-emblem">
-        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <polygon points="28,4 52,17 52,39 28,52 4,39 4,17" fill="rgba(200,170,110,0.15)" stroke="#c8aa6e" stroke-width="2"/>
           <polygon points="28,12 44,21 44,35 28,44 12,35 12,21" fill="none" stroke="#c8aa6e" stroke-width="1" opacity="0.5"/>
           <text x="28" y="35" text-anchor="middle" font-size="20" font-weight="900" fill="#c8aa6e" font-family="serif">?</text>
@@ -3453,7 +3822,7 @@ html, body { overflow-x: hidden; }
     <div class="modal-top">
       <div class="modal-top-bg"></div>
       <div class="modal-emblem">
-        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <polygon points="28,4 52,17 52,39 28,52 4,39 4,17" fill="rgba(10,200,185,0.1)" stroke="#0ac8b9" stroke-width="2"/>
           <polygon points="28,12 44,21 44,35 28,44 12,35 12,21" fill="none" stroke="#0ac8b9" stroke-width="1" opacity="0.5"/>
           <text x="28" y="35" text-anchor="middle" font-size="20" font-weight="900" fill="#0ac8b9" font-family="serif">F</text>
@@ -3476,11 +3845,11 @@ html, body { overflow-x: hidden; }
 <!-- REGISTER MODAL -->
 <div class="modal-overlay" id="modal-register">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('register')">&times;</button>
+    <button class="modal-close" onclick="closeModal('register')" aria-label="Close create account dialog">&times;</button>
     <div class="modal-top">
       <div class="modal-top-bg"></div>
       <div class="modal-emblem">
-        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg">
+        <svg width="56" height="56" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <polygon points="28,4 52,17 52,39 28,52 4,39 4,17" fill="rgba(10,200,185,0.1)" stroke="#0ac8b9" stroke-width="2"/>
           <polygon points="28,12 44,21 44,35 28,44 12,35 12,21" fill="none" stroke="#0ac8b9" stroke-width="1" opacity="0.5"/>
           <text x="28" y="35" text-anchor="middle" font-size="20" font-weight="900" fill="#0ac8b9" font-family="serif">+</text>
@@ -4083,7 +4452,7 @@ function renderChampionGrid() {
                 aria-pressed="${isFav}"
                 title="${currentUser ? 'Favorite' : 'Sign in to favorite'}"
                 onclick="toggleFavoriteChamp(this.dataset.champId, this.dataset.champName, this, event)">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
           </svg>
         </button>
@@ -4359,7 +4728,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
       <div class="champ-detail-info">
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem;">
           <button class="back-btn" onclick="navigate('champions')" style="margin:0;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             All Champions
           </button>
           ${(() => {
@@ -4394,7 +4763,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           <!-- OVERVIEW -->
           <div class="detail-panel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
               Champion Overview
             </div>
             <div class="detail-panel-body">
@@ -4421,7 +4790,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
                fetch that happens after the page has already painted. -->
           <div class="detail-panel" id="champAbilitiesPanel" data-champ-id="${c.id}">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
               Abilities
             </div>
             <div class="detail-panel-body" data-abilities-body>
@@ -4440,7 +4809,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           ${SKILL_VIDEO_TIMESTAMPS[c.id] !== undefined ? `
           <div class="detail-panel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
               Learn Skills
             </div>
             <div class="detail-panel-body">
@@ -4449,7 +4818,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
               </p>
               <button type="button" class="btn btn-blue" style="width:100%;justify-content:center;"
                       onclick="openSkillVideo('${c.id}', '${c.name.replace(/'/g,"&#39;")}')">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right:.4rem;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="margin-right:.4rem;" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Watch ${c.name}'s Ability Showcase
               </button>
             </div>
@@ -4458,7 +4827,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           <!-- BEST BUILD -->
           <div class="detail-panel" id="champBuildPanel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M12 8v8"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 12h8M12 8v8"/></svg>
               Recommended Build (Patch 26.13)
             </div>
             <div class="detail-panel-body">
@@ -4509,7 +4878,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           <!-- SKILL ORDER -->
           <div class="detail-panel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
               Skill Order
             </div>
             <div class="detail-panel-body">
@@ -4529,7 +4898,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           <!-- RUNES -->
           <div class="detail-panel" id="champRunePanel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
               Recommended Runes
             </div>
             <div class="detail-panel-body">
@@ -4566,6 +4935,13 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
                 <span style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--grey-4);">Shards:</span>
                 ${rune.shards.map(s => '<span style="font-size:.7rem;color:var(--gold-2);padding:2px 7px;background:rgba(200,170,110,.07);border:1px solid rgba(200,170,110,.18);border-radius:3px;">'+s+'</span>').join('')}
               </div>
+              <!-- PRO-TIP — generated from this champion's actual rune/role data,
+                   not static boilerplate, so it's a real per-champion answer
+                   rather than the same sentence repeated on every page. -->
+              <div style="display:flex;gap:.6rem;align-items:flex-start;margin-top:.85rem;padding:.65rem .75rem;background:rgba(10,200,185,.06);border:1px solid rgba(10,200,185,.2);border-radius:6px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--blue-2)" stroke-width="2" style="flex-shrink:0;margin-top:1px;" aria-hidden="true"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>
+                <p style="font-size:.74rem;color:var(--grey-2);line-height:1.6;"><strong style="color:var(--blue-1);">Pro tip:</strong> ${rune.name} is ${c.name}'s current recommended keystone for a ${buildType.toLowerCase()} build — pair it with the ${rune.secondary} secondary tree shown above rather than mixing in a different keystone's secondary, since the rune slots are tuned to support each other.</p>
+              </div>
             </div>
           </div>
 
@@ -4577,7 +4953,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           <!-- STATS -->
           <div class="detail-panel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
               Champion Stats
             </div>
             <div class="detail-panel-body">
@@ -4595,7 +4971,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           <!-- COUNTERS -->
           <div class="detail-panel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
               Hard Counters
             </div>
             <div class="detail-panel-body">
@@ -4614,7 +4990,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           <!-- SYNERGIES -->
           <div class="detail-panel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               Best Synergies
             </div>
             <div class="detail-panel-body">
@@ -4632,7 +5008,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           <!-- TIPS -->
           <div class="detail-panel">
             <div class="detail-panel-header">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               Champion Guide
             </div>
             <div class="detail-panel-body">
@@ -4834,7 +5210,7 @@ function renderBuildCard(b, champObj) {
               data-build-champ="${b.champ.replace(/"/g,'&quot;')}"
               data-build-type="${b.type.replace(/"/g,'&quot;')}"
               onclick="toggleSavedBuild({champ:this.dataset.buildChamp,type:this.dataset.buildType}, this, event)">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
         </svg>
       </button>
@@ -5775,7 +6151,7 @@ function renderProfile() {
   if (!currentUser) {
     el.innerHTML = `<div style="text-align:center;padding:4rem;">
       <div style="font-size:3rem;margin-bottom:1rem;color:var(--gold-2);">
-        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><circle cx="30" cy="22" r="12" fill="none" stroke="#c8aa6e" stroke-width="2"/><path d="M10 52c0-11 8.95-20 20-20s20 9 20 20" fill="none" stroke="#c8aa6e" stroke-width="2"/></svg>
+        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="30" cy="22" r="12" fill="none" stroke="#c8aa6e" stroke-width="2"/><path d="M10 52c0-11 8.95-20 20-20s20 9 20 20" fill="none" stroke="#c8aa6e" stroke-width="2"/></svg>
       </div>
       <h2 style="font-family:var(--font-display);color:var(--gold-1);margin-bottom:0.5rem;">Sign In to View Profile</h2>
       <p style="color:var(--grey-3);margin-bottom:1.5rem;">Create a free account to save builds, track your champions, and more.</p>
@@ -5853,7 +6229,7 @@ function renderProfile() {
                   aria-label="Remove saved build for ${b.champ}" aria-pressed="true" title="Remove from saved builds"
                   data-build-champ="${b.champ.replace(/"/g,'&quot;')}" data-build-type="${b.type.replace(/"/g,'&quot;')}"
                   onclick="toggleSavedBuild({champ:this.dataset.buildChamp,type:this.dataset.buildType}, this, event)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
           </button>
         </div>`;
       }).join('')}
@@ -5880,7 +6256,7 @@ function renderProfile() {
           <button type="button" class="champ-fav-btn is-favorited" style="position:static;" data-champ-id="${c.id}" data-champ-name="${c.name.replace(/"/g,'&quot;')}"
                   aria-label="Remove ${c.name} from favorites" aria-pressed="true" title="Remove from favorites"
                   onclick="toggleFavoriteChamp(this.dataset.champId, this.dataset.champName, this, event)">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></polygon></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></polygon></svg>
           </button>
         </div>`).join('');
 
