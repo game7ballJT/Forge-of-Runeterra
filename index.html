@@ -3924,11 +3924,11 @@ let lastViewedChamp = null; // set ONLY when arriving from another champion's de
 
 // Role assignments (rough, based on champion class/tags)
 const ROLE_MAP = {
-  top: ["Aatrox","Camille","Darius","Dr. Mundo","Fiora","Gangplank","Garen","Gnar","Gwen","Illaoi","Irelia","Jax","Jayce","Kennen","Kled","Malphite","Mordekaiser","Nasus","Ornn","Pantheon","Poppy","Quinn","Renekton","Riven","Rumble","Ryze","Sett","Shen","Singed","Sion","Tahm Kench","Teemo","Trundle","Tryndamere","Urgot","Vayne","Vladimir","Volibear","Wukong","Yorick","Cho Gath","Heimerdinger"],
-  jungle: ["Amumu","Bel Veth","Briar","Diana","Elise","Evelynn","Fiddlesticks","Gragas","Graves","Hecarim","Ivern","Jarvan IV","Karthus","Kayn","Kha Zix","Kindred","Lee Sin","Lillia","Master Yi","Mordekaiser","Nidalee","Nocturne","Nunu","Olaf","Rammus","Rek Sai","Rengar","Sejuani","Shaco","Shyvana","Skarner","Taliyah","Trundle","Udyr","Vi","Viego","Warwick","Wukong","Xin Zhao","Zac","Zed"],
-  mid: ["Ahri","Akali","Akshan","Annie","Aurelion Sol","Azir","Cassiopeia","Corki","Diana","Ekko","Fizz","Galio","Heimerdinger","Irelia","Jayce","Katarina","LeBlanc","Lissandra","Lux","Malzahar","Naafiri","Neeko","Nilah","Orianna","Qiyana","Ryze","Swain","Sylas","Syndra","Taliyah","Talon","Twisted Fate","Veigar","Vel Koz","Viktor","Vladimir","Xerath","Yasuo","Yone","Zed","Ziggs","Zilean","Zoe"],
-  adc: ["Aphelios","Ashe","Caitlyn","Corki","Draven","Ezreal","Jhin","Jinx","Kai Sa","Kalista","Kog Maw","Lucian","Miss Fortune","Nilah","Samira","Senna","Sivir","Smolder","Tristana","Twitch","Varus","Vayne","Xayah","Zeri"],
-  support: ["Alistar","Bard","Blitzcrank","Brand","Braum","Janna","Karma","Leona","Lulu","Lux","Maokai","Morgana","Nami","Nautilus","Neeko","Pyke","Rakan","Rell","Senna","Seraphine","Sona","Soraka","Swain","Tahm Kench","Taric","Thresh","Vel Koz","Xerath","Yuumi","Zilean","Zyra"]
+  top: ["Aatrox","Camille","Darius","Dr. Mundo","DrMundo","Fiora","Gangplank","Garen","Gnar","Gwen","Illaoi","Irelia","Jax","Jayce","Kennen","Kled","Malphite","Mordekaiser","Nasus","Ornn","Pantheon","Poppy","Quinn","Renekton","Riven","Rumble","Ryze","Sett","Shen","Singed","Sion","Tahm Kench","TahmKench","Teemo","Trundle","Tryndamere","Urgot","Vayne","Vladimir","Volibear","Wukong","MonkeyKing","Yorick","Cho Gath","ChoGath","Heimerdinger","KSante","Kayle"],
+  jungle: ["Amumu","Bel Veth","BelVeth","Briar","Diana","Elise","Evelynn","Fiddlesticks","Gragas","Graves","Hecarim","Ivern","Jarvan IV","JarvanIV","Karthus","Kayn","Kha Zix","KhaZix","Kindred","Lee Sin","LeeSin","Lillia","Master Yi","MasterYi","Mordekaiser","Nidalee","Nocturne","Nunu","Olaf","Rammus","Rek Sai","RekSai","Rengar","Sejuani","Shaco","Shyvana","Skarner","Taliyah","Trundle","Udyr","Vi","Viego","Warwick","Wukong","MonkeyKing","Xin Zhao","XinZhao","Zac","Zed"],
+  mid: ["Ahri","Akali","Akshan","Annie","Aurelion Sol","Azir","Cassiopeia","Corki","Diana","Ekko","Fizz","Galio","Heimerdinger","Irelia","Jayce","Katarina","LeBlanc","Lissandra","Lux","Malzahar","Naafiri","Neeko","Nilah","Orianna","Qiyana","Ryze","Swain","Sylas","Syndra","Taliyah","Talon","Twisted Fate","Veigar","Vel Koz","Viktor","Vladimir","Xerath","Yasuo","Yone","Zed","Ziggs","Zilean","Zoe","Anivia","Hwei","Kassadin","Vex"],
+  adc: ["Aphelios","Ashe","Caitlyn","Corki","Draven","Ezreal","Jhin","Jinx","Kai Sa","KaiSa","Kalista","Kog Maw","KogMaw","Lucian","Miss Fortune","MissFortune","Nilah","Samira","Senna","Sivir","Smolder","Tristana","Twitch","Varus","Vayne","Xayah","Zeri"],
+  support: ["Alistar","Bard","Blitzcrank","Brand","Braum","Janna","Karma","Leona","Lulu","Lux","Maokai","Morgana","Nami","Nautilus","Neeko","Pyke","Rakan","Rell","Senna","Seraphine","Sona","Soraka","Swain","Tahm Kench","TahmKench","Taric","Thresh","Vel Koz","Xerath","Yuumi","Zilean","Zyra","Renata"]
 };
 
 // Tier assignments (curated for patch 26.13)
@@ -4615,28 +4615,37 @@ function getCounters(tags) {
 // the page updates the URL's ?build= param and scrolls/highlights that exact
 // build section instead of leaving the visitor to hunt for it — this is what
 // makes "open this specific build" feel different from "open this champion".
-function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
+function openChampDetail(champId, fromChampId, buildKeyToHighlight, isRestore) {
   // Only set lastViewedChamp when explicitly arriving from another champion page
   // (counters/synergies click). Direct navigation from champions list, home,
   // guides, or external links passes no fromChampId, so it clears correctly.
   lastViewedChamp = fromChampId || null;
-  navigate('champion-detail', true);
+  navigate('champion-detail', true, isRestore);
   const c = allChampions.find(ch => ch.id === champId);
   if (!c) return;
 
-  // Reflect this view in the URL as a real, shareable, bookmarkable link —
-  // purely additive: it does not change how navigate()/the .page system works,
-  // it just keeps the address bar honest about what's currently showing.
-  // history.replaceState (not pushState) so the browser's own back button
-  // still behaves exactly as it did before (this site has no other history
-  // entries to go back to, so adding pushState here would be misleading).
+  // Reflect this view in the URL as a real, shareable, bookmarkable link,
+  // AND as a real browser history entry (pushState) so the native Back
+  // button can return to wherever the visitor was before opening this
+  // champion — including back through a chain of counters/synergies clicks
+  // from champion to champion, one click undone per Back press.
+  // isRestore (true only when this call originated from a popstate event,
+  // i.e. the user already pressed Back/Forward) uses replaceState instead,
+  // since the browser already moved the history pointer for us — pushing
+  // again here would create a duplicate, broken entry rather than just
+  // syncing the address bar and state object to match.
   try {
     const params = new URLSearchParams();
     params.set('champion', champId);
     if (buildKeyToHighlight) params.set('build', buildKeyToHighlight);
     const newUrl = window.location.pathname + '?' + params.toString();
-    window.history.replaceState({ champId, buildKeyToHighlight: buildKeyToHighlight || null }, '', newUrl);
-  } catch (e) { /* replaceState can throw in sandboxed/file:// contexts — never block the page on this */ }
+    const stateObj = { page: 'champion-detail', champId, buildKeyToHighlight: buildKeyToHighlight || null };
+    if (isRestore) {
+      window.history.replaceState(stateObj, '', newUrl);
+    } else {
+      window.history.pushState(stateObj, '', newUrl);
+    }
+  } catch (e) { /* pushState/replaceState can throw in sandboxed/file:// contexts — never block the page on this */ }
 
   const buildType = getBuildType(c.tags);
   const buildItems = BUILD_ITEMS[buildType] || BUILD_ITEMS.Fighter;
@@ -4785,6 +4794,42 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
             </div>
           </div>
 
+          <!-- LANE PRIORITY & PLAYSTYLE — Primary Lane Priority reuses c.role
+               (the same role already shown as a tag elsewhere on this page),
+               so this can never contradict what's already on screen. Common
+               Secondary Lanes and the Playstyle Overview are the new content. -->
+          <div class="detail-panel">
+            <div class="detail-panel-header">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.618V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+              Lane Priority &amp; Playstyle
+            </div>
+            <div class="detail-panel-body">
+              ${(() => {
+                const lp = getLanePlaystyle(c);
+                const secondaryChips = lp.secondary.length
+                  ? lp.secondary.map(r => `<span style="display:inline-flex;align-items:center;gap:5px;font-size:0.74rem;font-weight:600;color:var(--grey-1);background:var(--bg-hover);border:1px solid var(--border);border-radius:4px;padding:4px 9px;">${roleIcon(r)}${roleLabel(r)}</span>`).join('')
+                  : `<span style="font-size:0.78rem;color:var(--grey-4);font-style:italic;">No common secondary — ${c.name} is a dedicated ${roleLabel(c.role).toLowerCase()} specialist.</span>`;
+                return `
+                <div style="display:flex;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;">
+                  <div style="flex:1;min-width:160px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:0.85rem;">
+                    <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--grey-4);margin-bottom:0.55rem;">Primary Lane Priority</div>
+                    <div style="display:flex;align-items:center;gap:8px;color:var(--gold-1);">
+                      ${roleIcon(c.role)}
+                      <span style="font-family:var(--font-display);font-weight:700;font-size:1rem;">${roleLabel(c.role)}</span>
+                    </div>
+                  </div>
+                  <div style="flex:1;min-width:160px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:0.85rem;">
+                    <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--grey-4);margin-bottom:0.55rem;">Common Secondary Lanes</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px;">${secondaryChips}</div>
+                  </div>
+                </div>
+                <div style="font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--grey-4);margin-bottom:0.5rem;">Lane Playstyle Overview</div>
+                <p style="font-size:0.82rem;color:var(--grey-2);line-height:1.75;">${lp.overview}</p>`;
+              })()}
+            </div>
+          </div>
+
+
           <!-- ABILITIES — populated async via getChampionAbilitiesPromise();
                starts as a loading skeleton since this is a per-champion
                fetch that happens after the page has already painted. -->
@@ -4896,7 +4941,7 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
           </div>
 
           <!-- RUNES -->
-          <div class="detail-panel" id="champRunePanel">
+          <div class="detail-panel" id="champRunePanel" data-champ-id="${c.id}">
             <div class="detail-panel-header">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
               Recommended Runes
@@ -4916,24 +4961,38 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
               </div>
               <!-- KEYSTONE DESCRIPTION -->
               <p data-rune-desc style="font-size:.75rem;color:var(--grey-3);line-height:1.65;margin-bottom:.75rem;padding:0 .1rem;">${rune.desc}</p>
-              <!-- PRIMARY SLOT RUNES -->
+              <!-- PRIMARY SLOT RUNES — each chip gets a small icon placeholder
+                   (data-rune-slot-icon) that applyLiveRuneSlotIcons() fills in
+                   once the live rune tree data resolves. Text-only is the
+                   fallback if a match isn't found, never a broken image. -->
               <div style="margin-bottom:.75rem;">
                 <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--grey-4);margin-bottom:.4rem;">Primary Runes</div>
                 <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
-                  ${rune.slots.map(s => '<span style="font-size:.72rem;color:var(--grey-2);padding:3px 9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:3px;">'+s+'</span>').join('')}
+                  ${rune.slots.map(s => `<span data-rune-slot-name="${s.replace(/"/g,'&quot;')}" style="display:inline-flex;align-items:center;gap:5px;font-size:.72rem;color:var(--grey-2);padding:3px 9px 3px 5px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:3px;"><span data-rune-slot-icon style="width:16px;height:16px;flex-shrink:0;"></span>${s}</span>`).join('')}
                 </div>
               </div>
               <!-- SECONDARY PATH -->
               <div style="padding:.6rem .75rem;background:var(--bg-card);border-radius:5px;border:1px solid var(--border);margin-bottom:.6rem;">
                 <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--grey-4);margin-bottom:.4rem;">${rune.secondary} Secondary</div>
                 <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
-                  ${rune.secSlots.map(s => '<span style="font-size:.72rem;color:var(--grey-2);padding:3px 9px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:3px;">'+s+'</span>').join('')}
+                  ${rune.secSlots.map(s => `<span data-rune-slot-name="${s.replace(/"/g,'&quot;')}" style="display:inline-flex;align-items:center;gap:5px;font-size:.72rem;color:var(--grey-2);padding:3px 9px 3px 5px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:3px;"><span data-rune-slot-icon style="width:16px;height:16px;flex-shrink:0;"></span>${s}</span>`).join('')}
                 </div>
               </div>
-              <!-- STAT SHARDS -->
+              <!-- STAT SHARDS — Data Dragon's runesReforged.json has never
+                   included shard data (a known, long-standing gap in Riot's
+                   own API: github.com/RiotGames/developer-relations/issues/26),
+                   so there's no reliable live icon source here the way there
+                   is for keystone/primary/secondary runes above. Rather than
+                   guess a static icon path and risk a broken image, each
+                   shard gets a small colored dot matching its stat category
+                   instead — a deliberate visual upgrade over plain text,
+                   without claiming to be Riot's actual icon art. -->
               <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;">
                 <span style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--grey-4);">Shards:</span>
-                ${rune.shards.map(s => '<span style="font-size:.7rem;color:var(--gold-2);padding:2px 7px;background:rgba(200,170,110,.07);border:1px solid rgba(200,170,110,.18);border-radius:3px;">'+s+'</span>').join('')}
+                ${rune.shards.map(s => {
+                  const dotColor = /health/i.test(s) ? '#4ade80' : /armor|resist/i.test(s) ? '#60a5fa' : '#c8aa6e';
+                  return `<span style="display:inline-flex;align-items:center;gap:5px;font-size:.7rem;color:var(--gold-2);padding:2px 7px;background:rgba(200,170,110,.07);border:1px solid rgba(200,170,110,.18);border-radius:3px;"><span style="width:7px;height:7px;border-radius:50%;background:${dotColor};flex-shrink:0;"></span>${s}</span>`;
+                }).join('')}
               </div>
               <!-- PRO-TIP — generated from this champion's actual rune/role data,
                    not static boilerplate, so it's a real per-champion answer
@@ -5055,7 +5114,10 @@ function openChampDetail(champId, fromChampId, buildKeyToHighlight) {
   // delays first render — it just corrects the icon/name/description in
   // place if (and only if) Riot's live data differs, the same "paint fast,
   // upgrade when real data lands" pattern used for chunked build rendering.
-  getRunesDataPromise().then(treesData => applyLiveRuneData(treesData, rune.key));
+  getRunesDataPromise().then(treesData => {
+    applyLiveRuneData(treesData, rune.key);
+    applyLiveRuneSlotIcons(treesData, c.id);
+  });
 
   // Fetch this champion's real abilities (passive + Q/W/E/R) on demand —
   // not part of the bulk champion list, so it's a separate request, made
@@ -5352,6 +5414,220 @@ function setBuildFilter(f, el) {
   el.classList.add('active');
   renderBuilds();
 }
+
+const LANE_PLAYSTYLE = {
+  Aatrox: { secondary: [], overview: 'Aatrox is a dedicated top-lane bruiser with almost no presence in other lanes. Win the wave-to-wave trading war using Q\'s healing on the early levels, then look to snowball with Teleport plays mid-game once you have a kit advantage.' },
+  Ahri: { secondary: [], overview: 'Ahri is a mobile pick-mage whose Charm sets up burst combos and whose Spirit Rush dashes let her roam between lanes safely. She has very little flex outside mid, where her roam-and-pick playstyle has the most map impact.' },
+  Akali: { secondary: [], overview: 'Akali is a stealth assassin who hides inside her own Twilight Shroud smoke before bursting an isolated target with Five Point Strike combos. She has almost no flex outside mid, where her ability-reset playstyle is hardest to lock down.' },
+  Akshan: { secondary: ['adc'], overview: 'Akshan is a stealth-and-revive marksman whose Going Rogue can resurrect a recently-killed ally while he camouflages near walls between trades. His ADC flex uses the same hit-and-hide pattern in a bot-lane duo.' },
+  Alistar: { secondary: [], overview: 'Alistar is an engage tank whose Headbutt-into-Pulverize combo can knock an isolated enemy up and into his own team for a guaranteed follow-up. He has very little flex outside support, where his engage timing wins lane skirmishes.' },
+  Amumu: { secondary: [], overview: 'Amumu is a pick-and-engage tank whose Curse of the Sad Mummy can lock down the entire enemy team in a single cast. Path toward early skirmishes — his power comes from snowballing kills, not farming, and he has no real flex outside jungle.' },
+  Anivia: { secondary: [], overview: 'Anivia is a zone-control mage whose Crystallize can wall off a chokepoint mid-fight, and whose passive lets her revive briefly as an egg after taking lethal damage. She has almost no flex outside mid, where her wall-zoning playstyle thrives.' },
+  Annie: { secondary: [], overview: 'Annie is a burst mage whose passive Pyromania automatically stuns on her fourth ability cast, enabling a guaranteed Tibbers combo. She has very little flex outside mid, where her stun-into-burst combo punishes overextensions.' },
+  Aphelios: { secondary: [], overview: 'Aphelios is a weapon-rotating marksman who carries five unique guns with different effects, swapping based on which weapon\'s ammo runs out. He has almost no flex outside ADC, where his weapon-rotation mechanics need a stable lane.' },
+  Ashe: { secondary: [], overview: 'Ashe is a slow-stacking marksman whose Enchanted Crystal Arrow can stun a target across nearly the whole map, setting up a pick from anywhere. She has very little flex outside ADC, where her frost-shot slow enables her team to follow up.' },
+  AurelionSol: { secondary: [], overview: 'Aurelion Sol is a star-orbiting mage who builds Stellaris stacks for bonus burst, then can blink across the map with Falling Star for surprise picks. He has almost no flex outside mid, where his stacking pattern needs a safe scaling lane.' },
+  Azir: { secondary: [], overview: 'Azir is a soldier-summoning mage who builds walls and zones fights with Sand Soldiers before a long-range shuriken-throw ultimate. He has very little flex outside mid, where his sieging playstyle controls lane and objectives alike.' },
+  Bard: { secondary: [], overview: 'Bard is a wandering enchanter who roams the whole map collecting Chimes for bonus stats, and whose ultimate can stasis an entire group of champions caught in its path. He has almost no flex outside support, where his roaming pattern is core.' },
+  BelVeth: { secondary: [], overview: 'Bel\'Veth is a scaling skirmisher who builds True Form stacks from jungle camps and takedowns before becoming a near-unstoppable teamfight threat. She has no presence outside jungle, where her camp-clear speed defines her power spike.' },
+  Blitzcrank: { secondary: [], overview: 'Blitzcrank is a pick-engage tank whose Rocket Grab can pull an isolated target from long range into a guaranteed combo with his team. He has very little flex outside support, where his hook timing defines his entire kit.' },
+  Brand: { secondary: ['mid'], overview: 'Brand is a DoT-stacking mage whose Blaze passive spreads burning damage between nearby enemies, excelling in grouped lane skirmishes. His support flex uses the same AoE burn pattern to apply pressure in bot-lane fights.' },
+  Braum: { secondary: [], overview: 'Braum is a peel-and-block tank whose shield can negate a single incoming projectile per use, and whose passive stacks a stun on repeated hits. He has very little flex outside support, where his peel-for-the-carry playstyle is core.' },
+  Briar: { secondary: [], overview: 'Briar is a frenzied skirmisher who locks herself into Blood Frenzy for huge stat gains but can\'t stop attacking until the target dies or she\'s pulled back by an ally. Her power is entirely jungle-bound, with no real lane flex.' },
+  Caitlyn: { secondary: [], overview: 'Caitlyn is the longest-range marksman in the game, using traps and Headshot procs to poke safely before a long-range execute on low-health targets. She has almost no flex outside ADC, where her range advantage is hardest to close.' },
+  Camille: { secondary: ['jungle'], overview: 'Camille is a duelist who punishes immobile top laners with her true-damage execute, then transitions into a pick-heavy split-pusher. Her jungle flex leans on the same hookshot mobility to gank and isolate targets early.' },
+  Cassiopeia: { secondary: [], overview: 'Cassiopeia is a poison-stacking mage who can\'t auto-attack normally but instead chains Noxious Blast and Twin Fang for sustained damage. She has almost no flex outside mid, where her poke-and-poison pattern is safest to execute.' },
+  ChoGath: { secondary: [], overview: 'Cho\'Gath is a scaling tank-mage who wants a passive, farm-focused lane to stack Feast on minions and jungle camps. Avoid all-ins before 6 — your power spike is Rupture-Feast-Vorpal Spikes combos once you\'ve snowballed health.' },
+  Corki: { secondary: ['adc'], overview: 'Corki is a hybrid-damage marksman whose Missile Barrage rockets deal true damage and whose Special Delivery can escape ganks entirely. His ADC flex uses the same poke pattern from bot lane with a duo support.' },
+  Darius: { secondary: [], overview: 'Darius is one of the most straightforward top laners: pull with E, auto, stack Hemorrhage, and execute with Q\'s outer ring once Noxian Might triggers at 5 stacks. He has almost no flex appeal outside top lane.' },
+  Diana: { secondary: ['mid'], overview: 'Diana is a burst-and-engage skirmisher whose Lunar Rush can dash to a Moonlight orb for a follow-up ultimate that pulls the whole enemy team together. Her mid-lane flex uses the same burst pattern with a safer farm-first approach.' },
+  DrMundo: { secondary: ['jungle'], overview: 'Dr. Mundo is a sustain-tank who shrugs off poke with self-healing and out-scales most lane opponents through sheer HP stacking. His jungle flex works the same way — clear camps safely, then become unkillable in fights.' },
+  Draven: { secondary: [], overview: 'Draven is a snowballing marksman whose spinning axes deal bonus gold-generating damage on hit, rewarding aggressive early trading. He has very little flex outside ADC, where his gold-snowball pattern is strongest.' },
+  Ekko: { secondary: [], overview: 'Ekko is a time-manipulating assassin whose ultimate rewinds him to his position a few seconds prior, healing him and resetting a bad fight. He has very little flex outside mid, where his combo burst is hardest to punish.' },
+  Elise: { secondary: [], overview: 'Elise is a form-switching skirmisher who ambushes from bushes in Spider form before dropping cocoons to disable priority targets. Her power is jungle-specific, built around picking off isolated laners early.' },
+  Evelynn: { secondary: [], overview: 'Evelynn is a stealth assassin who is invisible until level 6 and then one-shots squishy targets from camouflage. She has essentially no lane presence — her entire kit revolves around jungle pathing and pick timing.' },
+  Ezreal: { secondary: [], overview: 'Ezreal is a poke-and-mobility marksman whose Arcane Shift can dash away from danger on a low cooldown while still dealing damage. He has almost no flex outside ADC, where his skillshot-poke pattern is safest to execute.' },
+  Fiddlesticks: { secondary: [], overview: 'Fiddlesticks is a fear-and-burst mage whose Crowstorm ultimate can teleport in for a massive AoE fear-and-damage combo from anywhere on the map. His power is jungle-bound, leaning on disguised camps and ambush ganks.' },
+  Fiora: { secondary: [], overview: 'Fiora is a true 1v1 specialist who wants short trading windows and isolated duels. Land Riposte to parry a key ability, then bleed out Vitals with auto-resets — she has essentially no presence outside top lane.' },
+  Fizz: { secondary: [], overview: 'Fizz is a slippery assassin whose Playful/Trickster jumps make him briefly untargetable mid-combo, dodging key abilities while he bursts down a target. He has almost no flex outside mid, where his evasive trading pattern thrives.' },
+  Galio: { secondary: ['support'], overview: 'Galio is a magic-resist tank whose Hero\'s Entrance can fly in from across the map for a teamfight-altering taunt-and-knockup. His support flex uses the same global engage to peel for bot lane instead of mid.' },
+  Gangplank: { secondary: ['mid'], overview: 'Gangplank is a scaling powder-keg zoner who farms safely with Q poke and barrels, then snowballs through global Cannon Barrage pressure. His mid-lane flex trades a bit of safety for faster roam timers.' },
+  Garen: { secondary: [], overview: 'Garen is a low-skill-floor bruiser who wins through tankiness and silence-into-spin trades. Hold E\'s silence for engages or to shut down a key spell, and let passive regen punish opponents who can\'t all-in you cleanly.' },
+  Gnar: { secondary: [], overview: 'Gnar is a unique ranged-then-melee transformer who kites in Mini form and zones with Mega form\'s knockback. Managing your Rage meter — choosing when to transform — is the entire skill expression of this champion.' },
+  Gragas: { secondary: ['top'], overview: 'Gragas is a body-slam skirmisher whose Explosive Cask can knock up and displace an entire grouped enemy team. His top-lane flex trades some early gank pressure for a more straightforward farming pattern.' },
+  Graves: { secondary: [], overview: 'Graves is a burst-damage skirmisher who reloads shotgun-style with True Grit and dashes through Quickdraw for repositioning. He has very little flex outside jungle, where his camp-clear speed and gank burst are strongest.' },
+  Gwen: { secondary: ['jungle'], overview: 'Gwen is an AP bruiser who snowballs Snip Snip! stacks in extended trades and uses Hallowed Mist to wall off poke damage. Her jungle flex uses the same untargetable mist to clear camps safely.' },
+  Hecarim: { secondary: [], overview: 'Hecarim is a speed-stacking diver who builds Rampage\'s bonus movement speed into a long-range Onslaught of Shadows engage. His power is almost entirely jungle-bound, snowballing off early skirmish wins.' },
+  Heimerdinger: { secondary: ['mid'], overview: 'Heimerdinger is a zone-control mage who punishes melee dives with turret placement and long-range H-28 rockets. His mid-lane version plays nearly identically — just with more roam pressure from the middle of the map.' },
+  Hwei: { secondary: [], overview: 'Hwei is a four-spell mage who swaps between Devastation, Vision, and Subjugation forms, each with different cast types for poke, zoning, or burst. He has very little flex outside mid, where his form-switching toolkit needs a stable lane.' },
+  Illaoi: { secondary: [], overview: 'Illaoi is a zone-denial bruiser who wants to fight on top of Tentacles for massive bonus damage. Land E on the enemy to summon a Vessel, then force fights near your altars — she has very little flex outside top.' },
+  Irelia: { secondary: ['mid'], overview: 'Irelia is a high-mobility blade-dancer who stacks passive true damage off minions and abilities before diving the enemy carry. Her mid-lane flex gets more roam uptime at the cost of a slightly worse matchup spread.' },
+  Ivern: { secondary: [], overview: 'Ivern is a utility enchanter-jungler who can\'t auto-attack monsters but instead befriends them and shields allies with Triggerseed. He has no lane presence — his entire kit is built around enabling teammates from the jungle.' },
+  Janna: { secondary: [], overview: 'Janna is a disengage enchanter whose Monsoon ultimate can knock back and heal her entire team simultaneously, ending bad fights instantly. She has almost no flex outside support, where her disengage tools protect a scaling carry.' },
+  JarvanIV: { secondary: ['top'], overview: 'Jarvan IV is an engage tank whose Cataclysm ultimate combos with his own Demacian Standard flag to trap enemies inside a wall. His top-lane flex uses the same combo for isolated 1v1 engages instead of teamfight picks.' },
+  Jax: { secondary: ['jungle'], overview: 'Jax is a late-game scaling duelist who wants to survive lane, then 1v1 anyone at three items. Counter Strike dodges a key auto or ability before stunning — his jungle flex uses the same scaling to carry through ganks.' },
+  Jayce: { secondary: ['mid'], overview: 'Jayce is a stance-switching poke-and-burst champion: Mercury Cannon for ranged zoning, Mercury Hammer for melee burst. His mid-lane version leans harder into the ranged poke pattern with more roam flexibility.' },
+  Jhin: { secondary: [], overview: 'Jhin is a four-shot marksman whose every fourth auto deals critical damage, and whose ultimate can execute targets across the map with precision shots. He has very little flex outside ADC, where his rhythm-based damage pattern thrives.' },
+  Jinx: { secondary: [], overview: 'Jinx is a hyperscaling marksman who\'s weak early but becomes one of the most oppressive teamfight carries once she hits her item spike. She has almost no flex outside ADC, where her rocket-and-minigun swap defines her damage profile.' },
+  KSante: { secondary: [], overview: 'K\'Sante is a tank-bruiser whose ultimate transforms his entire kit into an all-in dueling form, walling off an enemy\'s escape route mid-fight. He has almost no flex outside top, where his all-in combo is built for 1v1 dueling.' },
+  KaiSa: { secondary: [], overview: 'Kai\'Sa is an evolving marksman whose abilities permanently upgrade based on which stats she builds, and whose ultimate can leap to a nearby ally instantly. She has very little flex outside ADC, where her stat-based evolutions are core.' },
+  Kalista: { secondary: [], overview: 'Kalista is a spear-throwing marksman who can\'t normally walk — every movement is a hop — and whose ultimate can pull a bound ally into a fight or out of danger. She has almost no flex outside ADC, where her unique hop-mechanic is mastered.' },
+  Karma: { secondary: [], overview: 'Karma is a flexible mage-enchanter whose Mantra empowers her next ability for bonus effects, letting her swap between poke-mage and shield-support roles mid-fight. She has very little flex outside support, where this dual identity thrives.' },
+  Karthus: { secondary: [], overview: 'Karthus is a global-threat mage whose Requiem ultimate can execute low-health targets anywhere on the map, even after he\'s dead via his passive. His power is jungle-specific, built around split-pushing and global pressure.' },
+  Kassadin: { secondary: [], overview: 'Kassadin is a late-game scaling assassin whose Riftwalk blink stacks bonus damage with repeated casts, eventually granting near-unlimited mobility. He has very little flex outside mid, where his mana-shield scaling needs safe farm.' },
+  Katarina: { secondary: [], overview: 'Katarina is a reset-chaining assassin whose Death Lotus ultimate can wipe a grouped, low-health enemy team in seconds via Voracity resets. She has very little flex outside mid, where her dagger-reset combos are hardest to interrupt.' },
+  Kayle: { secondary: ['adc'], overview: 'Kayle is a hyperscaling fighter-mage who\'s nearly unplayable early but becomes ranged, untargetable-on-ultimate, and extremely strong once she hits her late-game power spike. Her ADC flex was the historical norm before her top-lane shift.' },
+  Kayn: { secondary: [], overview: 'Kayn transforms into either Shadow Assassin (single-target burst) or Rhaast (tanky AoE bruiser) based on which form he feeds with Umbral Trespass stacks. He has no real flex outside jungle, where his form choice defines the whole game plan.' },
+  Kennen: { secondary: ['mid'], overview: 'Kennen is an AP assassin-mage who stacks Mark of the Storm for a team-wide stun ultimate. His mid-lane flex trades top\'s safer farming for faster access to bot-lane roams.' },
+  KhaZix: { secondary: [], overview: 'Kha\'Zix is an isolation assassin who gets bonus evolved abilities for picking off targets away from their team. He has very little presence outside jungle, where ambushing isolated targets is the core of his kit.' },
+  Kindred: { secondary: [], overview: 'Kindred is a kiting marksman-jungler whose Lamb\'s Respite ultimate can sanctuary an entire fight, healing allies and denying kills inside its zone. Their power is jungle-bound, scaling off marks collected from takedowns.' },
+  Kled: { secondary: [], overview: 'Kled is an aggressive dismount-remount bruiser who wants to all-in early before falling off Skaarl, then play safe on foot to regenerate. He has almost no presence outside top lane.' },
+  KogMaw: { secondary: [], overview: 'Kog\'Maw is a glass-cannon marksman whose Living Artillery can siege from extreme range, and whose Icathian Surprise detonates for bonus damage on death. He has very little flex outside ADC, where his late-game scaling defines his power.' },
+  LeBlanc: { secondary: [], overview: 'LeBlanc is a burst-and-deceive mage who leaves a Mimic clone behind after dashing in, baiting enemies into wasting damage on the decoy. She has almost no flex outside mid, where her chain-burst combo punishes overextensions.' },
+  LeeSin: { secondary: [], overview: 'Lee Sin is a high-mobility skirmisher famous for the \'insec\' combo — kicking an isolated enemy back into his own team with Dragon\'s Rage. He has almost no lane presence, relying on early aggression and ward-hopping mobility.' },
+  Leona: { secondary: [], overview: 'Leona is a chain-CC engage tank who procs bonus damage on every ability used against a target she\'s already marked, locking enemies in repeated stuns. She has almost no flex outside support, where her engage chains win lane all-ins.' },
+  Lillia: { secondary: ['mid'], overview: 'Lillia is a DoT-stacking mage who builds sleep stacks on enemies before a long-range ultimate that can one-shot a slept target. Her mid-lane flex uses the same poke-and-burst pattern with a safer farming lane.' },
+  Lissandra: { secondary: [], overview: 'Lissandra is a control mage whose Glacial Path self-roots briefly for repositioning, and whose ultimate can root an entire grouped enemy team. She has very little flex outside mid, where her engage-and-burst pattern is core.' },
+  Lucian: { secondary: [], overview: 'Lucian is an aggressive trading marksman whose Relentless Pursuit dash resets after takedowns, letting him chain mobility through a fight. He has almost no flex outside ADC, where his short-trade aggression pattern thrives.' },
+  Lulu: { secondary: [], overview: 'Lulu is a polymorph enchanter whose Whimsy can shrink an enemy carry into uselessness or grow an ally into a giant for a teamfight-altering size swap. She has very little flex outside support, where her peel-and-disable kit is core.' },
+  Lux: { secondary: ['support'], overview: 'Lux is a long-range poke mage whose Final Spark can snipe across nearly the whole map for a finishing blow. Her support flex uses the same poke-and-root pattern to set up kills for a bot-lane carry instead of farming mid.' },
+  Malphite: { secondary: ['mid'], overview: 'Malphite is an armor-stacking tank whose Unstoppable Force ultimate can single-handedly win teamfights with a long-range engage knockup. His mid-lane AP burst variant trades durability for a one-shot all-in pattern.' },
+  Malzahar: { secondary: [], overview: 'Malzahar is a suppression mage whose Nether Grasp ultimate locks down a single target completely while voidlings chip away at the rest of the wave. He has very little flex outside mid, where his lane-bullying push pattern thrives.' },
+  Maokai: { secondary: [], overview: 'Maokai is a zone-control tank whose saplings root nearby enemies, and whose ultimate can drag himself across the map toward a teamfight. He has almost no flex outside support, where his root-zoning playstyle protects the backline.' },
+  MasterYi: { secondary: [], overview: 'Master Yi is a snowballing duelist whose Highlander ultimate grants huge attack speed and movement speed after kills or takedowns. He has very little flex outside jungle, where early camp clears set up his late-game carry potential.' },
+  MissFortune: { secondary: [], overview: 'Miss Fortune is a wave-clear marksman whose Bullet Time ultimate channels repeated shots at all enemies in a cone, excelling in grouped fights. She has very little flex outside ADC, where her love-tap passive resets on new targets.' },
+  MonkeyKing: { secondary: ['jungle'], overview: 'Wukong is a clone-and-dive bruiser whose Nimbus Strike dashes to a target while leaving a decoy behind, and whose ultimate can spin-knock-up a wide grouped area. His jungle flex is extremely common, using the same dive combo for early ganks.' },
+  Mordekaiser: { secondary: ['jungle'], overview: 'Mordekaiser is an isolation duelist who wants to pull a single enemy into his Death Realm where no one can help them. His jungle flex uses the same dueling power to punish overextended enemy junglers.' },
+  Morgana: { secondary: [], overview: 'Morgana is a binding mage whose Black Shield can block crowd control entirely on an ally, countering hard-engage compositions. She has very little flex outside support, where her root-and-shield pattern is a premier engage counter.' },
+  Naafiri: { secondary: [], overview: 'Naafiri is a pack-hunting assassin who summons phantom packmates on cast to multiply her damage output during all-ins. She has almost no flex outside mid, where her burst-and-dash combo is hardest to track.' },
+  Nami: { secondary: [], overview: 'Nami is a heal-and-engage enchanter whose Tidal Wave ultimate knocks up and slows an entire line of enemies while empowering her own next abilities. She has almost no flex outside support, where her engage-and-sustain combo thrives.' },
+  Nasus: { secondary: [], overview: 'Nasus is a farming scaler whose entire game plan is stacking Siphoning Strike on minions until Wither makes him unkillable late. Survive lane passively, then split-push relentlessly once you\'ve out-scaled the enemy team.' },
+  Nautilus: { secondary: [], overview: 'Nautilus is a guaranteed-hit engage tank whose Dredge Line anchors to terrain if it misses a champion, making his engage nearly impossible to dodge. He has very little flex outside support, where his pick potential is highest.' },
+  Neeko: { secondary: ['support'], overview: 'Neeko is a disguise mage who can impersonate an ally champion to bait enemies before a teamfight-altering root ultimate. Her support flex uses the same disguise trickery to set up picks for bot lane instead of mid.' },
+  Nidalee: { secondary: [], overview: 'Nidalee is a form-switching poke-and-burst champion who throws Javelin Toss spears in Cougar-adjacent human form before pouncing for burst damage in Cougar form. She has almost no flex outside jungle.' },
+  Nilah: { secondary: ['adc'], overview: 'Nilah is a lifesteal-sharing fighter whose Joy Unbound ultimate pulls in nearby enemies while sharing her own healing with allied teammates caught in the radius. Her ADC flex leans on the same teamfight-healing pattern from bot lane.' },
+  Nocturne: { secondary: [], overview: 'Nocturne is a global-dive assassin whose Paranoia ultimate can teleport across the map onto an out-of-position target while blinding nearby enemies. His power is jungle-bound, snowballing off pick potential.' },
+  Nunu: { secondary: [], overview: 'Nunu & Willump is a snowball-rolling engage tank whose ultimate channels a massive boulder that can wipe a grouped team. He has very little flex outside jungle, where Consume\'s monster-execute speeds up clears.' },
+  Olaf: { secondary: ['top'], overview: 'Olaf is an unstoppable berserker whose Ragnarok removes all crowd control and grants bonus stats the lower his health drops. His top-lane flex uses the same sustained-damage dueling pattern in a 1v1 lane.' },
+  Orianna: { secondary: [], overview: 'Orianna is a ball-positioning control mage whose entire kit revolves around tracking where her Ball is for shockwave engages and shield peels. She has very little flex outside mid, where her zone-control playstyle defines teamfights.' },
+  Ornn: { secondary: [], overview: 'Ornn is a team-utility tank who upgrades his entire team\'s items via Masterwork items at his forge. Play patiently for Volcanic Rupture engages and itemize for the team — he has no real presence outside top lane.' },
+  Pantheon: { secondary: ['support'], overview: 'Pantheon is an early-aggression diver who uses Aegis Assault\'s block to win trades, then snowballs with global Grand Skyfall dives onto overextended targets. His support flex repurposes that same global engage to collapse on bot lane.' },
+  Poppy: { secondary: ['jungle'], overview: 'Poppy is a disruption tank who uses Steadfast Presence to block dashes and Heroic Charge to wall-pin key targets. Her jungle flex brings the same pick potential to ganks earlier in the game.' },
+  Pyke: { secondary: [], overview: 'Pyke is an execute-assassin support whose ultimate can finish off low-health enemies for bonus gold without stealing it from his ADC. He has almost no flex outside support, where his roam-and-execute pattern snowballs the whole map.' },
+  Qiyana: { secondary: [], overview: 'Qiyana is a terrain-empowered assassin whose abilities change effect based on nearby terrain — walls, river, or grass — for varied burst combos. She has almost no flex outside mid, where terrain access is most reliable.' },
+  Quinn: { secondary: ['jungle'], overview: 'Quinn is a hit-and-run duelist who roams via Behind Enemy Lines to apply pressure across the map, then reveals enemies for kill confirmation. Her jungle flex leans even harder into the same roaming, vision-denial pattern.' },
+  Rakan: { secondary: [], overview: 'Rakan is a dive-engage enchanter whose mobility lets him vault toward allies for shields and dash among enemies for repeated charm-and-root combos. He has very little flex outside support, where his all-in engage tempo thrives.' },
+  Rammus: { secondary: [], overview: 'Rammus is a pure engage tank whose Powerball can travel across the map for a long-range stun on a priority target. He has no real lane presence — his entire kit is built around early ganks and teamfight engages from jungle.' },
+  RekSai: { secondary: [], overview: 'Rek\'Sai is a burrow-and-ambush skirmisher who tunnels underground to set up unseen ganks and emerges with a knockup on Unburrow. Her power is jungle-specific, leaning on early-game tempo and vision denial.' },
+  Rell: { secondary: [], overview: 'Rell is an iron-horse engage tank whose ultimate can pull every nearby enemy toward her for a grouped stun, and who dismounts for melee dueling power. She has almost no flex outside support, where her engage-into-peel kit is core.' },
+  Renata: { secondary: [], overview: 'Renata Glasc is a contract-empowering enchanter whose ultimate can briefly mind-control an enemy into fighting for your team. She has very little flex outside support, where her shield-and-empower kit protects a carry.' },
+  Renekton: { secondary: ['jungle'], overview: 'Renekton is an early-aggression bruiser who stacks Fury for a dash-stun combo, designed to bully opponents before level 6. His jungle flex uses the same early dominance to contest scuttle crab and force fights.' },
+  Rengar: { secondary: [], overview: 'Rengar is a stealth-ambush assassin whose bonetooth necklace empowers each ability after a takedown, snowballing his burst further. He has very little flex outside jungle, where bush-camping ambushes are hardest to play around.' },
+  Riven: { secondary: [], overview: 'Riven is a mechanically demanding dash-combo bruiser who animation-cancels her abilities into extended dueling strings. Mastering her Q-dash resets is the entire skill ceiling — she has almost no presence outside top.' },
+  Rumble: { secondary: ['jungle'], overview: 'Rumble is a heat-management bruiser-mage who wants to bait enemies into overheating his flamethrower for bonus damage, then zone teamfights with Equalizer. His jungle flex applies the same zoning to objective fights.' },
+  Ryze: { secondary: ['mid'], overview: 'Ryze is a scaling spell-weaver who chains Q-E-W combos for mana-efficient poke and snowballs into a near-unkillable late-game mage. His mid-lane version is functionally identical with slightly easier access to roams.' },
+  Samira: { secondary: [], overview: 'Samira is a combo-style marksman whose Style points build from varied ability usage, unlocking a guaranteed-execute ultimate at max stacks. She has very little flex outside ADC, where her dash-cancel combo system is core to her kit.' },
+  Sejuani: { secondary: [], overview: 'Sejuani is an engage tank whose Glacial Prison can freeze and stun an entire grouped enemy team from long range. She has no real lane presence, built entirely around early skirmishes and teamfight picks from jungle.' },
+  Senna: { secondary: ['support'], overview: 'Senna is a soul-collecting marksman whose range and damage scale off souls harvested from nearby deaths, making her viable in either bot-lane role. Her support flex is extremely common — arguably more popular than her primary ADC role.' },
+  Seraphine: { secondary: [], overview: 'Seraphine is a stage-presence enchanter whose abilities echo with bonus effects when allies are nearby, scaling her utility with team positioning. She has very little flex outside support, where her echo mechanics matter most.' },
+  Sett: { secondary: ['support'], overview: 'Sett is a grappling brawler who punishes melee-heavy lanes with Knuckle Down\'s empowered autos and a long-range Haymaker pull. His support flex uses the same crowd control to set up kills for an ADC.' },
+  Shaco: { secondary: [], overview: 'Shaco is a deception assassin who uses Hallucinate decoys to bait enemies and Two-Shiv Poison procs for burst damage from stealth. He has almost no flex outside jungle, where ambush timing defines his power.' },
+  Shen: { secondary: ['support'], overview: 'Shen is a global-pressure tank whose Stand United ultimate can teleport to and shield any ally on the map. His support flex leans even harder into that map-wide presence, peeling for whichever lane needs help most.' },
+  Shyvana: { secondary: [], overview: 'Shyvana is a scaling skirmisher who transforms into Dragon Form for AoE burst and double resource bars from Fury. Her power is jungle-bound, clearing camps quickly to reach her dragon-form power spike.' },
+  Singed: { secondary: [], overview: 'Singed is a kite-and-poison bruiser who baits enemies into chasing him through Mega Adhesive and Fling combos. He has essentially no presence outside top lane, where his unique kiting playstyle is hardest to punish.' },
+  Sion: { secondary: ['jungle'], overview: 'Sion is a tank whose Unstoppable Onslaught charge can engage from absurd range, and who keeps fighting briefly even after dying via his passive. His jungle flex repurposes that long-range engage for early ganks.' },
+  Sivir: { secondary: [], overview: 'Sivir is a wave-clear marksman whose Spell Shield can block a single enemy spell, and whose ultimate grants the whole team bonus movement speed for sieges. She has very little flex outside ADC, where her boomerang-blade poke thrives.' },
+  Skarner: { secondary: [], overview: 'Skarner is a pick-and-engage tank whose Impale can grab and drag a priority target into his own team from a long distance. He has very little flex outside jungle, where his suppression combo is hardest to play around.' },
+  Smolder: { secondary: [], overview: 'Smolder is a slow-scaling marksman whose stacks grow permanently from minion and champion takedowns, eventually unlocking massive bonus damage. He has almost no flex outside ADC, where his stacking pattern needs a safe scaling lane.' },
+  Sona: { secondary: [], overview: 'Sona is an aura enchanter whose passive power chords proc bonus effects every third auto-attack, and whose ultimate can stun an entire grouped enemy team. She has almost no flex outside support, where her constant-pressure auras thrive.' },
+  Soraka: { secondary: [], overview: 'Soraka is a global-heal enchanter whose ultimate can save a critically low-health ally anywhere on the map, and whose Equinox can silence and root a zone. She has very little flex outside support, where her sustain enables aggressive laning.' },
+  Swain: { secondary: ['support'], overview: 'Swain is a soul-harvesting mage-tank whose ultimate pulls in a wide area of enemies while draining their health to heal himself. His support flex uses the same drain-and-engage pattern to peel for bot lane instead of farming mid.' },
+  Sylas: { secondary: [], overview: 'Sylas is a kit-stealing fighter-mage whose ultimate copies the last-cast ultimate of any enemy champion, making his power level depend on the matchup. He has very little flex outside mid, where ultimate-steal value is highest.' },
+  Syndra: { secondary: [], overview: 'Syndra is a sphere-stacking burst mage who collects Dark Spheres on the ground to throw en masse for a finishing ultimate combo. She has almost no flex outside mid, where her poke-into-burst pattern is safest to execute.' },
+  TahmKench: { secondary: ['support'], overview: 'Tahm Kench is a sustain tank who devours allies with Devour to save them from death or set up a pick with the same ability on enemies. His support flex is extremely common — arguably as popular as his top-lane version.' },
+  Taliyah: { secondary: ['mid'], overview: 'Taliyah is a terrain-manipulating mage who reshapes the battlefield with Worked Ground walls and ults in for surprise burst from unexpected angles. Her mid-lane flex uses the same combo with a more conventional farming pattern.' },
+  Talon: { secondary: [], overview: 'Talon is a mobility-burst assassin whose Rake can be cast in melee or thrown from range, then followed by a wall-vault for a surprise dive. He has very little flex outside mid, where his roam-and-burst pattern controls the map.' },
+  Taric: { secondary: [], overview: 'Taric is a bastion tank whose passive empowers his next auto after using an ability, and whose ultimate grants a brief invulnerability to a bonded ally. He has very little flex outside support, where his armor-and-shield kit protects carries.' },
+  Teemo: { secondary: ['jungle'], overview: 'Teemo is a blind-and-kite duelist who denies vision and slows pursuers with Noxious Trap mushrooms placed around the map. His jungle flex uses the same trap-zoning to control objectives and counter-jungle.' },
+  Thresh: { secondary: [], overview: 'Thresh is a hook-and-lantern support whose Death Sentence can land a pick from long range, and whose Dark Passage lantern can save a fleeing ally. He has almost no flex outside support, where his hook-landing skill ceiling is highest.' },
+  Tristana: { secondary: [], overview: 'Tristana is a range-extending marksman whose auto-attack range grows with level, eventually outranging most other ADCs at max rank. She has very little flex outside ADC, where her rocket-jump mobility resets on takedowns.' },
+  Trundle: { secondary: ['jungle'], overview: 'Trundle is a sustain duelist whose Pillar of Ice can wall off an escape route mid-chase, and whose ultimate steals enemy stats for the fight\'s duration. His jungle flex is just as common, using the same dueling power on objectives.' },
+  Tryndamere: { secondary: [], overview: 'Tryndamere is a snowballing duelist who relies on critical strikes and Undying Rage to survive lethal damage during all-ins. He has almost no presence outside top lane, where his 1v1 power is hardest to itemize against.' },
+  TwistedFate: { secondary: [], overview: 'Twisted Fate is a card-throwing poke mage whose Destiny ultimate reveals every enemy champion on the map for a global pick setup. He has almost no flex outside mid, where his global-vision roam pressure is most disruptive.' },
+  Twitch: { secondary: [], overview: 'Twitch is a stealth-ambush marksman who goes invisible to flank for a surprise burst combo, applying stacking poison damage on hit. He has almost no flex outside ADC, where his ambush ranged-burst pattern is hardest to predict.' },
+  Udyr: { secondary: [], overview: 'Udyr is a stance-switching brawler who swaps between Bear (movement), Tiger (damage), Turtle (sustain), and Phoenix (AoE burn) stances mid-fight. He has very little flex outside jungle, where stance-switching for ganks is core.' },
+  Urgot: { secondary: [], overview: 'Urgot is a zone-control duelist whose Disdain execute punishes low-health targets and whose Fear Beyond Death ultimate hard-displaces enemies into his team. He has very little flex outside top lane.' },
+  Varus: { secondary: [], overview: 'Varus is a poke-and-root marksman whose stacking Blight damage detonates for bonus burst, and whose ultimate roots a whole grouped line of enemies. He has very little flex outside ADC, where his poison-poke pattern thrives.' },
+  Vayne: { secondary: ['adc'], overview: 'Vayne is most often played top lane in the current meta, where Condemn punishes overextensions and tumble resets keep her safe while stacking true damage. Her ADC flex uses the same scaling pattern from the bot lane.' },
+  Veigar: { secondary: [], overview: 'Veigar is an infinitely-scaling mage whose Phenomenal Evil Power stacks permanently from kills, eventually one-shotting anyone with his ultimate. He has very little flex outside mid, where his stack-and-cage playstyle is safest.' },
+  VelKoz: { secondary: ['support'], overview: 'Vel\'Koz is a sustained-poke mage whose Void Rush dash empowers his next ability, and whose ultimate channels a long-range disintegration beam. His support flex uses the same poke-and-disable pattern to peel for bot lane instead of mid.' },
+  Vex: { secondary: [], overview: 'Vex is a gloom-stacking mage who gains bonus damage against dashing enemies, punishing mobility-heavy compositions with her Personal Space passive. She has almost no flex outside mid, where her anti-dash punish thrives.' },
+  Vi: { secondary: [], overview: 'Vi is a dive-and-isolate assassin whose Cease and Desist can pin a single target against terrain while blocking the rest of their team from intervening. She has almost no flex outside jungle, where pick potential is her win condition.' },
+  Viego: { secondary: [], overview: 'Viego is a possession-based skirmisher who can take control of any champion he kills, briefly becoming them with their items. His power is jungle-specific, snowballing hard off early takedowns that chain into more possessions.' },
+  Viktor: { secondary: [], overview: 'Viktor is a scaling augment mage who upgrades his abilities permanently via Hextech items collected across the game. He has very little flex outside mid, where his power-spike scaling defines his entire game plan.' },
+  Vladimir: { secondary: ['mid'], overview: 'Vladimir is a sustain mage who pools into Sanguine Pool to dodge damage and heals off his own ability casts via Crimson Pact. His mid-lane version plays near-identically with faster roam access.' },
+  Volibear: { secondary: [], overview: 'Volibear is an aggression bruiser who dives onto isolated targets with Thundering Smash and rides allies with The Relentless Storm for an extra burst of damage. He has very little presence outside top lane.' },
+  Warwick: { secondary: [], overview: 'Warwick is a sustain duelist whose Infinite Duress ultimate suppresses a single target for a guaranteed pick if it lands. He has very little flex outside jungle, where blood-scent tracking helps him find low-health targets to finish.' },
+  Xayah: { secondary: [], overview: 'Xayah is a feather-recall marksman who plants feathers with each cast and recalls them for bonus damage, and whose ultimate makes her untargetable mid-fight. She has very little flex outside ADC, where her feather-recall combo is core.' },
+  Xerath: { secondary: ['support'], overview: 'Xerath is a long-range siege mage whose ultimate channels repeated artillery strikes across nearly the whole map. His support flex uses the same siege-poke pattern to control bot-lane skirmishes instead of farming mid.' },
+  XinZhao: { secondary: ['top'], overview: 'Xin Zhao is an aggression skirmisher whose Crescent Guard can knock back an entire group before a sustained dueling combo. His top-lane flex uses the same early-aggression pattern with a more straightforward 1v1 lane.' },
+  Yasuo: { secondary: ['top'], overview: 'Yasuo is a crit-stacking duelist whose Wind Wall blocks all incoming projectiles, and whose ultimate suspends any already-airborne enemy for follow-up burst. His top-lane flex uses the same dash-and-knockup combo in a 1v1 setting.' },
+  Yone: { secondary: ['top'], overview: 'Yone is a dual-wielding duelist whose Spirit Cleave applies bonus true damage and whose ultimate pulls in everyone hit along a dash line. His top-lane flex uses the same crit-and-dash combo in a 1v1 lane instead of mid.' },
+  Yorick: { secondary: [], overview: 'Yorick is a split-push specialist who summons a Maiden of the Mist wall to zone teamfights while ghouls push side lanes. He has almost no flex appeal outside top lane, where his split-push pattern is strongest.' },
+  Yuumi: { secondary: [], overview: 'Yuumi is an attached enchanter who becomes untargetable by hiding on an ally champion, healing and empowering them while immune to most damage. She has no flex outside support, where her attached playstyle defines her entire kit.' },
+  Zac: { secondary: [], overview: 'Zac is an elastic engage tank who splits into globs on death for a brief second chance, and whose ultimate launches him across the map for a teamfight-altering stun. He has no real flex outside jungle.' },
+  Zed: { secondary: ['mid'], overview: 'Zed is a shadow-clone assassin who copies his own abilities through Living Shadow for double damage instances before a kill-confirming mark detonation. His jungle path uses the same burst combo to punish isolated camps and ganking lanes.' },
+  Zeri: { secondary: [], overview: 'Zeri is a mobile hyper-carry marksman whose auto-attacks are a continuous laser rather than discrete shots, and who can zip along walls with her ultimate active. She has almost no flex outside ADC, where her mobility-kiting pattern thrives.' },
+  Ziggs: { secondary: [], overview: 'Ziggs is a bomb-siege mage who zones lanes and structures with Mega Inferno Bombs, dealing bonus damage to towers and inhibitors. He has very little flex outside mid, where his siege-poke pattern controls objectives.' },
+  Zilean: { secondary: ['support'], overview: 'Zilean is a time-manipulating utility mage whose Chrono Shift can revive a low-health ally a few seconds after they would have died. His support flex is just as common as mid, peeling and setting up picks with bombs.' },
+  Zoe: { secondary: [], overview: 'Zoe is a sleep-and-burst mage whose Spell Thief lets her pick up and use a randomized spell dropped by enemy summoner spell or item casts. She has very little flex outside mid, where her poke-and-sleep combo is safest.' },
+  Zyra: { secondary: [], overview: 'Zyra is a plant-summoning mage whose seeds bloom into thorny plants that attack nearby enemies, and whose ultimate roots and pulls a wide area. She has very little flex outside support, where her plant-zoning playstyle is core.' },
+};
+// ============================================================
+// LANE PRIORITY & PLAYSTYLE
+// ============================================================
+// Reuses the page's own existing role assignment (c.role, already computed
+// by getRole() and already shown elsewhere on this same page as a tag) as
+// the single source of truth for "Primary Lane Priority" — this guarantees
+// the new section can never contradict a role already displayed on screen.
+// LANE_PLAYSTYLE below only supplies the genuinely NEW data: which other
+// lanes this champion commonly flexes into, and how to actually play the
+// lane on this specific champion.
+const ROLE_DISPLAY = {
+  top: 'Top Lane', jungle: 'Jungle', mid: 'Mid Lane', adc: 'ADC (Bot Lane)', support: 'Support',
+};
+function roleLabel(role) { return ROLE_DISPLAY[role] || (role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Flex'); }
+
+// Same 5 icons already used for the role filter tabs on the Champions page —
+// reused here rather than introducing a new icon style, so the lane badge
+// reads as the same visual language a visitor has already seen elsewhere.
+const ROLE_ICON_SVG = {
+  top: '<svg width="13" height="13" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="10,2 18,8 18,16 10,18 2,16 2,8" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="6" x2="10" y2="14" stroke="currentColor" stroke-width="1.5"/></svg>',
+  jungle: '<svg width="13" height="13" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 13 Q10 7 13 13" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+  mid: '<svg width="13" height="13" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="3" y="3" width="14" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+  adc: '<svg width="13" height="13" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 10 L16 10 M12 6 L16 10 L12 14" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>',
+  support: '<svg width="13" height="13" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M10 3 C10 3 3 6 3 12 L10 17 L17 12 C17 6 10 3 10 3Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>',
+};
+function roleIcon(role) { return ROLE_ICON_SVG[role] || ROLE_ICON_SVG.mid; }
+
+// Generic per-role fallback — only used if a champion is missing from
+// LANE_PLAYSTYLE below. This covers the live (non-file://) data path: if
+// Riot ships a brand-new champion via Data Dragon before this site's static
+// data is updated for them, the page still renders sensible content instead
+// of breaking or showing "undefined".
+const LANE_PLAYSTYLE_FALLBACK = {
+  top: "Top lane is a 1-vs-1 island for most of the early game. Focus on trading evenly, watching for jungle ganks, and using Teleport to convert a lane lead into map-wide pressure once mid-game starts.",
+  jungle: "Jungle revolves around clearing camps efficiently, tracking the enemy jungler's pathing, and timing ganks for when a lane is overextended or out of position. Objective control — Dragon, Herald, Baron — is usually a stronger win condition than pure farm.",
+  mid: "Mid lane offers the shortest path to both side lanes and the jungle, making roam timing the core skill. Push your wave or win a trade before roaming, so you're not sacrificing free farm for a roam that doesn't pay off.",
+  adc: "Bot lane is a 2-vs-2 lane where trading is shared with your support. Stay behind your frontline in fights, prioritize farm over forced trades early, and scale into your item power spikes before taking unnecessary risks.",
+  support: "Support's value comes from vision control, peeling for your carry, and deciding when to engage versus disengage in lane skirmishes. Buy a Control Ward every recall — it's one of the highest gold-efficiency purchases in the game.",
+};
+function getLanePlaystyle(c) {
+  const entry = LANE_PLAYSTYLE[c.name];
+  if (entry) return entry;
+  return { secondary: [], overview: LANE_PLAYSTYLE_FALLBACK[c.role] || LANE_PLAYSTYLE_FALLBACK.mid };
+}
+
 
 // ============================================================
 // GUIDES PAGE
@@ -6332,7 +6608,7 @@ function goToProfileSection(section) {
 // ============================================================
 // NAVIGATION
 // ============================================================
-function navigate(pageName, skipFlash) {
+function navigate(pageName, skipFlash, isRestore) {
   // Leaving the champion-detail page entirely (not via chained openChampDetail) clears back-nav state
   if (pageName !== 'champion-detail') lastViewedChamp = null;
   // Also clear the ?champion=&build= deep-link params from the URL when
@@ -6356,13 +6632,66 @@ function navigate(pageName, skipFlash) {
   document.querySelectorAll('.nav-links a, .mobile-menu a, #mobileNavMenu a').forEach(a => a.classList.remove('active'));
   const navEl = document.getElementById('nav-' + pageName);
   if (navEl) navEl.classList.add('active');
+  const isFirstNavigateCall = !currentPage;
+  const previousPage = currentPage;
   currentPage = pageName;
   if (pageName === 'profile')  renderProfile();
   if (pageName === 'tierlist') renderTierList();
   if (pageName === 'builds')   renderBuilds();
   if (pageName === 'guides')   { guidePage = 0; renderGuides(); }
   setTimeout(() => { observeFadeIns(); animatePageIn(pageName); }, 60);
+
+  // ──────────────────────────────────────────────────────────────────────
+  // BROWSER BACK/FORWARD SUPPORT — previously this site never called
+  // pushState, only replaceState, on the theory that there was "no other
+  // history entry to go back to." In practice that meant every internal
+  // navigation (clicking Champions, Tier List, a champion card, etc.) left
+  // the browser's session history with exactly ONE entry for the whole
+  // visit, so pressing the browser's native Back button immediately
+  // exited the site (back to Google, a referral link, etc.) instead of
+  // undoing the last internal navigation — the bug being fixed here.
+  //
+  // Champion-detail pages are deliberately skipped below: openChampDetail()
+  // already does its own (more detailed, champion+build-aware) history
+  // write immediately after calling navigate('champion-detail', ...), so
+  // doing it again here would create a second, redundant history entry
+  // for a single click.
+  //
+  // isRestore is true only when this call originated FROM a popstate event
+  // (the user already pressed Back/Forward and the browser already moved
+  // the history pointer) — pushing or replacing again in that case would
+  // corrupt the history stack instead of just syncing the UI to match.
+  if (!isRestore && pageName !== 'champion-detail' && pageName !== previousPage) {
+    try {
+      if (isFirstNavigateCall) {
+        // Replace (not push) the very first navigate() call of the whole
+        // page load, so this doesn't stack a redundant duplicate entry on
+        // top of the entry the browser already created when the page
+        // first loaded. Back from Home should exit after exactly one
+        // press, same as visitors already expect on every other site.
+        window.history.replaceState({ page: pageName }, '', window.location.pathname);
+      } else {
+        window.history.pushState({ page: pageName }, '', window.location.pathname);
+      }
+    } catch (e) { /* pushState/replaceState can throw in sandboxed/file:// contexts — never block navigation over this */ }
+  }
 }
+
+// Fires when the user presses the browser's native Back or Forward button.
+// Reads whichever state object navigate()/openChampDetail() attached to
+// that history entry and replays the corresponding internal navigation —
+// isRestore=true on both calls below so neither one re-pushes/re-replaces
+// history a second time (the browser already moved the history pointer
+// before this event fires; our job here is only to update the UI to match).
+window.addEventListener('popstate', (e) => {
+  const state = e.state || {};
+  const targetPage = state.page || 'home';
+  if (targetPage === 'champion-detail' && state.champId) {
+    openChampDetail(state.champId, null, state.buildKeyToHighlight || null, true);
+  } else {
+    navigate(targetPage, true, true);
+  }
+});
 
 function animatePageIn(pageName) {
   if (pageName === 'champions') {
@@ -6831,6 +7160,56 @@ function findKeystoneByKey(treesData, key) {
     }
   }
   return null;
+}
+
+// Searches EVERY slot (not just the keystone slot[0]) across all 5 trees for
+// a rune matching `displayName` — this is what powers the new icon lookups
+// for Primary Runes and Secondary tree chips. Matching is whitespace/case
+// tolerant since the hardcoded display strings in `keystones` above (e.g.
+// "Legend: Alacrity") need to line up with whatever Riot's live data calls
+// the same rune, and a punctuation/spacing mismatch shouldn't silently break
+// the icon — it should just fall back to no icon, same as a failed fetch.
+function normalizeRuneName(s) { return (s || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
+function findRuneByName(treesData, displayName) {
+  if (!Array.isArray(treesData)) return null;
+  const target = normalizeRuneName(displayName);
+  if (!target) return null;
+  for (const tree of treesData) {
+    if (!Array.isArray(tree.slots)) continue;
+    for (const slot of tree.slots) {
+      if (!Array.isArray(slot.runes)) continue;
+      const found = slot.runes.find(r => normalizeRuneName(r.name) === target);
+      if (found) {
+        return {
+          id: found.id, key: found.key, name: found.name,
+          icon: (found.icon || '').replace('perk-images/Styles/', ''),
+          treeName: tree.name,
+        };
+      }
+    }
+  }
+  return null;
+}
+
+// Replaces every Primary/Secondary rune chip's placeholder icon with the
+// real live icon once getRunesDataPromise() resolves. `expectedChampId`
+// guards the same way applyChampionAbilities() does — if the visitor has
+// already navigated to a different champion by the time this resolves,
+// the chips for the OLD champion's now-removed panel are silently skipped
+// rather than (impossibly) updating a panel that's no longer in the DOM.
+function applyLiveRuneSlotIcons(treesData, expectedChampId) {
+  const panel = document.getElementById('champRunePanel');
+  if (!panel) return; // visitor navigated away before the fetch resolved
+  if (panel.dataset.champId !== expectedChampId) return; // a newer openChampDetail() call superseded this one
+  panel.querySelectorAll('[data-rune-slot-name]').forEach(chip => {
+    const name = chip.dataset.runeSlotName;
+    const live = findRuneByName(treesData, name);
+    if (!live || !live.icon) return; // no match (or fetch failed) — the text-only chip already rendered is a perfectly fine fallback
+    const iconEl = chip.querySelector('[data-rune-slot-icon]');
+    if (!iconEl) return;
+    const src = 'https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/' + live.icon;
+    iconEl.innerHTML = `<img src="${src}" alt="" width="16" height="16" loading="lazy" decoding="async" style="border-radius:3px;object-fit:contain;" onerror="this.parentElement.innerHTML=''">`;
+  });
 }
 
 // ============================================================
