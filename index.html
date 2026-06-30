@@ -7232,15 +7232,26 @@ function applyLiveRuneSlotIcons(treesData, expectedChampId) {
 const _championAbilitiesCache = {}; // keyed by champion id, e.g. 'Jinx'
 const _championAbilitiesFetchPromises = {};
 
-function getChampionAbilitiesPromise(champId) {
-  if (_championAbilitiesCache[champId]) return Promise.resolve(_championAbilitiesCache[champId]);
+function getChampionAbilitiesPromise(champId, _retriesLeft) {
+  if (_retriesLeft === undefined) _retriesLeft = 2; // up to 2 retries (3 attempts total) on transient failures before giving up
+  if (_championAbilitiesCache[champId] !== undefined) return Promise.resolve(_championAbilitiesCache[champId]);
   if (_championAbilitiesFetchPromises[champId]) return _championAbilitiesFetchPromises[champId];
   if (window.location.protocol === 'file:') return Promise.resolve(null);
-  _championAbilitiesFetchPromises[champId] = fetch(`${DD_BASE}/data/en_US/champion/${champId}.json`)
-    .then(r => r.json())
+  const p = fetch(`${DD_BASE}/data/en_US/champion/${champId}.json`)
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' fetching abilities for ' + champId);
+      return r.json();
+    })
     .then(j => {
       const data = j.data && j.data[champId];
-      if (!data) { _championAbilitiesCache[champId] = null; return null; }
+      if (!data) {
+        // The fetch itself succeeded, but this champion genuinely isn't in
+        // the response — a real, stable fact worth caching permanently
+        // (retrying won't change it), unlike a network-level failure below.
+        _championAbilitiesCache[champId] = null;
+        delete _championAbilitiesFetchPromises[champId];
+        return null;
+      }
       const result = {
         passive: data.passive ? {
           name: data.passive.name,
@@ -7255,10 +7266,25 @@ function getChampionAbilitiesPromise(champId) {
         })) : [],
       };
       _championAbilitiesCache[champId] = result;
+      delete _championAbilitiesFetchPromises[champId];
       return result;
     })
-    .catch(() => { _championAbilitiesCache[champId] = null; return null; });
-  return _championAbilitiesFetchPromises[champId];
+    .catch(err => {
+      // Network error, CORS rejection, a non-OK HTTP status, malformed JSON,
+      // etc. — none of these tell us anything permanent about this champion,
+      // so (unlike the "not in the response" case above) this must NOT be
+      // cached forever. Clearing the in-flight promise entry lets the next
+      // call for this champId attempt a fresh fetch instead of permanently
+      // replaying today's failure for the rest of the browsing session.
+      console.warn('[abilities] fetch failed for', champId, '—', err && err.message ? err.message : err, _retriesLeft > 0 ? '(retrying)' : '(giving up after retries)');
+      delete _championAbilitiesFetchPromises[champId];
+      if (_retriesLeft > 0) {
+        return new Promise(resolve => setTimeout(resolve, 600)).then(() => getChampionAbilitiesPromise(champId, _retriesLeft - 1));
+      }
+      return null; // exhausted retries this call — NOT cached, so a later visit to this champion can still try again fresh
+    });
+  _championAbilitiesFetchPromises[champId] = p;
+  return p;
 }
 
 // Strip HTML tags from DDragon description strings
