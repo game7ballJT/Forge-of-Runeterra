@@ -13,4 +13,4 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-Sitemap: https://forgeofruneterra.gg/sitemap.xml
+Sitemap: https://forgeofruneterra.com/
