@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<title>Bard vs Blitzcrank Matchup — Patch 26.13 | Forge of Runeterra</title>
+<meta name="description" content="How to play Bard into Blitzcrank in Patch 26.13. Win the Bard vs Blitzcrank matchup with itemization tips, rune adjustments, and lane strategy.">
+<link rel="canonical" href="https://forgeofruneterra.gg/counters/bard-vs-blitzcrank/">
+<meta property="og:title" content="Bard vs Blitzcrank — Matchup Guide Patch 26.13">
+<meta property="og:url" content="https://forgeofruneterra.gg/counters/bard-vs-blitzcrank/">
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Bard vs Blitzcrank Matchup Guide \u2014 Patch 26.13",
+  "description": "How to beat Blitzcrank as Bard in Patch 26.13. Tips, item adjustments, and lane strategy.",
+  "datePublished": "June 24, 2026",
+  "author": {
+    "@type": "Organization",
+    "name": "Forge of Runeterra"
+  },
+  "url": "https://forgeofruneterra.gg/counters/bard-vs-blitzcrank/"
+}</script>
+<style>
+:root{
+  --gold:#c8aa6e;--gold-dark:#a08040;--teal:#0bc4b4;
+  --bg:#0a0e1a;--bg-card:#111827;--bg-panel:#0d1424;
+  --border:rgba(255,255,255,.08);--text:#e2e8f0;--muted:#8899aa;
+  --font:'Inter',system-ui,sans-serif;--display:'Cinzel','Trajan Pro',serif;
+  --red:#ff4e50;--green:#22cc44;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.6}
+a{color:var(--teal);text-decoration:none}a:hover{text-decoration:underline}
+h1,h2,h3,h4{font-family:var(--display);color:var(--gold);line-height:1.3}
+h1{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:.5rem}
+h2{font-size:clamp(1.2rem,2.5vw,1.7rem);margin:2rem 0 .75rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+h3{font-size:1.1rem;margin:1.5rem 0 .5rem;color:var(--gold-dark)}
+p{margin-bottom:1rem;color:#ccd6e8}
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+.site-header{background:rgba(10,14,26,.95);border-bottom:1px solid var(--border);padding:.9rem 0;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+.site-header .inner{max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap}
+.site-logo{font-family:var(--display);font-size:1.2rem;color:var(--gold);font-weight:700;letter-spacing:.05em}
+.site-logo span{color:var(--teal);font-size:.65rem;display:block;letter-spacing:.15em;text-transform:uppercase}
+.header-nav{display:flex;gap:1.2rem;font-size:.85rem}
+.header-nav a{color:var(--muted)}
+.header-nav a:hover{color:var(--gold);text-decoration:none}
+.launch-btn{margin-left:auto;background:var(--teal);color:#000;padding:.45rem 1.1rem;border-radius:4px;font-weight:700;font-size:.82rem;text-decoration:none !important;letter-spacing:.05em}
+.launch-btn:hover{background:#0ae0ce;color:#000}
+.hero{padding:3rem 0 2rem;border-bottom:1px solid var(--border)}
+.champ-hero{display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap}
+.champ-splash{width:96px;height:96px;border-radius:8px;border:2px solid var(--border);object-fit:cover;flex-shrink:0}
+.champ-meta{flex:1;min-width:0}
+.champ-subtitle{color:var(--muted);font-size:.9rem;margin-bottom:.5rem}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+.tag{background:rgba(200,170,110,.12);color:var(--gold);border:1px solid rgba(200,170,110,.25);border-radius:4px;padding:2px 9px;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.tag.role{background:rgba(11,196,180,.1);color:var(--teal);border-color:rgba(11,196,180,.25)}
+.tag.tier-S{background:rgba(255,215,0,.15);color:#ffd700;border-color:rgba(255,215,0,.3)}
+.tag.tier-A{background:rgba(192,57,43,.15);color:#e74c3c;border-color:rgba(192,57,43,.3)}
+.tag.tier-B{background:rgba(52,152,219,.12);color:#3498db;border-color:rgba(52,152,219,.3)}
+.tag.tier-C{background:rgba(149,165,166,.1);color:#95a5a6;border-color:rgba(149,165,166,.25)}
+.tag.tier-D{background:rgba(100,100,100,.1);color:#7f8c8d;border-color:rgba(100,100,100,.2)}
+.panel{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-bottom:1.5rem;overflow:hidden}
+.panel-header{padding:.7rem 1.1rem;background:rgba(200,170,110,.06);border-bottom:1px solid var(--border);font-family:var(--display);font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:.5rem}
+.panel-body{padding:1.1rem}
+.answer-first strong{color:#fff;font-size:1.05em;display:block;margin-bottom:.5rem}
+.items-grid{display:flex;flex-wrap:wrap;gap:.6rem}
+.item-chip{display:flex;align-items:center;gap:.45rem;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:5px;padding:.3rem .55rem;font-size:.78rem;color:var(--text)}
+.item-chip img{width:26px;height:26px;border-radius:3px;object-fit:cover}
+.rune-block{display:flex;flex-direction:column;gap:.5rem}
+.rune-keystone{background:rgba(200,170,110,.08);border:1px solid rgba(200,170,110,.2);border-radius:6px;padding:.7rem 1rem;font-weight:700;color:var(--gold)}
+.rune-tree-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:.6rem 0 .3rem}
+.rune-chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.rune-chip{font-size:.77rem;padding:3px 9px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:3px;color:var(--text)}
+.shard-chip{font-size:.72rem;padding:2px 7px;background:rgba(200,170,110,.07);border:1px solid rgba(200,170,110,.18);border-radius:3px;color:var(--gold-dark)}
+.counter-grid,.synergy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem}
+.counter-card,.synergy-card{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:5px;padding:.4rem .6rem;font-size:.82rem}
+.counter-card img,.synergy-card img{width:32px;height:32px;border-radius:4px;object-fit:cover}
+.counter-card a,.synergy-card a{color:var(--text);text-decoration:none}
+.counter-card a:hover,.synergy-card a:hover{color:var(--gold)}
+.cta-band{background:rgba(11,196,180,.07);border:1px solid rgba(11,196,180,.2);border-radius:8px;padding:1.5rem;text-align:center;margin:2rem 0}
+.cta-band h3{color:var(--teal);margin-bottom:.4rem}
+.cta-band p{font-size:.9rem;margin-bottom:1rem}
+.cta-btn{display:inline-block;background:var(--teal);color:#000 !important;font-weight:700;padding:.55rem 1.4rem;border-radius:5px;text-decoration:none !important;font-size:.88rem;letter-spacing:.05em}
+.cta-btn:hover{background:#0ae0ce}
+.breadcrumb{font-size:.8rem;color:var(--muted);margin-bottom:1.5rem}
+.breadcrumb a{color:var(--muted)}
+.breadcrumb a:hover{color:var(--gold)}
+.main-layout{display:grid;grid-template-columns:1fr 300px;gap:2rem;padding:2rem 0}
+.sidebar-card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:1rem;margin-bottom:1rem;font-size:.82rem}
+.sidebar-card h4{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
+.sidebar-stat{display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid var(--border);color:var(--muted)}
+.sidebar-stat:last-child{border:none}
+.sidebar-stat strong{color:var(--text)}
+.tier-badge{font-family:var(--display);font-size:2rem;font-weight:900;text-align:center;padding:.5rem;border-radius:6px}
+.related-list{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.related-list a{color:var(--muted);font-size:.82rem;padding:.2rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.related-list a:hover{color:var(--gold);text-decoration:none}
+.patch-badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(11,196,180,.1);color:var(--teal);border:1px solid rgba(11,196,180,.25);border-radius:4px;padding:3px 10px;font-size:.72rem;font-weight:700;letter-spacing:.07em}
+.site-footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:3rem;text-align:center;color:var(--muted);font-size:.8rem}
+.site-footer a{color:var(--muted)}
+.matchup-intro strong{color:#fff}
+.guide-section{margin-bottom:2rem}
+.guide-section h2{font-size:1.2rem}
+.tip-box{background:rgba(11,196,180,.07);border-left:3px solid var(--teal);border-radius:0 6px 6px 0;padding:.75rem 1rem;margin:1rem 0;font-size:.88rem}
+.tip-box strong{color:var(--teal)}
+@media(max-width:768px){
+  .main-layout{grid-template-columns:1fr}
+  .sidebar{order:-1}
+  .counter-grid,.synergy-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="inner">
+    <a href="https://forgeofruneterra.gg/" class="site-logo" style="text-decoration:none">
+      Forge of Runeterra
+      <span>LoL Builds & Tier Lists</span>
+    </a>
+    <nav class="header-nav">
+      <a href="https://forgeofruneterra.gg/champions/">Champions</a>
+      <a href="https://forgeofruneterra.gg/#tierlist">Tier List</a>
+      <a href="https://forgeofruneterra.gg/#builds">Builds</a>
+      <a href="https://forgeofruneterra.gg/#guides">Guides</a>
+      <a href="https://forgeofruneterra.gg/patch/26-13/">Patch 26.13</a>
+    </nav>
+    <a href="https://forgeofruneterra.gg/" class="launch-btn">▶ Open Full App</a>
+  </div>
+</header>
+
+<main>
+<div class="container">
+  <div class="breadcrumb" style="margin-top:1.5rem">
+    <a href="https://forgeofruneterra.gg/">Home</a> &rsaquo;
+    <a href="https://forgeofruneterra.gg/champions/bard/">Bard</a> &rsaquo;
+    Bard vs Blitzcrank
+  </div>
+
+  <!-- Matchup header -->
+  <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin:1rem 0 2rem">
+    <img src="https://ddragon.leagueoflegends.com/cdn/15.12.1/img/champion/bard.png" alt="Bard" style="width:72px;height:72px;border-radius:8px;border:2px solid var(--border)">
+    <div style="font-family:var(--display);font-size:2rem;color:var(--muted);padding:0 .5rem">VS</div>
+    <img src="https://ddragon.leagueoflegends.com/cdn/15.12.1/img/champion/blitzcrank.png" alt="Blitzcrank" style="width:72px;height:72px;border-radius:8px;border:2px solid var(--border)">
+    <div>
+      <h1 style="font-size:1.6rem">Bard vs Blitzcrank</h1>
+      <div style="font-size:.82rem;color:var(--muted)">Support Matchup &bull; Patch 26.13</div>
+    </div>
+  </div>
+
+  <!-- Answer-first block -->
+  <div class="panel">
+    <div class="panel-header">⚔ How to Beat Blitzcrank as Bard</div>
+    <div class="panel-body">
+      <div class="answer-first">
+        <strong>To win Bard vs Blitzcrank in Patch 26.13, exploit Blitzcrank's fighter vulnerabilities by itemizing early resistance and denying their power spike timing.</strong>
+        <p>Bard (Mage) against Blitzcrank (Fighter) is a matchup that depends heavily on level timing, summoner spell cooldowns, and the jungler's ganking priority for Support.</p>
+      </div>
+
+      <h2>What makes this matchup difficult</h2>
+      <p>Blitzcrank presents a challenge for Bard primarily because of their fighter toolkit. Understanding their key ability cooldowns and power windows is essential to navigating this lane.</p>
+
+      <h2>How Bard wins this matchup</h2>
+      <p>Bard is a wandering enchanter who roams the whole map collecting Chimes for bonus stats, and whose ultimate can stasis an entire group of champions caught in its path. He has almost no flex outside support, where his roaming pattern is core.</p>
+      <div class="tip-box">
+        <strong>Key tip:</strong> Against Blitzcrank, prioritize your first item spike. At Luden's Tempest, your trading power increases significantly. Force short trades before level 6 if you're an early-game champion.
+      </div>
+
+      <h2>Item adjustments for this matchup</h2>
+      <p>Your standard Bard build (Luden's Tempest) applies here, but consider adjusting your third item slot based on how dominant Blitzcrank is in the game.</p>
+      <div class="items-grid">
+        <div class="item-chip"><img src="https://ddragon.leagueoflegends.com/cdn/15.12.1/img/item/6655.png" alt="Luden's Tempest" loading="lazy" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/15.12.1/img/item/3364.png'">Luden's Tempest</div><div class="item-chip"><img src="https://ddragon.leagueoflegends.com/cdn/15.12.1/img/item/4645.png" alt="Shadowflame" loading="lazy" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/15.12.1/img/item/3364.png'">Shadowflame</div><div class="item-chip"><img src="https://ddragon.leagueoflegends.com/cdn/15.12.1/img/item/3157.png" alt="Zhonya's Hourglass" loading="lazy" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/15.12.1/img/item/3364.png'">Zhonya's Hourglass</div><div class="item-chip"><img src="https://ddragon.leagueoflegends.com/cdn/15.12.1/img/item/3135.png" alt="Void Staff" loading="lazy" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/15.12.1/img/item/3364.png'">Void Staff</div>
+      </div>
+
+      <h2>About your opponent: Blitzcrank</h2>
+      <p>Blitzcrank is a pick-engage tank whose Rocket Grab can pull an isolated target from long range into a guaranteed combo with his team. He has very little flex outside support, where his hook timing defines his entire kit.</p>
+
+      <h2>Frequently asked: Bard vs Blitzcrank</h2>
+
+      <h3>Does Bard counter Blitzcrank?</h3>
+      <p><strong>Bard has favourable matchup tools against Blitzcrank.</strong> Matchup outcomes depend on player execution, item timing, and jungle priority as much as pure champion kit interactions.</p>
+
+      <h3>What level does Bard win this lane?</h3>
+      <p><strong>The first notable power window for Bard is levels 3 and 6.</strong> At level 3 you have access to your full basic combo. At level 6 your ultimate opens new all-in or escape options depending on your champion archetype.</p>
+
+      <h3>What summoner spells should I run?</h3>
+      <p><strong>Flash is non-negotiable. Your second summoner depends on your matchup.</strong> Against aggressive Blitzcrank players, Ignite secures kills in winning trades. Against scaling or defensive opponents, Teleport provides map-wide presence.</p>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;flex-wrap:wrap">
+    <a href="https://forgeofruneterra.gg/champions/bard/" class="cta-btn" style="text-align:center;padding:.7rem">Full Bard Guide →</a>
+    <a href="https://forgeofruneterra.gg/champions/blitzcrank/" class="cta-btn" style="text-align:center;padding:.7rem;background:rgba(255,255,255,.1);color:var(--text)">Full Blitzcrank Guide →</a>
+  </div>
+</div>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <p>Forge of Runeterra is not affiliated with Riot Games. Data sourced from the Riot Games Data Dragon API.</p>
+    <p style="margin-top:.4rem">
+      <a href="https://forgeofruneterra.gg/">Home</a> &bull;
+      <a href="https://forgeofruneterra.gg/champions/">All Champions</a> &bull;
+      <a href="https://forgeofruneterra.gg/patch/26-13/">Patch 26.13</a> &bull;
+      <a href="https://forgeofruneterra.gg/sitemap.xml">Sitemap</a>
+    </p>
+    <p style="margin-top:.4rem">Patch 26.13 &bull; June 24, 2026</p>
+  </div>
+</footer>
+
+</body></html>

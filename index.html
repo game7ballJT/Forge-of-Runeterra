@@ -10,6 +10,11 @@
 <meta name="author" content="Forge of Runeterra">
 <meta name="keywords" content="LoL builds, League of Legends tier list, champion guides, LoL counters, patch 26.13, best champions, LoL runes, item builds">
 <link rel="canonical" href="https://forgeofruneterra.gg/">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+<!-- Static section discovery links for crawlers -->
+<link rel="alternate" href="/champions/" title="All Champions — Builds & Tier Lists">
+<link rel="alternate" href="/guides/" title="Meta Guides & Tier Lists">
+<link rel="alternate" href="/patch/26-13/" title="Patch 26.13 Notes">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://forgeofruneterra.gg/">
 <meta property="og:title" content="Forge of Runeterra | LoL Champion Builds, Tier List &amp; Guides — Patch 26.13">
@@ -4443,6 +4448,7 @@ function renderChampionGrid() {
     const isFav = !!(favoriteChampIds && favoriteChampIds.has(c.id));
     return `
     <div class="champ-card" onclick="openChampDetail('${c.id}')" tabindex="0" role="button" aria-label="${c.name}">
+      <a href="/champions/${c.id.toLowerCase()}/" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap" tabindex="-1" aria-hidden="true">${c.name} Build &amp; Guide Patch 26.13</a>
       <div class="champ-img-wrapper">
         <img class="champ-img" src="${c.img}" alt="${c.name}" loading="lazy" width="120" height="120">
         <div class="champ-tier-badge tier-${c.tier}">${c.tier}</div>
